@@ -40,7 +40,7 @@ public partial class LMSContext : DbContext
     //{
     //    if (!optionsBuilder.IsConfigured)
     //    {
-    //        optionsBuilder.UseSqlServer("Data Source=localhost;Database=LMSContext;Trusted_Connection=True;");
+    //        optionsBuilder.UseSqlServer("Data Source=localhost;Database=LMSContext;Trusted_Connection=True;TrustServerCertificate=True;");
     //    }        
     //    base.OnConfiguring(optionsBuilder);
     //}
