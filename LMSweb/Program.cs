@@ -1,4 +1,11 @@
+using LMSweb.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<LMSContext>(options =>
+    options.UseSqlServer(builder.Configuration["LMSContext"])
+);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
