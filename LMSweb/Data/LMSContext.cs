@@ -1,4 +1,5 @@
 ﻿using LMSweb.Models;
+using LMSweb.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMSweb.Data;
@@ -267,6 +268,138 @@ public partial class LMSContext : DbContext
                 .HasMaxLength(128)
                 .HasColumnName("UPassword");
         });
+
+        /* 測試資料 */
+        var test_users = new List<User>
+        {
+            new User
+            {
+                Id = "S001",
+                Upassword = HashHelper.SHA256Hash("S001"),
+                Name = "林世楷",
+                RoleName = "Student",
+                Gender = "男"
+            },
+            new User
+            {
+                Id = "S002",
+                Upassword = HashHelper.SHA256Hash("S002"),
+                Name = "李國禎",
+                RoleName = "Student",
+                Gender = "男"
+            },
+            new User
+            {
+                Id = "S003",
+                Upassword = HashHelper.SHA256Hash("S003"),
+                Name = "許盈琪",
+                RoleName = "Student",
+                Gender = "女"
+            },
+            new User
+            {
+                Id = "S004",
+                Upassword = HashHelper.SHA256Hash("S004"),
+                Name = "Kevin",
+                RoleName = "Student",
+                Gender = "男"
+            },
+            new User
+            {
+                Id = "S005",
+                Upassword = HashHelper.SHA256Hash("S005"),
+                Name = "Vivian",
+                RoleName = "Student",
+                Gender = "女"
+            },
+            new User
+            {
+                Id = "S006",
+                Upassword = HashHelper.SHA256Hash("S006"),
+                Name = "Amy",
+                RoleName = "Student",
+                Gender = "女"
+            },
+            new User
+            {
+                Id = "T001",
+                Upassword = HashHelper.SHA256Hash("T00001"),
+                Name = "Lee",
+                RoleName = "Teacher"
+            },
+            new User
+            {
+                Id = "T002",
+                Upassword = HashHelper.SHA256Hash("T002"),
+                Name = "曾老師",
+                RoleName = "Teacher"
+            },
+            new User
+            {
+                Id = "T003",
+                Upassword = HashHelper.SHA256Hash("T003"),
+                Name = "李偉老師",
+                RoleName = "Teacher"
+            },
+            new User
+            {
+                Id = "T004",
+                Upassword = HashHelper.SHA256Hash("Kevin1004"),
+                Name = "焰超老師",
+                RoleName = "Teacher"
+            }
+        };
+        modelBuilder.Entity<User>().HasData(test_users);
+
+        var test_students = new List<Student>
+        {
+            new Student
+            {
+                StudentId = "S001"
+            },
+            new Student
+            {
+                StudentId = "S002"
+            },
+            new Student
+            {
+                StudentId = "S003"
+            },
+            new Student
+            {
+                StudentId = "S004"
+            },
+            new Student
+            {
+                StudentId = "S005"
+            },
+            new Student
+            {
+                StudentId = "S006"
+            }
+        };
+        modelBuilder.Entity<Student>().HasData(test_students);
+
+        var test_teachers = new List<Teacher>
+        {
+            new Teacher
+            {
+                TeacherId = "T001"
+            },
+            new Teacher
+            {
+                TeacherId = "T002"
+            },
+            new Teacher
+            {
+                TeacherId = "T003"
+            },
+            new Teacher
+            {
+                TeacherId = "T004"
+            }
+        };
+        modelBuilder.Entity<Teacher>().HasData(test_teachers);
 
         OnModelCreatingPartial(modelBuilder);
     }
