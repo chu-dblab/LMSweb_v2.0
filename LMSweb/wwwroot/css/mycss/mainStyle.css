@@ -2,9 +2,13 @@
     font-family: "Noto Sans CJK TC", "Microsoft JhengHei", PingFang, STHeiti, sans-serif, serif;
 }
 
-body {
+/*body {
     --bs-body-bg: #484848;
     --bs-card-bg: #484848;
+}*/
+
+body {
+    background-color: #484848 !important;
 }
 
 nav {

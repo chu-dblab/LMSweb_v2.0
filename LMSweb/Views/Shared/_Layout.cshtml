@@ -4,45 +4,63 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LMSWeb2.0</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.css" />
+
+    <link rel="stylesheet" href="~/css/mycss/mainStyle.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/lib/jasny-bootstrap/css/jasny-bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-fileinput/css/fileinput.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bs-stepper/dist/css/bs-stepper.min.css" />
+
+    @RenderSection("topCSS", required: false)
+    @RenderSection("topJS", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LMSweb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <header id="header">
+        @*@RenderSection("header", required: false)*@
+        <nav class="navbar navbar-expand-lg navbar-light text-white">
+            <div class="container">
+
+                @if (User.IsInRole("Student") == true)
+                {
+                    <a class="text-light text-decoration-none h3 my-auto" href="@Url.Action("Home", "Student")">
+                        LMSWeb 2.0
+                    </a>
+                }
+                else
+                {
+                    <a class="text-light text-decoration-none h3 my-auto" href="@Url.Action("Home", "Teacher")">
+                        LMSWeb 2.0
+                    </a>
+                }
+
+                @RenderSection("NavPills", required: false)
+
+                <ul class="navbar-nav text-light">
+                    @Html.Partial("_LoginPartial")
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main id="main">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - LMSweb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="w-100">
+        <div class="container d-flex flex-wrap text-white">
+            <p class="d-block">&copy; @DateTime.Now.Year</p>
+            <p class="ms-auto d-block">結合社會共享調節與互動式同儕互評的程式設計合作學習環境</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/moment.js/moment.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    
+    @RenderSection("scripts", required: false)
+    @RenderSection("endCSS", required: false)
+    @RenderSection("endJS", required: false)
 </body>
 </html>

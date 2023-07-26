@@ -1,0 +1,17 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item">
+        <span class="nav-link text-light">
+            @User.Identity.Name
+        </span>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" href="@Url.Action("Logout","Home")">登出</a>
+    </li>
+}
+else
+{
+    <li class="text-light">
+        <a class="text-decoration-none text-white fs-5" href="@Url.Action("Login","Home")">登入</a>
+    </li>
+}

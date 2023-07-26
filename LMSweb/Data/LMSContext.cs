@@ -238,7 +238,7 @@ public partial class LMSContext : DbContext
                 .HasForeignKey(d => d.GroupId)
                 .HasConstraintName("FK_Students_Groups");
 
-            entity.HasOne(d => d.StudentNavigation).WithOne(p => p.Student)
+            entity.HasOne(d => d.User).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Students_Users");
@@ -250,7 +250,7 @@ public partial class LMSContext : DbContext
                 .HasMaxLength(128)
                 .HasColumnName("TeacherID");
 
-            entity.HasOne(d => d.TeacherNavigation).WithOne(p => p.Teacher)
+            entity.HasOne(d => d.User).WithOne(p => p.Teacher)
                 .HasForeignKey<Teacher>(d => d.TeacherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teachers_Users");
@@ -355,27 +355,33 @@ public partial class LMSContext : DbContext
         {
             new Student
             {
-                StudentId = "S001"
+                StudentId = "S001",
+                StudentName = "林世楷"
             },
             new Student
             {
-                StudentId = "S002"
+                StudentId = "S002",
+                StudentName = "李國禎"
             },
             new Student
             {
-                StudentId = "S003"
+                StudentId = "S003",
+                StudentName = "許盈琪"
             },
             new Student
             {
-                StudentId = "S004"
+                StudentId = "S004",
+                StudentName = "Kevin"
             },
             new Student
             {
-                StudentId = "S005"
+                StudentId = "S005",
+                StudentName = "Vivian"
             },
             new Student
             {
-                StudentId = "S006"
+                StudentId = "S006",
+                StudentName = "Amy"
             }
         };
         modelBuilder.Entity<Student>().HasData(test_students);
@@ -384,19 +390,23 @@ public partial class LMSContext : DbContext
         {
             new Teacher
             {
-                TeacherId = "T001"
+                TeacherId = "T001",
+                TeacherName = "Lee"
             },
             new Teacher
             {
-                TeacherId = "T002"
+                TeacherId = "T002",
+                TeacherName = "曾老師"
             },
             new Teacher
             {
-                TeacherId = "T003"
+                TeacherId = "T003",
+                TeacherName = "李偉老師"
             },
             new Teacher
             {
-                TeacherId = "T004"
+                TeacherId = "T004",
+                TeacherName = "焰超老師"
             }
         };
         modelBuilder.Entity<Teacher>().HasData(test_teachers);

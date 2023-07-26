@@ -1,8 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section topCSS {
+    <style>
+        .carl {
+            align-items: center;
+            background-image: url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+            background-size: cover;
+            background-color: #898888;
+            height: 400px;
+            color: white;
+            opacity: 0.8;
+        }
+    </style>
+}
+
+<div class="carl row">
+
+        @*<img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Alternate Text" />*@
+        <p class="font-weight-bold text-center display-4 " style="padding:100px 30px 150px 30px">
+            Welcome!
+        </p>
 </div>
