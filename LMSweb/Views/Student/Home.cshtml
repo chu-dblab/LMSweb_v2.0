@@ -13,60 +13,63 @@
     </div>
 
     <div class="card m-3 bg-white">
-        <table class="table table-striped">
-            <thead>
-                <tr class="row m-3">
-                    <th class="col-1">#</th>
-                    <th class="col-2">
-                        課程名稱
-                    </th>
-                    <th class="col-2">
-                        授課老師
-                    </th>
-                    <th class="col-2">
-                        組名
-                    </th>
-                    <th class="col-2">
-                        組員
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="number">
-                <tr class="row mx-3 my-1">
-                    <td class="col-1">@(k++)</td>
-                    <td class="col-2">
-                        @Html.DisplayFor(model => model.CourseName)
-                    </td>
-                    <td class="col-2">
-                        @Html.DisplayFor(model => model.TeacherName)
-                    </td>
-                    <td class="col-2">
-                        @Html.DisplayFor(model => model.GroupName)
-                    </td>
-                    <td class="col-2">
-                        @if (Model.GroupStudent.Count > 0)
-                        {
-                            foreach (var stu in (Model.GroupStudent.OrderByDescending(x => x.IsLeader).ThenBy(x => x.StudentID)))
+        @if(Model != null)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr class="row m-3">
+                        <th class="col-1">#</th>
+                        <th class="col-2">
+                            課程名稱
+                        </th>
+                        <th class="col-2">
+                            授課老師
+                        </th>
+                        <th class="col-2">
+                            組名
+                        </th>
+                        <th class="col-2">
+                            組員
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="number">
+                    <tr class="row mx-3 my-1">
+                        <td class="col-1">@(k++)</td>
+                        <td class="col-2">
+                            @Html.DisplayFor(model => model.CourseName)
+                        </td>
+                        <td class="col-2">
+                            @Html.DisplayFor(model => model.TeacherName)
+                        </td>
+                        <td class="col-2">
+                            @Html.DisplayFor(model => model.GroupName)
+                        </td>
+                        <td class="col-2">
+                            @if (Model.GroupStudent.Count > 0)
                             {
-                                @stu.StudentName
-                                if (stu.IsLeader)
+                                foreach (var stu in (Model.GroupStudent.OrderByDescending(x => x.IsLeader).ThenBy(x => x.StudentID)))
                                 {
-                                    <span>組長</span>
+                                    @stu.StudentName
+                                    if (stu.IsLeader)
+                                    {
+                                        <span>組長</span>
+                                    }
+                                    <br>
                                 }
-                                <br>
                             }
-                        }
-                    </td>
-                    <td class="col flex-shrink-1">
-                        <div class="d-grid gap-2 d-md-flex justify-content-end">
-                            <a class=" btn btn-primary" href="@Url.Action("Index", "Missions", new { cid = Model.CourseID })">
-                                進入我的課程
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td class="col flex-shrink-1">
+                            <div class="d-grid gap-2 d-md-flex justify-content-end">
+                                <a class=" btn btn-primary" href="@Url.Action("Index", "Missions", new { cid = Model.CourseID })">
+                                    進入我的課程
+                                    <i class="bi bi-arrow-right-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }        
     </div>
 </div>

@@ -20,7 +20,7 @@ namespace LMSweb.Controllers
 
         public IActionResult Home()
         {
-            var sid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value ?? null;   //抓出當初記載Claims陣列中的SID
+            var sid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;   //抓出當初記載Claims陣列中的SID
 
             if (sid == null)
             {

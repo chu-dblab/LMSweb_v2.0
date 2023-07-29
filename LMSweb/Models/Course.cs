@@ -11,7 +11,7 @@ public partial class Course
 
     public string Cname { get; set; } = null!;
 
-    public string TestType { get; set; } = null!;
+    public required int TestType { get; set; }
 
     public DateTime CreateTime { get; set; }
 

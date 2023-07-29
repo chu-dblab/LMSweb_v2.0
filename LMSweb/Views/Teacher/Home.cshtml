@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TeacherHomeViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@functions {
+    string GetTypeString(int input)
+    {
+        //if (input == 0) return "控制組";
+        //else if (input == 1) return "實驗組一：同儕互評";
+        //else if (input == 2) return "實驗組二：自我調節";
+        //else if (input == 3) return "實驗組三：互動式同儕互評";
+        //else if (input == 4) return "實驗組四：社會共享調節";
+        //else if (input == 5) return "實驗組五：互動式同儕互評 & 社會共享調節";
+        //else return "組別Type錯誤";
+
+        if (input == 0) return "控制組";
+        else if (input == 1) return "實驗組一";
+        else if (input == 2) return "實驗組二";
+        else if (input == 3) return "實驗組三";
+        else if (input == 4) return "實驗組四";
+        else if (input == 5) return "實驗組五";
+        else return "組別Type錯誤";
+    }
+}
+<div class="container">
+
+    @*<div class="card row flex-wrap d-flex m-3">
+    <h1 class="col-5">課程列表</h1>
+    <a href="@Url.Action("CourseCreate", "Teacher")" class="btn btn-primary col flex-shrink-0 w-auto ms-auto">content</a>
+    </div>*@
+
+    <div class="card m-3 p-3">
+        <div class="row m-2">
+            <p class="col col-md flex-shrink-1 w-auto fs-2 my-auto">課程列表</p>
+            <div class="col col-md-2 justify-content-end d-flex">
+                <a class="btn btn-primary w-auto py-2 fs-5" href='@Url.Action("CourseCreate", "Teacher")'>
+                    新增課程
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="article m-3">
+        <div class="row row-cols-1 row-cols-md-4 mb-4 text-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card mb-3 shadow-sm" style="border-radius: 15px; ">
+                        <div class="card-body">
+                            <div class="card-title pricing-card-title text-center mt-2 py-2 px-1">
+                                <p class="h3" style="min-height: 80px">
+                                    @Html.DisplayFor(modelItem => item.CourseName, new { @class = "fw-bold" })
+                                </p>
+                            </div>
+
+                            <p class="h6">ID : @Html.DisplayFor(modelItem => item.CourseID)</p>
+                            <p class="h6"> @GetTypeString(item.TestType)</p>
+
+                            <hr />
+                            @Html.ActionLink("進入課程", "Index", "Missions", new { cid = item.CourseID }, new { @class = "btn btn-primary" })
+                            <a type="button" class="btn btn-link p-1" href="@Url.Action("CourseEdit", "Teacher", new { cid = item.CourseID })">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("CourseDelete", "Teacher", new { cid = item.CourseID })">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
