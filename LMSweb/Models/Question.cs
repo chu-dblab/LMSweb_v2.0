@@ -9,7 +9,7 @@ public partial class Question
 
     public string EprocedureId { get; set; } = null!;
 
-    public string CourseId { get; set; } = null!;
+    public string? CourseId { get; set; }
 
     public string? Qtype { get; set; }
 
