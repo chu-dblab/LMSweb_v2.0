@@ -46,7 +46,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.Course", b =>
@@ -78,7 +78,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.Execution", b =>
@@ -99,7 +99,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("MissionId");
 
-                    b.ToTable("Executions");
+                    b.ToTable("Executions", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.ExperimentalProcedure", b =>
@@ -114,7 +114,7 @@ namespace LMSweb.Migrations
 
                     b.HasKey("EprocedureId");
 
-                    b.ToTable("ExperimentalProcedures");
+                    b.ToTable("ExperimentalProcedures", (string)null);
 
                     b.HasData(
                         new
@@ -173,7 +173,7 @@ namespace LMSweb.Migrations
 
                     b.HasKey("Gid");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.Mission", b =>
@@ -213,7 +213,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Missions");
+                    b.ToTable("Missions", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.Option", b =>
@@ -239,7 +239,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Options");
+                    b.ToTable("Options", (string)null);
 
                     b.HasData(
                         new
@@ -590,7 +590,7 @@ namespace LMSweb.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Provideds");
+                    b.ToTable("Provideds", (string)null);
                 });
 
             modelBuilder.Entity("LMSweb.Models.Question", b =>
@@ -625,7 +625,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("EprocedureId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
 
                     b.HasData(
                         new
@@ -787,7 +787,7 @@ namespace LMSweb.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
 
                     b.HasData(
                         new
@@ -841,7 +841,7 @@ namespace LMSweb.Migrations
 
                     b.HasKey("TeacherId");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
 
                     b.HasData(
                         new
@@ -895,7 +895,7 @@ namespace LMSweb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
