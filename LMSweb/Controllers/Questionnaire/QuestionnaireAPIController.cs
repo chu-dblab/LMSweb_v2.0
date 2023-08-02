@@ -47,9 +47,16 @@ namespace LMSweb.Controllers.Questionnaire
         }
         // POST: api/Questionnaire
         [HttpPost]
-        public void Post([FromBody] PostViewModel VM)
+        public IActionResult Post([FromBody] PostViewModel VM)
         {
+            if (VM == null) { return NotFound(); }
+            else
+            {
+                var EprocedureSercices = new EprocedureSercices(_context);
+                EprocedureSercices.SaveAnswer(VM);
 
+                return Ok();
+            }
         }
     }
 }

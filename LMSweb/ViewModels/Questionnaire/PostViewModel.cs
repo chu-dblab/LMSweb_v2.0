@@ -3,6 +3,7 @@
     public class PostViewModel
     {
         public string UID { get; set; }
+        public string MissionId { get; set; }
         public List<Answer> Answers { get; set; }
     }
 

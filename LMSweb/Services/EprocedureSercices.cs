@@ -111,7 +111,7 @@ namespace LMSweb.Services
             return EprocedureIdTable[TaskType, TaskSteps];
         }
 
-        public void PostAnswer(PostViewModel postViewModel)
+        public void SaveAnswer(PostViewModel postViewModel)
         {
             var uid = _context.Users.Find(postViewModel.UID);
 
@@ -125,12 +125,24 @@ namespace LMSweb.Services
                     {
                         var _answer = new Models.Answer();
 
-                        _answer.Aid = @$"{answer.QuestionId}{DateTime.Now:yyyymmddhhmmss}";
+                        var aid_str = @$"{answer.QuestionId}{DateTime.Now:yyyymmddhhmmss}";
+
+                        _answer.Aid = aid_str;
                         _answer.Acontent = $@"{answer.Content.OptionId},{answer.Content.OcontentContent}";
                         _answer.Atime = DateTime.Now;
                         _answer.QuestionId = answer.QuestionId;
 
                         _context.Answers.Add(_answer);
+                        _context.SaveChanges();
+
+                        var _provided = new Models.Provided()
+                        {
+                            AnswerId = aid_str,
+                            MissionId = postViewModel.MissionId,
+                            UserId = postViewModel.UID
+                        };
+
+                        _context.Provideds.Add(_provided);
                         _context.SaveChanges();
                     }
                 }
