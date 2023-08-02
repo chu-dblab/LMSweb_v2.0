@@ -22,4 +22,6 @@ public partial class Mission
     public virtual Course? Course { get; set; }
 
     public virtual ICollection<Execution> Executions { get; set; } = new List<Execution>();
+
+    public virtual Provided? Provided { get; set; }
 }

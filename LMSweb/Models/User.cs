@@ -19,5 +19,5 @@ public partial class User
 
     public virtual Teacher? Teacher { get; set; }
 
-    public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
+    public virtual Provided? Provided { get; set; }
 }

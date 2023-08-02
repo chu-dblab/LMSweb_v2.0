@@ -4,6 +4,7 @@ using LMSweb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    partial class LMSContextModelSnapshot : ModelSnapshot
+    [Migration("20230802060842_remove_answer_user")]
+    partial class remove_answer_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -568,31 +571,6 @@ namespace LMSweb.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LMSweb.Models.Provided", b =>
-                {
-                    b.Property<string>("AnswerId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("MissionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.HasKey("AnswerId", "UserId");
-
-                    b.HasIndex("MissionId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Provideds");
-                });
-
             modelBuilder.Entity("LMSweb.Models.Question", b =>
                 {
                     b.Property<string>("QuestionId")
@@ -1038,33 +1016,6 @@ namespace LMSweb.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("LMSweb.Models.Provided", b =>
-                {
-                    b.HasOne("LMSweb.Models.Answer", "Answer")
-                        .WithMany("Provideds")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LMSweb.Models.Mission", "Mission")
-                        .WithOne("Provided")
-                        .HasForeignKey("LMSweb.Models.Provided", "MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LMSweb.Models.User", "User")
-                        .WithOne("Provided")
-                        .HasForeignKey("LMSweb.Models.Provided", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Answer");
-
-                    b.Navigation("Mission");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LMSweb.Models.Question", b =>
                 {
                     b.HasOne("LMSweb.Models.Course", "Course")
@@ -1119,11 +1070,6 @@ namespace LMSweb.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LMSweb.Models.Answer", b =>
-                {
-                    b.Navigation("Provideds");
-                });
-
             modelBuilder.Entity("LMSweb.Models.Course", b =>
                 {
                     b.Navigation("Missions");
@@ -1148,8 +1094,6 @@ namespace LMSweb.Migrations
             modelBuilder.Entity("LMSweb.Models.Mission", b =>
                 {
                     b.Navigation("Executions");
-
-                    b.Navigation("Provided");
                 });
 
             modelBuilder.Entity("LMSweb.Models.Question", b =>
@@ -1166,8 +1110,6 @@ namespace LMSweb.Migrations
 
             modelBuilder.Entity("LMSweb.Models.User", b =>
                 {
-                    b.Navigation("Provided");
-
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");

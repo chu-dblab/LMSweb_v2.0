@@ -15,5 +15,5 @@ public partial class Answer
 
     public virtual Question Question { get; set; } = null!;
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<Provided> Provideds { get; set; } = new List<Provided>();
 }

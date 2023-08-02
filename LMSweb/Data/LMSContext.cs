@@ -36,6 +36,7 @@ public partial class LMSContext : DbContext
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Provided> Provideds { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{
@@ -66,29 +67,7 @@ public partial class LMSContext : DbContext
                 .HasForeignKey(d => d.QuestionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Answers_Questions");
-
-            entity.HasMany(d => d.Users).WithMany(p => p.Answers)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Provided",
-                    r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_Provideds_Users"),
-                    l => l.HasOne<Answer>().WithMany()
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_Provideds_Answers"),
-                    j =>
-                    {
-                        j.HasKey("AnswerId", "UserId");
-                        j.ToTable("Provideds");
-                        j.IndexerProperty<string>("AnswerId")
-                            .HasMaxLength(128)
-                            .HasColumnName("AnswerID");
-                        j.IndexerProperty<string>("UserId")
-                            .HasMaxLength(128)
-                            .HasColumnName("UserID");
-                    });
+            
         });
 
         modelBuilder.Entity<Course>(entity =>
@@ -266,6 +245,11 @@ public partial class LMSContext : DbContext
             entity.Property(e => e.Upassword)
                 .HasMaxLength(128)
                 .HasColumnName("UPassword");
+        });
+
+        modelBuilder.Entity<Provided>(entity =>
+        {
+            entity.HasKey(e => new {e.AnswerId, e.UserId});
         });
 
         /* 測試資料 */
