@@ -1,0 +1,84 @@
+﻿@{
+}
+
+@section topCSS {
+    <style>
+        input[type="radio"] {
+            display: none;
+        }
+        input[type="radio"]:checked+label {
+            background-color: #007bff;
+            color: white;
+        }
+        input[type="radio"]:checked+label:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        input[type="radio"]:checked+label:active {
+            background-color: #007bff;
+            color: white;
+        }
+        label {
+            align-items: center;
+        }
+
+        .bg-8C8C8C {
+            background-color: #8C8C8C;
+        }
+
+        .bg-A4A4A4 {
+            background-color: #A4A4A4;
+        }
+        .number {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 30px;
+            line-height: 50px;
+            margin-right: 10px;
+        }
+    </style>
+}
+
+<div class="container">
+    <div class="card m-3 p-3">
+        <h1 class="w-auto m-2 fs-2">目標設置</h1>
+    </div>
+    <div class="card m-3 p-3">
+        <div class="row m-2">
+            <div class="col-4 row align-content-center row">
+                <div class="number col-2">1</div>
+                <p class="fs-5 col my-auto">我期望我們小組在這次任務可以得到幾分？</p>
+            </div>
+            <div class="col row">
+                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio1" style="padding: 0px; margin: 0px;">
+                        <p class="align-self-center" style="padding: 0px; margin: 0px;">90-100</p>
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1">
+                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio2" style="padding: 0px; margin: 0px;">
+                        <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option1">
+                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio3" style="padding: 0px; margin: 0px;">
+                        <p class="align-self-center" style="padding: 0px; margin: 0px;">70-80</p>
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option1">
+                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio3" style="padding: 0px; margin: 0px;">
+                        <p class="align-self-center" style="padding: 0px; margin: 0px;">60-70</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
