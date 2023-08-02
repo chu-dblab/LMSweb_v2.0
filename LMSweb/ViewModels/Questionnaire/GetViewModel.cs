@@ -2,7 +2,10 @@
 {
     public class GetViewModel
     {
-        string UID { get; set; }
-        int TaskSteps { get; set; }
+        public string UID { get; set; }
+        public int TaskType { get; set; }
+        public int TaskSteps { get; set; }
     }
+
+    
 }
