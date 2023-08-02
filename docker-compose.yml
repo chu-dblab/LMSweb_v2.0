@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  lmsweb:
+    image: ${DOCKER_REGISTRY-}lmsweb
+    build:
+      context: .
+      dockerfile: LMSweb/Dockerfile

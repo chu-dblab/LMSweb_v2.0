@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMSweb", "LMSweb\LMSweb.csproj", "{5B36F816-E807-47FE-A871-3105F39B5A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSweb", "LMSweb\LMSweb.csproj", "{5B36F816-E807-47FE-A871-3105F39B5A7D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{23F89A3C-32A4-4ABD-881A-9B3908D44FD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5B36F816-E807-47FE-A871-3105F39B5A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B36F816-E807-47FE-A871-3105F39B5A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B36F816-E807-47FE-A871-3105F39B5A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F89A3C-32A4-4ABD-881A-9B3908D44FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F89A3C-32A4-4ABD-881A-9B3908D44FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F89A3C-32A4-4ABD-881A-9B3908D44FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F89A3C-32A4-4ABD-881A-9B3908D44FD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
