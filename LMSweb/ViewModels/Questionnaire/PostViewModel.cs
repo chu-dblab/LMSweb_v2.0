@@ -2,19 +2,19 @@
 {
     public class PostViewModel
     {
-        string UID { get; set; }
-        List<Answer> Answers { get; set; }
+        public string UID { get; set; }
+        public List<Answer> Answers { get; set; }
     }
 
     public class Answer
     {
-        string? QuestionId { get; set; }
-        AnswerContent Content { get; set; }
+        public string? QuestionId { get; set; }
+        public AnswerContent Content { get; set; }
     }
 
     public class AnswerContent
     {
-        string? OptionId { get; set; }
-        string? OcontentContent { get; set; }
+        public string? OptionId { get; set; }
+        public string? OcontentContent { get; set; }
     }
 }

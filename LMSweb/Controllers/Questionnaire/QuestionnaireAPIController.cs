@@ -43,15 +43,13 @@ namespace LMSweb.Controllers.Questionnaire
                     return NotFound();
                 }
             }
-
-            
-
             return Ok(ReGetVM);
         }
-        //// POST: api/Questionnaire
-        //[HttpPost]
-        //public void Post([FromBody] PostViewModel VM)
-        //{
-        //}
+        // POST: api/Questionnaire
+        [HttpPost]
+        public void Post([FromBody] PostViewModel VM)
+        {
+
+        }
     }
 }
