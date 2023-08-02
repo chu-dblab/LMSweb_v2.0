@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LMSweb.Models;
 
 public partial class Option
 {
-    public int OptionId { get; set; }
+    public int OptionID { get; set; }
 
     public string Ocontent { get; set; } = null!;
 

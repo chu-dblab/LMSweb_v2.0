@@ -4,6 +4,7 @@ using LMSweb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    partial class LMSContextModelSnapshot : ModelSnapshot
+    [Migration("20230802022820_AddColumnAndForeignKeyForOptions")]
+    partial class AddColumnAndForeignKeyForOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,43 +118,6 @@ namespace LMSweb.Migrations
                     b.HasKey("EprocedureId");
 
                     b.ToTable("ExperimentalProcedures");
-
-                    b.HasData(
-                        new
-                        {
-                            EprocedureId = "0",
-                            Name = "目標設置"
-                        },
-                        new
-                        {
-                            EprocedureId = "1",
-                            Name = "任務監控"
-                        },
-                        new
-                        {
-                            EprocedureId = "2",
-                            Name = "內容監控"
-                        },
-                        new
-                        {
-                            EprocedureId = "3",
-                            Name = "任務評估"
-                        },
-                        new
-                        {
-                            EprocedureId = "4",
-                            Name = "自我反思"
-                        },
-                        new
-                        {
-                            EprocedureId = "5",
-                            Name = "團隊反思"
-                        },
-                        new
-                        {
-                            EprocedureId = "6",
-                            Name = "同儕互評"
-                        });
                 });
 
             modelBuilder.Entity("LMSweb.Models.Group", b =>
@@ -235,308 +201,6 @@ namespace LMSweb.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Options");
-
-                    b.HasData(
-                        new
-                        {
-                            OptionID = 1,
-                            Ocontent = "90~100",
-                            QuestionId = "PGS01"
-                        },
-                        new
-                        {
-                            OptionID = 2,
-                            Ocontent = "80~90",
-                            QuestionId = "PGS01"
-                        },
-                        new
-                        {
-                            OptionID = 3,
-                            Ocontent = "70~80",
-                            QuestionId = "PGS01"
-                        },
-                        new
-                        {
-                            OptionID = 4,
-                            Ocontent = "60~70",
-                            QuestionId = "PGS01"
-                        },
-                        new
-                        {
-                            OptionID = 5,
-                            Ocontent = "查找教材",
-                            QuestionId = "PGS02"
-                        },
-                        new
-                        {
-                            OptionID = 6,
-                            Ocontent = "上網找資料",
-                            QuestionId = "PGS02"
-                        },
-                        new
-                        {
-                            OptionID = 7,
-                            Ocontent = "與同學討論與合作",
-                            QuestionId = "PGS02"
-                        },
-                        new
-                        {
-                            OptionID = 8,
-                            Ocontent = "詢問老師",
-                            QuestionId = "PGS02"
-                        },
-                        new
-                        {
-                            OptionID = 9,
-                            Ocontent = "參與討論",
-                            QuestionId = "PGS03"
-                        },
-                        new
-                        {
-                            OptionID = 10,
-                            Ocontent = "規劃流程圖",
-                            QuestionId = "PGS03"
-                        },
-                        new
-                        {
-                            OptionID = 11,
-                            Ocontent = "撰寫程式碼",
-                            QuestionId = "PGS03"
-                        },
-                        new
-                        {
-                            OptionID = 12,
-                            Ocontent = "10分鐘以內",
-                            QuestionId = "TM01"
-                        },
-                        new
-                        {
-                            OptionID = 13,
-                            Ocontent = "10-15分鐘",
-                            QuestionId = "TM01"
-                        },
-                        new
-                        {
-                            OptionID = 14,
-                            Ocontent = "15分鐘以上",
-                            QuestionId = "TM01"
-                        },
-                        new
-                        {
-                            OptionID = 15,
-                            Ocontent = "正確",
-                            QuestionId = "CM01"
-                        },
-                        new
-                        {
-                            OptionID = 16,
-                            Ocontent = "不完全正確",
-                            QuestionId = "CM01"
-                        },
-                        new
-                        {
-                            OptionID = 17,
-                            Ocontent = "不正確",
-                            QuestionId = "CM01"
-                        },
-                        new
-                        {
-                            OptionID = 18,
-                            Ocontent = "有",
-                            QuestionId = "TE01"
-                        },
-                        new
-                        {
-                            OptionID = 19,
-                            Ocontent = "沒有",
-                            QuestionId = "TE01"
-                        },
-                        new
-                        {
-                            OptionID = 20,
-                            Ocontent = "90~100",
-                            QuestionId = "SR01"
-                        },
-                        new
-                        {
-                            OptionID = 21,
-                            Ocontent = "80~90",
-                            QuestionId = "SR01"
-                        },
-                        new
-                        {
-                            OptionID = 22,
-                            Ocontent = "70~80",
-                            QuestionId = "SR01"
-                        },
-                        new
-                        {
-                            OptionID = 23,
-                            Ocontent = "60~70",
-                            QuestionId = "SR01"
-                        },
-                        new
-                        {
-                            OptionID = 24,
-                            Ocontent = "查找教材",
-                            QuestionId = "SR02"
-                        },
-                        new
-                        {
-                            OptionID = 25,
-                            Ocontent = "上網找資料",
-                            QuestionId = "SR02"
-                        },
-                        new
-                        {
-                            OptionID = 26,
-                            Ocontent = "與同學討論與合作",
-                            QuestionId = "SR02"
-                        },
-                        new
-                        {
-                            OptionID = 27,
-                            Ocontent = "詢問老師",
-                            QuestionId = "SR02"
-                        },
-                        new
-                        {
-                            OptionID = 28,
-                            Ocontent = "參與討論",
-                            QuestionId = "SR03"
-                        },
-                        new
-                        {
-                            OptionID = 29,
-                            Ocontent = "規劃流程圖",
-                            QuestionId = "SR03"
-                        },
-                        new
-                        {
-                            OptionID = 30,
-                            Ocontent = "撰寫程式碼",
-                            QuestionId = "SR03"
-                        },
-                        new
-                        {
-                            OptionID = 31,
-                            Ocontent = "90~100",
-                            QuestionId = "TR01"
-                        },
-                        new
-                        {
-                            OptionID = 32,
-                            Ocontent = "80~90",
-                            QuestionId = "TR01"
-                        },
-                        new
-                        {
-                            OptionID = 33,
-                            Ocontent = "70~80",
-                            QuestionId = "TR01"
-                        },
-                        new
-                        {
-                            OptionID = 34,
-                            Ocontent = "60~70",
-                            QuestionId = "TR01"
-                        },
-                        new
-                        {
-                            OptionID = 35,
-                            Ocontent = "查找教材",
-                            QuestionId = "TR02"
-                        },
-                        new
-                        {
-                            OptionID = 36,
-                            Ocontent = "上網找資料",
-                            QuestionId = "TR02"
-                        },
-                        new
-                        {
-                            OptionID = 37,
-                            Ocontent = "與同學討論與合作",
-                            QuestionId = "TR02"
-                        },
-                        new
-                        {
-                            OptionID = 38,
-                            Ocontent = "詢問老師",
-                            QuestionId = "TR02"
-                        },
-                        new
-                        {
-                            OptionID = 39,
-                            Ocontent = "參與討論",
-                            QuestionId = "TR03"
-                        },
-                        new
-                        {
-                            OptionID = 40,
-                            Ocontent = "規劃流程圖",
-                            QuestionId = "TR03"
-                        },
-                        new
-                        {
-                            OptionID = 41,
-                            Ocontent = "撰寫程式碼",
-                            QuestionId = "TR03"
-                        },
-                        new
-                        {
-                            OptionID = 42,
-                            Ocontent = "3",
-                            QuestionId = "PE01"
-                        },
-                        new
-                        {
-                            OptionID = 43,
-                            Ocontent = "2",
-                            QuestionId = "PE01"
-                        },
-                        new
-                        {
-                            OptionID = 44,
-                            Ocontent = "1",
-                            QuestionId = "PE01"
-                        },
-                        new
-                        {
-                            OptionID = 45,
-                            Ocontent = "3",
-                            QuestionId = "PE02"
-                        },
-                        new
-                        {
-                            OptionID = 46,
-                            Ocontent = "2",
-                            QuestionId = "PE02"
-                        },
-                        new
-                        {
-                            OptionID = 47,
-                            Ocontent = "1",
-                            QuestionId = "PE02"
-                        },
-                        new
-                        {
-                            OptionID = 48,
-                            Ocontent = "3",
-                            QuestionId = "PE03"
-                        },
-                        new
-                        {
-                            OptionID = 49,
-                            Ocontent = "2",
-                            QuestionId = "PE03"
-                        },
-                        new
-                        {
-                            OptionID = 50,
-                            Ocontent = "1",
-                            QuestionId = "PE03"
-                        });
                 });
 
             modelBuilder.Entity("LMSweb.Models.Question", b =>
@@ -547,6 +211,7 @@ namespace LMSweb.Migrations
                         .HasColumnName("QuestionID");
 
                     b.Property<string>("CourseId")
+                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("CourseID");
@@ -572,127 +237,6 @@ namespace LMSweb.Migrations
                     b.HasIndex("EprocedureId");
 
                     b.ToTable("Questions");
-
-                    b.HasData(
-                        new
-                        {
-                            QuestionId = "PGS01",
-                            EprocedureId = "0",
-                            Qcontent = "我期望我們小組在這次任務可以得到幾分？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "PGS02",
-                            EprocedureId = "0",
-                            Qcontent = "為達成目標，我將採用以下那些學習方法？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "PGS03",
-                            EprocedureId = "0",
-                            Qcontent = "在合作學習中，我希望能積極參與以下合作任務？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "TM01",
-                            EprocedureId = "1",
-                            Qcontent = "我們認為需要多長時間完成程式碼的撰寫？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "CM01",
-                            EprocedureId = "2",
-                            Qcontent = "我們認為這份流程圖是正確的嗎？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "TE01",
-                            EprocedureId = "3",
-                            Qcontent = "我們有沒有依照老師指示完成任務？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "SR01",
-                            EprocedureId = "4",
-                            Qcontent = "我期望我們小組在這次任務可以得到幾分？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "SR02",
-                            EprocedureId = "4",
-                            Qcontent = "為達成目標，我將採用以下那些學習方法？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "SR03",
-                            EprocedureId = "4",
-                            Qcontent = "在合作學習中，我希望能積極參與以下合作任務？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "SR04",
-                            EprocedureId = "4",
-                            Qcontent = "依據上述反思，我覺得下個任務可以如何改進？",
-                            Qtype = "2"
-                        },
-                        new
-                        {
-                            QuestionId = "TR01",
-                            EprocedureId = "5",
-                            Qcontent = "我們期望我們小組在這次任務可以得到幾分？",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "TR02",
-                            EprocedureId = "5",
-                            Qcontent = "為達成目標，我們將採用以下那些學習方法？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "TR03",
-                            EprocedureId = "5",
-                            Qcontent = "在合作學習中，我們希望能積極參與以下合作任務？",
-                            Qtype = "1"
-                        },
-                        new
-                        {
-                            QuestionId = "TR04",
-                            EprocedureId = "5",
-                            Qcontent = "依據上述反思，我們覺得下個任務可以如何改進？",
-                            Qtype = "2"
-                        },
-                        new
-                        {
-                            QuestionId = "PE01",
-                            EprocedureId = "6",
-                            Qcontent = "我們覺得這一組的邏輯性可以獲得幾分?",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "PE02",
-                            EprocedureId = "6",
-                            Qcontent = "我們覺得這一組的正確性可以獲得幾分?",
-                            Qtype = "0"
-                        },
-                        new
-                        {
-                            QuestionId = "PE03",
-                            EprocedureId = "6",
-                            Qcontent = "我們覺得這一組的可讀性可以獲得幾分?",
-                            Qtype = "0"
-                        });
                 });
 
             modelBuilder.Entity("LMSweb.Models.Student", b =>
@@ -1001,6 +545,7 @@ namespace LMSweb.Migrations
                     b.HasOne("LMSweb.Models.Course", "Course")
                         .WithMany("Questions")
                         .HasForeignKey("CourseId")
+                        .IsRequired()
                         .HasConstraintName("FK_Questions_Courses");
 
                     b.HasOne("LMSweb.Models.ExperimentalProcedure", "Eprocedure")

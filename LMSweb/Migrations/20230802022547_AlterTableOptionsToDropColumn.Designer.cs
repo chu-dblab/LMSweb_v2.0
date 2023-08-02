@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    [Migration("20230801131817_fix_OptionId_data_type")]
-    partial class fix_OptionId_data_type
+    [Migration("20230802022547_AlterTableOptionsToDropColumn")]
+    partial class AlterTableOptionsToDropColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,27 +179,16 @@ namespace LMSweb.Migrations
 
             modelBuilder.Entity("LMSweb.Models.Option", b =>
                 {
-                    b.Property<int>("OptionId")
+                    b.Property<int>("OID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("OptionID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OptionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OID"));
 
                     b.Property<string>("Ocontent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("OContent");
-
-                    b.Property<string>("QuestionId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("QuestionID");
-
-                    b.HasKey("OptionId");
-
-                    b.HasIndex("QuestionId");
 
                     b.ToTable("Options");
                 });
@@ -530,17 +519,6 @@ namespace LMSweb.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("LMSweb.Models.Option", b =>
-                {
-                    b.HasOne("LMSweb.Models.Question", "Question")
-                        .WithMany("Options")
-                        .HasForeignKey("QuestionId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Options_Questions");
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("LMSweb.Models.Question", b =>
                 {
                     b.HasOne("LMSweb.Models.Course", "Course")
@@ -640,8 +618,6 @@ namespace LMSweb.Migrations
             modelBuilder.Entity("LMSweb.Models.Question", b =>
                 {
                     b.Navigation("Answers");
-
-                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("LMSweb.Models.Teacher", b =>

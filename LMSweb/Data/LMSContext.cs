@@ -178,9 +178,8 @@ public partial class LMSContext : DbContext
 
         modelBuilder.Entity<Option>(entity =>
         {
-            entity.Property(e => e.OptionId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("OptionID");
+            entity.HasKey(e => e.OptionID);
+            entity.Property(e => e.OptionID).ValueGeneratedOnAdd();
             entity.Property(e => e.Ocontent).HasColumnName("OContent");
             entity.Property(e => e.QuestionId)
                 .HasMaxLength(128)
@@ -411,447 +410,447 @@ public partial class LMSContext : DbContext
         };
         modelBuilder.Entity<Teacher>().HasData(test_teachers);
 
-        //var test_experimental = new List<ExperimentalProcedure> 
-        //{
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "0",
-        //        Name = "目標設置"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "1",
-        //        Name = "任務監控"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "2",
-        //        Name = "內容監控"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "3",
-        //        Name = "任務評估"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "4",
-        //        Name = "自我反思"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "5",
-        //        Name = "團隊反思"
-        //    },
-        //    new ExperimentalProcedure
-        //    {
-        //        EprocedureId = "6",
-        //        Name = "同儕互評"
-        //    },
-        //};
-        //modelBuilder.Entity<ExperimentalProcedure>().HasData(test_experimental);
+        var test_experimental = new List<ExperimentalProcedure>
+        {
+            new ExperimentalProcedure
+            {
+                EprocedureId = "0",
+                Name = "目標設置"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "1",
+                Name = "任務監控"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "2",
+                Name = "內容監控"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "3",
+                Name = "任務評估"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "4",
+                Name = "自我反思"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "5",
+                Name = "團隊反思"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "6",
+                Name = "同儕互評"
+            },
+        };
+        modelBuilder.Entity<ExperimentalProcedure>().HasData(test_experimental);
 
-        //var test_Question = new List<Question>
-        //{
-        //    new Question
-        //    {
-        //        QuestionId = "PGS01",
-        //        EprocedureId = "0",
-        //        Qtype = "0",
-        //        Qcontent = "我期望我們小組在這次任務可以得到幾分？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "PGS02",
-        //        EprocedureId = "0",
-        //        Qtype = "1",
-        //        Qcontent = "為達成目標，我將採用以下那些學習方法？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "PGS03",
-        //        EprocedureId = "0",
-        //        Qtype = "1",
-        //        Qcontent = "在合作學習中，我希望能積極參與以下合作任務？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TM01",
-        //        EprocedureId = "1",
-        //        Qtype = "0",
-        //        Qcontent = "我們認為需要多長時間完成程式碼的撰寫？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "CM01",
-        //        EprocedureId = "2",
-        //        Qtype = "0",
-        //        Qcontent = "我們認為這份流程圖是正確的嗎？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TE01",
-        //        EprocedureId = "3",
-        //        Qtype = "0",
-        //        Qcontent = "我們有沒有依照老師指示完成任務？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "SR01",
-        //        EprocedureId = "4",
-        //        Qtype = "0",
-        //        Qcontent = "我期望我們小組在這次任務可以得到幾分？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "SR02",
-        //        EprocedureId = "4",
-        //        Qtype = "1",
-        //        Qcontent = "為達成目標，我將採用以下那些學習方法？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "SR03",
-        //        EprocedureId = "4",
-        //        Qtype = "1",
-        //        Qcontent = "在合作學習中，我希望能積極參與以下合作任務？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "SR04",
-        //        EprocedureId = "4",
-        //        Qtype = "2",
-        //        Qcontent = "依據上述反思，我覺得下個任務可以如何改進？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TR01",
-        //        EprocedureId = "5",
-        //        Qtype = "0",
-        //        Qcontent = "我們期望我們小組在這次任務可以得到幾分？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TR02",
-        //        EprocedureId = "5",
-        //        Qtype = "1",
-        //        Qcontent = "為達成目標，我們將採用以下那些學習方法？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TR03",
-        //        EprocedureId = "5",
-        //        Qtype = "1",
-        //        Qcontent = "在合作學習中，我們希望能積極參與以下合作任務？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "TR04",
-        //        EprocedureId = "5",
-        //        Qtype = "2",
-        //        Qcontent = "依據上述反思，我們覺得下個任務可以如何改進？"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "PE01",
-        //        EprocedureId = "6",
-        //        Qtype = "0",
-        //        Qcontent = "我們覺得這一組的邏輯性可以獲得幾分?"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "PE01",
-        //        EprocedureId = "6",
-        //        Qtype = "0",
-        //        Qcontent = "我們覺得這一組的正確性可以獲得幾分?"
-        //    },
-        //    new Question
-        //    {
-        //        QuestionId = "PE01",
-        //        EprocedureId = "6",
-        //        Qtype = "0",
-        //        Qcontent = "我們覺得這一組的可讀性可以獲得幾分?"
-        //    },
-        //};
-        //modelBuilder.Entity<Question>().HasData(test_Question);
+        var test_Question = new List<Question>
+        {
+            new Question
+            {
+                QuestionId = "PGS01",
+                EprocedureId = "0",
+                Qtype = "0",
+                Qcontent = "我期望我們小組在這次任務可以得到幾分？"
+            },
+            new Question
+            {
+                QuestionId = "PGS02",
+                EprocedureId = "0",
+                Qtype = "1",
+                Qcontent = "為達成目標，我將採用以下那些學習方法？"
+            },
+            new Question
+            {
+                QuestionId = "PGS03",
+                EprocedureId = "0",
+                Qtype = "1",
+                Qcontent = "在合作學習中，我希望能積極參與以下合作任務？"
+            },
+            new Question
+            {
+                QuestionId = "TM01",
+                EprocedureId = "1",
+                Qtype = "0",
+                Qcontent = "我們認為需要多長時間完成程式碼的撰寫？"
+            },
+            new Question
+            {
+                QuestionId = "CM01",
+                EprocedureId = "2",
+                Qtype = "0",
+                Qcontent = "我們認為這份流程圖是正確的嗎？"
+            },
+            new Question
+            {
+                QuestionId = "TE01",
+                EprocedureId = "3",
+                Qtype = "0",
+                Qcontent = "我們有沒有依照老師指示完成任務？"
+            },
+            new Question
+            {
+                QuestionId = "SR01",
+                EprocedureId = "4",
+                Qtype = "0",
+                Qcontent = "我期望我們小組在這次任務可以得到幾分？"
+            },
+            new Question
+            {
+                QuestionId = "SR02",
+                EprocedureId = "4",
+                Qtype = "1",
+                Qcontent = "為達成目標，我將採用以下那些學習方法？"
+            },
+            new Question
+            {
+                QuestionId = "SR03",
+                EprocedureId = "4",
+                Qtype = "1",
+                Qcontent = "在合作學習中，我希望能積極參與以下合作任務？"
+            },
+            new Question
+            {
+                QuestionId = "SR04",
+                EprocedureId = "4",
+                Qtype = "2",
+                Qcontent = "依據上述反思，我覺得下個任務可以如何改進？"
+            },
+            new Question
+            {
+                QuestionId = "TR01",
+                EprocedureId = "5",
+                Qtype = "0",
+                Qcontent = "我們期望我們小組在這次任務可以得到幾分？"
+            },
+            new Question
+            {
+                QuestionId = "TR02",
+                EprocedureId = "5",
+                Qtype = "1",
+                Qcontent = "為達成目標，我們將採用以下那些學習方法？"
+            },
+            new Question
+            {
+                QuestionId = "TR03",
+                EprocedureId = "5",
+                Qtype = "1",
+                Qcontent = "在合作學習中，我們希望能積極參與以下合作任務？"
+            },
+            new Question
+            {
+                QuestionId = "TR04",
+                EprocedureId = "5",
+                Qtype = "2",
+                Qcontent = "依據上述反思，我們覺得下個任務可以如何改進？"
+            },
+            new Question
+            {
+                QuestionId = "PE01",
+                EprocedureId = "6",
+                Qtype = "0",
+                Qcontent = "我們覺得這一組的邏輯性可以獲得幾分?"
+            },
+            new Question
+            {
+                QuestionId = "PE02",
+                EprocedureId = "6",
+                Qtype = "0",
+                Qcontent = "我們覺得這一組的正確性可以獲得幾分?"
+            },
+            new Question
+            {
+                QuestionId = "PE03",
+                EprocedureId = "6",
+                Qtype = "0",
+                Qcontent = "我們覺得這一組的可讀性可以獲得幾分?"
+            },
+        };
+        modelBuilder.Entity<Question>().HasData(test_Question);
 
-        //var test_option = new List<Option>
-        //{
-        //    // PGS01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "90~100",
-        //        QuestionId = "PGS01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "80~90",
-        //        QuestionId = "PGS01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "70~80",
-        //        QuestionId = "PGS01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "60~70",
-        //        QuestionId = "PGS01"
-        //    },
-        //    // PGS02 選項
-        //    new Option
-        //    {
-        //        Ocontent = "查找教材",
-        //        QuestionId = "PGS02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "上網找資料",
-        //        QuestionId = "PGS02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "與同學討論與合作",
-        //        QuestionId = "PGS02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "詢問老師",
-        //        QuestionId = "PGS02"
-        //    },
-        //    // PGS03 選項
-        //    new Option
-        //    {
-        //        Ocontent = "參與討論",
-        //        QuestionId = "PGS03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "規劃流程圖",
-        //        QuestionId = "PGS03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "撰寫程式碼",
-        //        QuestionId = "PGS03"
-        //    },
-        //    // TM01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "10分鐘以內",
-        //        QuestionId = "TM01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "10-15分鐘",
-        //        QuestionId = "TM01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "15分鐘以上",
-        //        QuestionId = "TM01"
-        //    },
-        //    // CM01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "正確",
-        //        QuestionId = "CM01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "不完全正確",
-        //        QuestionId = "CM01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "不正確",
-        //        QuestionId = "CM01"
-        //    },
-        //    // TE01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "有",
-        //        QuestionId = "TE01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "沒有",
-        //        QuestionId = "TE01"
-        //    },
-        //    // SR01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "90~100",
-        //        QuestionId = "SR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "80~90",
-        //        QuestionId = "SR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "70~80",
-        //        QuestionId = "SR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "60~70",
-        //        QuestionId = "SR01"
-        //    },
-        //    // SR02 選項
-        //    new Option
-        //    {
-        //        Ocontent = "查找教材",
-        //        QuestionId = "SR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "上網找資料",
-        //        QuestionId = "SR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "與同學討論與合作",
-        //        QuestionId = "SR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "詢問老師",
-        //        QuestionId = "SR02"
-        //    },
-        //    // SR03 選項
-        //    new Option
-        //    {
-        //        Ocontent = "參與討論",
-        //        QuestionId = "SR03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "規劃流程圖",
-        //        QuestionId = "SR03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "撰寫程式碼",
-        //        QuestionId = "SR03"
-        //    },
-        //    // TR01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "90~100",
-        //        QuestionId = "TR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "80~90",
-        //        QuestionId = "TR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "70~80",
-        //        QuestionId = "TR01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "60~70",
-        //        QuestionId = "TR01"
-        //    },
-        //    // TR02 選項
-        //    new Option
-        //    {
-        //        Ocontent = "查找教材",
-        //        QuestionId = "TR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "上網找資料",
-        //        QuestionId = "TR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "與同學討論與合作",
-        //        QuestionId = "TR02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "詢問老師",
-        //        QuestionId = "TR02"
-        //    },
-        //    // TR03 選項
-        //    new Option
-        //    {
-        //        Ocontent = "參與討論",
-        //        QuestionId = "TR03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "規劃流程圖",
-        //        QuestionId = "TR03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "撰寫程式碼",
-        //        QuestionId = "TR03"
-        //    },
-        //    // PE01 選項
-        //    new Option
-        //    {
-        //        Ocontent = "3",
-        //        QuestionId = "PE01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "2",
-        //        QuestionId = "PE01"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "1",
-        //        QuestionId = "PE01"
-        //    },
-        //    // PE02 選項
-        //    new Option
-        //    {
-        //        Ocontent = "3",
-        //        QuestionId = "PE02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "2",
-        //        QuestionId = "PE02"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "1",
-        //        QuestionId = "PE02"
-        //    },
-        //    // PE03 選項
-        //    new Option
-        //    {
-        //        Ocontent = "3",
-        //        QuestionId = "PE03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "2",
-        //        QuestionId = "PE03"
-        //    },
-        //    new Option
-        //    {
-        //        Ocontent = "1",
-        //        QuestionId = "PE03"
-        //    },
-        //};
+        var test_option = new List<Option>
+        {
+            // PGS01 選項
+            new Option
+            {
+                Ocontent = "90~100",
+                QuestionId = "PGS01"
+            },
+            new Option
+            {
+                Ocontent = "80~90",
+                QuestionId = "PGS01"
+            },
+            new Option
+            {
+                Ocontent = "70~80",
+                QuestionId = "PGS01"
+            },
+            new Option
+            {
+                Ocontent = "60~70",
+                QuestionId = "PGS01"
+            },
+            // PGS02 選項
+            new Option
+            {
+                Ocontent = "查找教材",
+                QuestionId = "PGS02"
+            },
+            new Option
+            {
+                Ocontent = "上網找資料",
+                QuestionId = "PGS02"
+            },
+            new Option
+            {
+                Ocontent = "與同學討論與合作",
+                QuestionId = "PGS02"
+            },
+            new Option
+            {
+                Ocontent = "詢問老師",
+                QuestionId = "PGS02"
+            },
+            // PGS03 選項
+            new Option
+            {
+                Ocontent = "參與討論",
+                QuestionId = "PGS03"
+            },
+            new Option
+            {
+                Ocontent = "規劃流程圖",
+                QuestionId = "PGS03"
+            },
+            new Option
+            {
+                Ocontent = "撰寫程式碼",
+                QuestionId = "PGS03"
+            },
+            // TM01 選項
+            new Option
+            {
+                Ocontent = "10分鐘以內",
+                QuestionId = "TM01"
+            },
+            new Option
+            {
+                Ocontent = "10-15分鐘",
+                QuestionId = "TM01"
+            },
+            new Option
+            {
+                Ocontent = "15分鐘以上",
+                QuestionId = "TM01"
+            },
+            // CM01 選項
+            new Option
+            {
+                Ocontent = "正確",
+                QuestionId = "CM01"
+            },
+            new Option
+            {
+                Ocontent = "不完全正確",
+                QuestionId = "CM01"
+            },
+            new Option
+            {
+                Ocontent = "不正確",
+                QuestionId = "CM01"
+            },
+            // TE01 選項
+            new Option
+            {
+                Ocontent = "有",
+                QuestionId = "TE01"
+            },
+            new Option
+            {
+                Ocontent = "沒有",
+                QuestionId = "TE01"
+            },
+            // SR01 選項
+            new Option
+            {
+                Ocontent = "90~100",
+                QuestionId = "SR01"
+            },
+            new Option
+            {
+                Ocontent = "80~90",
+                QuestionId = "SR01"
+            },
+            new Option
+            {
+                Ocontent = "70~80",
+                QuestionId = "SR01"
+            },
+            new Option
+            {
+                Ocontent = "60~70",
+                QuestionId = "SR01"
+            },
+            // SR02 選項
+            new Option
+            {
+                Ocontent = "查找教材",
+                QuestionId = "SR02"
+            },
+            new Option
+            {
+                Ocontent = "上網找資料",
+                QuestionId = "SR02"
+            },
+            new Option
+            {
+                Ocontent = "與同學討論與合作",
+                QuestionId = "SR02"
+            },
+            new Option
+            {
+                Ocontent = "詢問老師",
+                QuestionId = "SR02"
+            },
+            // SR03 選項
+            new Option
+            {
+                Ocontent = "參與討論",
+                QuestionId = "SR03"
+            },
+            new Option
+            {
+                Ocontent = "規劃流程圖",
+                QuestionId = "SR03"
+            },
+            new Option
+            {
+                Ocontent = "撰寫程式碼",
+                QuestionId = "SR03"
+            },
+            // TR01 選項
+            new Option
+            {
+                Ocontent = "90~100",
+                QuestionId = "TR01"
+            },
+            new Option
+            {
+                Ocontent = "80~90",
+                QuestionId = "TR01"
+            },
+            new Option
+            {
+                Ocontent = "70~80",
+                QuestionId = "TR01"
+            },
+            new Option
+            {
+                Ocontent = "60~70",
+                QuestionId = "TR01"
+            },
+            // TR02 選項
+            new Option
+            {
+                Ocontent = "查找教材",
+                QuestionId = "TR02"
+            },
+            new Option
+            {
+                Ocontent = "上網找資料",
+                QuestionId = "TR02"
+            },
+            new Option
+            {
+                Ocontent = "與同學討論與合作",
+                QuestionId = "TR02"
+            },
+            new Option
+            {
+                Ocontent = "詢問老師",
+                QuestionId = "TR02"
+            },
+            // TR03 選項
+            new Option
+            {
+                Ocontent = "參與討論",
+                QuestionId = "TR03"
+            },
+            new Option
+            {
+                Ocontent = "規劃流程圖",
+                QuestionId = "TR03"
+            },
+            new Option
+            {
+                Ocontent = "撰寫程式碼",
+                QuestionId = "TR03"
+            },
+            // PE01 選項
+            new Option
+            {
+                Ocontent = "3",
+                QuestionId = "PE01"
+            },
+            new Option
+            {
+                Ocontent = "2",
+                QuestionId = "PE01"
+            },
+            new Option
+            {
+                Ocontent = "1",
+                QuestionId = "PE01"
+            },
+            // PE02 選項
+            new Option
+            {
+                Ocontent = "3",
+                QuestionId = "PE02"
+            },
+            new Option
+            {
+                Ocontent = "2",
+                QuestionId = "PE02"
+            },
+            new Option
+            {
+                Ocontent = "1",
+                QuestionId = "PE02"
+            },
+            // PE03 選項
+            new Option
+            {
+                Ocontent = "3",
+                QuestionId = "PE03"
+            },
+            new Option
+            {
+                Ocontent = "2",
+                QuestionId = "PE03"
+            },
+            new Option
+            {
+                Ocontent = "1",
+                QuestionId = "PE03"
+            },
+        };
 
-        //var k = 0;
-        //foreach (var option in test_option)
-        //{
-        //    option.OptionId = k;
-        //    k++;
-        //}
+        var k = 1;
+        foreach (var option in test_option)
+        {
+            option.OptionID = k;
+            k++;
+        }
 
-        //modelBuilder.Entity<Option>().HasData(test_option);
+        modelBuilder.Entity<Option>().HasData(test_option);
 
         OnModelCreatingPartial(modelBuilder);
     }
