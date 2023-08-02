@@ -17,7 +17,7 @@ namespace LMSweb.Controllers.Questionnaire
             _context = context;
         }
 
-        [HttpPost]
+        [HttpGet]
         // Get: api/Questionnaire
         public IActionResult Get([FromBody] GetViewModel VM)
         {
