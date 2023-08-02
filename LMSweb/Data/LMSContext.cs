@@ -447,6 +447,11 @@ public partial class LMSContext : DbContext
                 EprocedureId = "6",
                 Name = "同儕互評"
             },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "7",
+                Name = "同儕回饋"
+            },
         };
         modelBuilder.Entity<ExperimentalProcedure>().HasData(test_experimental);
 
@@ -570,6 +575,13 @@ public partial class LMSContext : DbContext
                 EprocedureId = "6",
                 Qtype = "0",
                 Qcontent = "我們覺得這一組的可讀性可以獲得幾分?"
+            },
+            new Question
+            {
+                QuestionId = "PC01",
+                EprocedureId = "7",
+                Qtype = "0",
+                Qcontent = "該組評價合理嗎?"
             },
         };
         modelBuilder.Entity<Question>().HasData(test_Question);
@@ -840,6 +852,27 @@ public partial class LMSContext : DbContext
             {
                 Ocontent = "1",
                 QuestionId = "PE03"
+            },
+            // PC01 選項
+            new Option
+            {
+                Ocontent = "非常合理",
+                QuestionId = "PC01"
+            },
+            new Option
+            {
+                Ocontent = "合理",
+                QuestionId = "PC01"
+            },
+            new Option
+            {
+                Ocontent = "不合理",
+                QuestionId = "PC01"
+            },
+            new Option
+            {
+                Ocontent = "非常不合理",
+                QuestionId = "PC01"
             },
         };
 
