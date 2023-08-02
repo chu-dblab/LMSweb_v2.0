@@ -14,7 +14,6 @@ namespace LMSweb.Controllers.Questionnaire
         {
             return "value";
         }
-        // // //
         // POST: api/Questionnaire
         [HttpPost]
         public void Post([FromBody] PostViewModel VM)
