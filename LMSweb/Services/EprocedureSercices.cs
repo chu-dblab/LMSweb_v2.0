@@ -83,15 +83,15 @@ namespace LMSweb.Services
             EprocedureIdTable[1, 1] = "D";
             EprocedureIdTable[1, 2] = "1";
             EprocedureIdTable[1, 3] = "C";
-            EprocedureIdTable[1, 4] = "4";
+            EprocedureIdTable[1, 4] = "2";
             // 實驗組二：同儕互評
             EprocedureIdTable[2, 0] = "D";
             EprocedureIdTable[2, 1] = "C";
             EprocedureIdTable[2, 2] = "6";
             // 實驗組三：社會共享調節
-            EprocedureIdTable[3, 0] = "0";
+            EprocedureIdTable[3, 0] = "3";
             EprocedureIdTable[3, 1] = "D";
-            EprocedureIdTable[3, 2] = "1";
+            EprocedureIdTable[3, 2] = "4";
             EprocedureIdTable[3, 3] = "C";
             EprocedureIdTable[3, 4] = "5";
             // 實驗組四：互動式同儕互評
@@ -100,9 +100,9 @@ namespace LMSweb.Services
             EprocedureIdTable[4, 2] = "6";
             EprocedureIdTable[4, 3] = "7";
             // 實驗組五：社會共享調節 & 互動式同儕互評
-            EprocedureIdTable[5, 0] = "0";
+            EprocedureIdTable[5, 0] = "3";
             EprocedureIdTable[5, 1] = "D";
-            EprocedureIdTable[5, 2] = "1";
+            EprocedureIdTable[5, 2] = "4";
             EprocedureIdTable[5, 3] = "C";
             EprocedureIdTable[5, 2] = "6";
             EprocedureIdTable[5, 2] = "7";
