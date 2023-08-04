@@ -557,60 +557,31 @@ public partial class LMSContext : DbContext
             },
             new Question
             {
-                QuestionId = "SR01B",
+                QuestionId = "TR01B",
                 EprocedureId = "5",
                 Qtype = "0",
                 Qcontent = "我們覺得這次小組任務可以獲得幾分?"
             },
             new Question
             {
-                QuestionId = "SR02B",
+                QuestionId = "TR02B",
                 EprocedureId = "5",
                 Qtype = "1",
                 Qcontent = "在本次學習任務中，我們小組採用了以下哪些學習方法? (可複選)"
             },
             new Question
             {
-                QuestionId = "SR03B",
+                QuestionId = "TR03B",
                 EprocedureId = "5",
                 Qtype = "1",
                 Qcontent = "在本次學習任務中，我們小組積極參與了以下哪些合作任務? (可複選)"
             },
             new Question
             {
-                QuestionId = "SR04B",
+                QuestionId = "TR04B",
                 EprocedureId = "5",
                 Qtype = "2",
                 Qcontent = "依據上述反思，我們小組覺得下個任務可以如何改進?"
-            },
-
-            new Question
-            {
-                QuestionId = "TR01B",
-                EprocedureId = "2",
-                Qtype = "0",
-                Qcontent = "我們期望我們小組在這次任務可以得到幾分？"
-            },
-            new Question
-            {
-                QuestionId = "TR02B",
-                EprocedureId = "2",
-                Qtype = "1",
-                Qcontent = "為達成目標，我們將採用以下那些學習方法？"
-            },
-            new Question
-            {
-                QuestionId = "TR03B",
-                EprocedureId = "2",
-                Qtype = "1",
-                Qcontent = "在合作學習中，我們希望能積極參與以下合作任務？"
-            },
-            new Question
-            {
-                QuestionId = "TR04B",
-                EprocedureId = "2",
-                Qtype = "2",
-                Qcontent = "依據上述反思，我們覺得下個任務可以如何改進？"
             },
             new Question
             {
