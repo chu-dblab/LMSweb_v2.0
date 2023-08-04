@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\Helper\" />
+    <Folder Include="Assets\" />
   </ItemGroup>
 
 </Project>
