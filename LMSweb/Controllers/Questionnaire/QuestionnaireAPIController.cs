@@ -19,32 +19,26 @@ namespace LMSweb.Controllers.Questionnaire
 
         [HttpGet]
         // Get: api/Questionnaire
-        public IActionResult Get([FromBody] GetViewModel VM)
+        public IActionResult Get(int tasktype, int tasksteps)
         {
             var ReGetVM = new ReGetViewModel();
             var EprocedureSercices = new EprocedureSercices(_context);
+            var EprocedureId = EprocedureSercices.GetEprocedureId(tasktype,tasksteps);
 
-            var EprocedureId = EprocedureSercices.GetEprocedureId(VM.TaskType, VM.TaskSteps);
-            
             if (EprocedureId == "D" || EprocedureId == "C")
             {
                 return NotFound();
             }
-            else
-            {
-                var Topic = EprocedureSercices.GetEprocedureContent(EprocedureId);
+            var Topic = EprocedureSercices.GetEprocedureContent(EprocedureId);
 
-                if (Topic != null)
-                {
-                    ReGetVM.Topic = Topic;
-                }
-                else
-                {
-                    return NotFound();
-                }
+            if (Topic == null)
+            {
+                return NotFound();                
             }
+            ReGetVM.Topic = Topic;
             return Ok(ReGetVM);
         }
+
         // POST: api/Questionnaire
         [HttpPost]
         public IActionResult Post([FromBody] PostViewModel VM)
