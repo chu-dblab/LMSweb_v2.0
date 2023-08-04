@@ -34,6 +34,7 @@ namespace LMSweb.Services
                 {
                     var questionOutput = new Question();
 
+                    questionOutput.QuestionId = question.QuestionId ?? "";
                     questionOutput.Content = question.Qcontent ?? "";
                     questionOutput.Type = question.Qtype ?? "";
                     questionOutput.Options = new List<Option>();
@@ -46,6 +47,7 @@ namespace LMSweb.Services
                         {
                             var optionOutput = new Option();
 
+                            optionOutput.OptionId = option.OptionID.ToString() ?? "";
                             optionOutput.Content = option.Ocontent ?? "";
 
                             questionOutput.Options.Add(optionOutput);

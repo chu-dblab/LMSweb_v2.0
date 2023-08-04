@@ -3,20 +3,20 @@
 
 @section topCSS {
     <style>
-        input[type="radio"] {
+        input[type="radio"], input[type="checkbox"] {
             display: none;
         }
-        input[type="radio"]:checked+label {
+        input[type="radio"]:checked+label, input[type="checkbox"]:checked+label {
             background-color: #007bff;
             color: white;
             border-radius: 10px;
         }
-        input[type="radio"]:checked+label:hover {
+        input[type="radio"]:checked+label:hover, input[type="checkbox"]:checked+label:hover {
             background-color: #007bff;
             color: white;
             border-radius: 10px;
         }
-        input[type="radio"]:checked+label:active {
+        input[type="radio"]:checked+label:active, input[type="checkbox"]:checked+label:active {
             background-color: #007bff;
             color: white;
             border-radius: 10px;
@@ -48,47 +48,169 @@
 
 <div class="container">
     <div class="card m-3 p-3">
-        <h1 class="w-auto m-2 fs-2">目標設置</h1>
+        <h1 class="w-auto m-2 fs-2" id="Title"></h1>
     </div>
     <div class="card m-3 p-3">
-        <div class="row m-2">
-            <div class="col-4 row align-content-center row">
-                <div class="number col-2">1</div>
-                <p class="fs-5 col my-auto">我期望我們小組在這次任務可以得到幾分？</p>
-            </div>
-            <div class="col-8 row">
-                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio1" style="padding: 0px; margin: 0px;">
-                        <p class="align-self-center" style="padding: 0px; margin: 0px;">90-100</p>
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1">
-                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio2" style="padding: 0px; margin: 0px;">
-                        <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option1">
-                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio3" style="padding: 0px; margin: 0px;">
-                        <p class="align-self-center" style="padding: 0px; margin: 0px;">70-80</p>
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option1">
-                    <label class="form-check-label h-100 col-12 row justify-content-center" for="inlineRadio4" style="padding: 0px; margin: 0px;">
-                        <p class="align-self-center" style="padding: 0px; margin: 0px;">60-70</p>
-                    </label>
-                </div>
-            </div>
-        </div>
+        <Questionnaire>
+        </Questionnaire>
     </div>
 </div>
 
+<template id="SingleChoice_body">
+    <!-- 單選題 -->
+    <form class="row m-2">
+        <div class="col-4 row align-content-center row">
+            <div class="number col-2" id="Q_number"></div>
+            <p class="fs-5 col my-auto" id="Q_name"></p>
+        </div>
+        <div class="col-8 row" id="Optiona"></div>
+    </form>
+</template>
+
+<template id="SingleChoice_Option">
+    <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="" value="">
+        <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
+            <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
+        </label>
+    </div>
+</template>
+
+<template id="MultipleChoice_body">
+    <!-- 多選題 -->
+    <form class="row m-2">
+        <div class="col-4 row align-content-center row">
+            <div class="number col-2" id="Q_number"></div>
+            <p class="fs-5 col my-auto" id="Q_name"></p>
+        </div>
+        <div class="col-8 row" id="Optiona"></div>
+    </form>
+</template>
+
+<template id="MultipleChoice_Option">
+    <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;">
+        <input class="form-check-input" type="checkbox" id="" value="option1">
+        <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
+            <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
+        </label>
+    </div>
+</template>
+
+<template id="EssayQuestion_body">
+    <form class="row m-2">
+        <div class="col-4 row align-content-center row">
+            <div class="number col-2" id="Q_number"></div>
+            <p class="fs-5 col my-auto" id="Q_name"></p>
+        </div>
+        <div class="col-8 row" id="Optiona">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </form>
+</template>
+
 @section endJS {
+    <!-- jQuery v3.6.0 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        /*
+            單選題    SingleChoice
+            多選題    MultipleChoice
+            問答題    EssayQuestion
+            */
+        var Title;
+        var Question;
+        var questions;
+
+        window.onload = async function () {
+            // 1. 取得題庫
+            questions = await getQuestions();
+            console.log(Question);
+            // 2. 顯示題庫
+            await displayQuestions();
+        }
+
+        async function getQuestions() {
+            var output;
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            await fetch("https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4", requestOptions)
+                .then(response => response.text())
+                // .then(result => {
+                //     output = JSON.parse(result);
+                // })
+                .then((data) => {
+                    // 在这里你可以使用解析后的数据
+                    console.log(data);
+                    output = JSON.parse(data);
+                    console.log(output.topic);
+                    output = output.topic;
+                    Title = output.name;
+                    Question = output.questions;
+                })
+                .catch(error => console.log('error', error));
+
+            return output;
+        }
         
+        async function displayQuestions() {
+            $("#Title").text(Title);
+            var k = 1;
+            var optId = 1;
+
+            Question.forEach(que => {
+
+                if (que.type == "0") {
+                    var options = que.options;
+                    let template = $("#SingleChoice_body").html();
+                    var formCheck = $(template);
+
+                    formCheck.find("#Q_number").text(k++);
+                    formCheck.find("#Q_name").text(que.content);
+                    options.forEach(opt => {
+                        let template2 = $("#SingleChoice_Option").html();
+                        var formCheck2 = $(template2);
+                        console.log(template2);
+                        formCheck2.find("input").attr("id", opt.optionId);
+                        formCheck2.find("label").attr("for", opt.optionId);
+                        formCheck2.find("label").attr("id", opt.optionId);
+                        formCheck2.find("label").text(opt.content);
+                        formCheck.find("#Optiona").append(formCheck2);
+                    });
+                    formCheck.appendTo("Questionnaire");
+                }
+                else if (que.type == "1") {
+                    var options = que.options;
+                    let template = $("#MultipleChoice_body").html();
+                    var formCheck = $(template);
+
+                    formCheck.find("#Q_number").text(k++);
+                    formCheck.find("#Q_name").text(que.content);
+                    options.forEach(opt => {
+                        let template2 = $("#MultipleChoice_Option").html();
+                        var formCheck2 = $(template2);
+                        console.log(template2);
+                        formCheck2.find("input").attr("id", opt.optionId);
+                        formCheck2.find("label").attr("for", opt.optionId);
+                        formCheck2.find("label").attr("id", opt.optionId);
+                        formCheck2.find("label").text(opt.content);
+                        formCheck.find("#Optiona").append(formCheck2);
+                    });
+                    formCheck.appendTo("Questionnaire");
+                }
+            });
+            Question.forEach(que => {
+                if (que.type == "2") {
+                    let template = $("#EssayQuestion_body").html();
+                    var formCheck = $(template);
+
+                    formCheck.find("#Q_number").text(k++);
+                    formCheck.find("#Q_name").text(que.content);
+                    formCheck.appendTo("Questionnaire");
+                }
+            });
+        }
     </script>
 }
-```
