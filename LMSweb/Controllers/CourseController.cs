@@ -33,15 +33,7 @@ namespace LMSweb.Controllers
         public ActionResult Create(CreateViewModel courseViewModel)
         {
             /*
-             *  public string Cid { get; set; } = null!;
-
-                public string? TeacherId { get; set; }
-
-                public string Cname { get; set; } = null!;
-
-                public required int TestType { get; set; }
-
-                public DateTime CreateTime { get; set; }
+             * 新增課程到資料庫
              */
 
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;   //抓出當初記載Claims陣列中的TID
@@ -58,6 +50,49 @@ namespace LMSweb.Controllers
                     // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
                 };
                 _context.Courses.Add(course);
+                _context.SaveChanges();
+                return RedirectToAction("Home", "Teacher");
+            }
+            return View(courseViewModel);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            /*
+             * 透過id找到課程，並將資料傳到 View                   
+             */
+
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            var courseViewModel = new EditViewModel
+            {
+                CourseName = course.Cname,
+                TestType = course.TestType,
+                // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
+            };
+            return View(courseViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string id, EditViewModel courseViewModel)
+        {
+            /*
+             *  透過id找到課程，並將資料更新到資料庫
+             */
+
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                course.Cname = courseViewModel.CourseName;
+                course.TestType = courseViewModel.TestType;
+                // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
                 _context.SaveChanges();
                 return RedirectToAction("Home", "Teacher");
             }
