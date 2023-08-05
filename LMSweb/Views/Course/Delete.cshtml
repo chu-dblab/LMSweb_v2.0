@@ -1,0 +1,58 @@
+﻿@model DeleteViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="container">
+    <div class="card m-3 p-4">
+        <h4>確認要刪除此課程嗎?</h4>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.TeacherName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TeacherName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseID)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CourseID)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.TestType)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TestType)
+                </dd>
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="刪除" class="btn btn-primary" />
+                    <input type="button" value="取消" class="btn btn-secondary" onclick="location.href='@Url.Action("Home", "Teacher", new { cid = Model.CourseID})'" />
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

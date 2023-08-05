@@ -71,7 +71,6 @@ namespace LMSweb.Controllers
             {
                 CourseName = course.Cname,
                 TestType = course.TestType,
-                // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
             };
             return View(courseViewModel);
         }
@@ -92,11 +91,51 @@ namespace LMSweb.Controllers
             {
                 course.Cname = courseViewModel.CourseName;
                 course.TestType = courseViewModel.TestType;
-                // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
+
                 _context.SaveChanges();
                 return RedirectToAction("Home", "Teacher");
             }
             return View(courseViewModel);
+        }
+
+        public ActionResult Delete(string cid)
+        {
+            /*
+             * 透過id找到課程，並將資料傳到 View                   
+             */
+
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == cid);
+            var TeacherId = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+            var TeacherName = _context.Teachers.FirstOrDefault(x => x.TeacherId == TeacherId).TeacherName;
+            if (course == null)
+            {
+                return NotFound();
+            }
+            var delsteViewModel = new DeleteViewModel
+            {
+                TeacherName = TeacherName,
+                CourseID = course.Cid,
+                CourseName = course.Cname,
+                TestType = course.TestType,
+            };
+            return View(delsteViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(string cid, DeleteViewModel courseViewModel)
+        {
+            /*
+             * 透過id找到課程，並將資料從資料庫刪除
+             */
+
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == cid);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+            return RedirectToAction("Home", "Teacher");
         }
     }
 }

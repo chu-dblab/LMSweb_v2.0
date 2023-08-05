@@ -62,7 +62,7 @@
                             <a type="button" class="btn btn-link p-1" href="@Url.Action("Edit", "Course", new { cid = item.CourseID })">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
-                            <a type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("CourseDelete", "Teacher", new { cid = item.CourseID })">
+                            <a type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("Delete", "Course", new { cid = item.CourseID })">
                                 <i class="bi bi-trash-fill"></i>
                             </a>
                         </div>
