@@ -56,13 +56,13 @@ namespace LMSweb.Controllers
             return View(courseViewModel);
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string cid)
         {
             /*
              * 透過id找到課程，並將資料傳到 View                   
              */
 
-            var course = _context.Courses.FirstOrDefault(x => x.Cid == id);
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == cid);
             if (course == null)
             {
                 return NotFound();
@@ -77,13 +77,13 @@ namespace LMSweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(string id, EditViewModel courseViewModel)
+        public ActionResult Edit(string cid, EditViewModel courseViewModel)
         {
             /*
              *  透過id找到課程，並將資料更新到資料庫
              */
 
-            var course = _context.Courses.FirstOrDefault(x => x.Cid == id);
+            var course = _context.Courses.FirstOrDefault(x => x.Cid == cid);
             if (course == null)
             {
                 return NotFound();

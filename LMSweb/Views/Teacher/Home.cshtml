@@ -59,7 +59,7 @@
 
                             <hr />
                             @Html.ActionLink("進入課程", "Index", "Missions", new { cid = item.CourseID }, new { @class = "btn btn-primary" })
-                            <a type="button" class="btn btn-link p-1" href="@Url.Action("Edit", "Course", new { id = item.CourseID })">
+                            <a type="button" class="btn btn-link p-1" href="@Url.Action("Edit", "Course", new { cid = item.CourseID })">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
                             <a type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("CourseDelete", "Teacher", new { cid = item.CourseID })">
