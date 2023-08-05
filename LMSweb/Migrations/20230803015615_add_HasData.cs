@@ -46,7 +46,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Questions",
-                columns: new[] { "QuestionID", "CourseID", "EProcedureID", "QContent", "QType" },
+                columns: new[] { "QuestionID", "CourseId", "EProcedureID", "QContent", "QType" },
                 values: new object[,]
                 {
                     { "CM01A", null, "1", "我認為這份流程圖是正確的嗎？", "0" },
@@ -81,7 +81,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Students",
-                columns: new[] { "StudentID", "CourseID", "GroupID", "isLeader", "StudentName" },
+                columns: new[] { "StudentId", "CourseId", "GroupID", "isLeader", "StudentName" },
                 values: new object[,]
                 {
                     { "S001", null, null, false, "林世楷" },
@@ -620,32 +620,32 @@ namespace LMSweb.Migrations
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S001");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S002");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S003");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S004");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S005");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S006");
 
             migrationBuilder.DeleteData(

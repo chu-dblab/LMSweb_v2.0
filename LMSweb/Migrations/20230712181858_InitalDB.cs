@@ -263,7 +263,7 @@ namespace LMSweb.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_CourseID",
                 table: "Missions",
-                column: "CourseID");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Options_QuestionID",
@@ -278,7 +278,7 @@ namespace LMSweb.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_CourseID",
                 table: "Questions",
-                column: "CourseID");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_EProcedureID",
@@ -288,7 +288,7 @@ namespace LMSweb.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Students_CourseID",
                 table: "Students",
-                column: "CourseID");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_GroupID",

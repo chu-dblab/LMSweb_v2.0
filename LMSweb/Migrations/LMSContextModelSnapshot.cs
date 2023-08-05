@@ -186,7 +186,7 @@ namespace LMSweb.Migrations
                     b.Property<string>("CourseId")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("CourseID");
+                        .HasColumnName("CourseId");
 
                     b.Property<string>("CurrentAction")
                         .IsRequired()
@@ -753,7 +753,7 @@ namespace LMSweb.Migrations
                     b.Property<string>("CourseId")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("CourseID");
+                        .HasColumnName("CourseId");
 
                     b.Property<string>("EprocedureId")
                         .IsRequired()
@@ -953,12 +953,12 @@ namespace LMSweb.Migrations
                     b.Property<string>("StudentId")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("StudentID");
+                        .HasColumnName("StudentId");
 
                     b.Property<string>("CourseId")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("CourseID");
+                        .HasColumnName("CourseId");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("int")
@@ -967,6 +967,9 @@ namespace LMSweb.Migrations
                     b.Property<bool>("IsLeader")
                         .HasColumnType("bit")
                         .HasColumnName("isLeader");
+
+                    b.Property<string>("Sex")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentName")
                         .IsRequired()

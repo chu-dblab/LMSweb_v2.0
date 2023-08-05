@@ -142,7 +142,7 @@ public partial class LMSContext : DbContext
                 .HasColumnName("MID");
             entity.Property(e => e.CourseId)
                 .HasMaxLength(128)
-                .HasColumnName("CourseID");
+                .HasColumnName("CourseId");
             entity.Property(e => e.CurrentAction).HasMaxLength(128);
             entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.Mname)
@@ -177,7 +177,7 @@ public partial class LMSContext : DbContext
                 .HasColumnName("QuestionID");
             entity.Property(e => e.CourseId)
                 .HasMaxLength(128)
-                .HasColumnName("CourseID");
+                .HasColumnName("CourseId");
             entity.Property(e => e.EprocedureId)
                 .HasMaxLength(128)
                 .HasColumnName("EProcedureID");
@@ -201,10 +201,10 @@ public partial class LMSContext : DbContext
 
             entity.Property(e => e.StudentId)
                 .HasMaxLength(128)
-                .HasColumnName("StudentID");
+                .HasColumnName("StudentId");
             entity.Property(e => e.CourseId)
                 .HasMaxLength(128)
-                .HasColumnName("CourseID");
+                .HasColumnName("CourseId");
             entity.Property(e => e.GroupId).HasColumnName("GroupID");
             entity.Property(e => e.IsLeader).HasColumnName("isLeader");
 

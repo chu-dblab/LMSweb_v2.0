@@ -608,7 +608,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Questions",
-                columns: new[] { "QuestionID", "CourseID", "EProcedureID", "QContent", "QType" },
+                columns: new[] { "QuestionID", "CourseId", "EProcedureID", "QContent", "QType" },
                 values: new object[,]
                 {
                     { "CM01A", null, "1", "我認為這份流程圖是正確的嗎？", "0" },

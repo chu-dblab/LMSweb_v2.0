@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    [Migration("20230804111747_add_HasData_2")]
-    partial class add_HasData_2
+    [Migration("20230805131002_add_student_sex")]
+    partial class add_student_sex
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -970,6 +970,9 @@ namespace LMSweb.Migrations
                     b.Property<bool>("IsLeader")
                         .HasColumnType("bit")
                         .HasColumnName("isLeader");
+
+                    b.Property<string>("Sex")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentName")
                         .IsRequired()

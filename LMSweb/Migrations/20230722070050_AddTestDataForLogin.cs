@@ -31,7 +31,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Students",
-                columns: new[] { "StudentID", "CourseID", "GroupID", "isLeader" },
+                columns: new[] { "StudentId", "CourseId", "GroupID", "isLeader" },
                 values: new object[,]
                 {
                     { "S001", null, null, false },
@@ -59,32 +59,32 @@ namespace LMSweb.Migrations
         {
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S001");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S002");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S003");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S004");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S005");
 
             migrationBuilder.DeleteData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S006");
 
             migrationBuilder.DeleteData(

@@ -2,7 +2,7 @@
 
 namespace LMSweb.ViewModels.Course
 {
-    public class CreateViewModel
+    public class CourseCreateViewModel
     {
         [Display(Name = "課程名稱")]
         [Required]

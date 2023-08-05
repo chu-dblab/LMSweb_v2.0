@@ -2,7 +2,7 @@
 
 namespace LMSweb.ViewModels.Course
 {
-    public class DeleteViewModel
+    public class CourseDeleteViewModel
     {
         [Display(Name = "教師名稱")]
         public string TeacherName { get; set; }

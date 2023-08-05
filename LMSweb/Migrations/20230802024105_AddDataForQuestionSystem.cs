@@ -13,7 +13,7 @@ namespace LMSweb.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "CourseID",
+                name: "CourseId",
                 table: "Questions",
                 type: "nvarchar(128)",
                 maxLength: 128,
@@ -38,7 +38,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Questions",
-                columns: new[] { "QuestionID", "CourseID", "EProcedureID", "QContent", "QType" },
+                columns: new[] { "QuestionID", "CourseId", "EProcedureID", "QContent", "QType" },
                 values: new object[,]
                 {
                     { "CM01", null, "2", "我們認為這份流程圖是正確的嗎？", "0" },
@@ -492,7 +492,7 @@ namespace LMSweb.Migrations
                 keyValue: "6");
 
             migrationBuilder.AlterColumn<string>(
-                name: "CourseID",
+                name: "CourseId",
                 table: "Questions",
                 type: "nvarchar(128)",
                 maxLength: 128,

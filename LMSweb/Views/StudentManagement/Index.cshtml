@@ -1,0 +1,172 @@
+﻿@model StudentManagementViewModel
+@{
+    //Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@section NavPills {
+    @*<ul class="nav nav-pills me-auto ms-3">
+        <li class="nav-item">
+            <a class="text-white nav-link " aria-current="page" href="@Url.Action("Index", "Missions", new { CID = Model.CourseId})">任務管理</a>
+        </li>
+        <li class="nav-item">
+            <a class="text-white nav-link active" aria-current="page" href="@Url.Action("StudentManagement", "Course", new { CID = Model.CourseId})">學生名單</a>
+        </li>
+        <li class="nav-item">
+            <a class="text-white nav-link" href="@Url.Action("TeacherJourney","LearningBehaviors", new { CID = Model.CourseId})">學習表現</a>
+        </li>
+        <li class="nav-item">
+            <a class="text-white nav-link" href="@Url.Action("TeacherEvalutionJourney","LearningBehaviors",new {CID = Model.CourseId})">學習表現(互評版)</a>
+        </li>
+    </ul>*@
+}
+
+<div class="cardArticle">
+    <h4>@Model.CourseName</h4>
+    <p>學生列表</p>
+</div>
+<div class="card " style="box-sizing: border-box; width: 100%; max-width: 1200px; margin: 20px auto 20px; border-radius: 5px; border: 1px solid #dee2e6; border-color: #cdcdcd;">
+    <div class="card-header" style=" padding: 30px 50px 8px 50px;">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" href="@Url.Action("StudentManagement", "Course", new { CID = Model.CourseId})"><h5>修課名單</h5></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("StudentGroup", "Course", new { CID = Model.CourseId})"><h5>分組名單</h5></a>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <div class="card-body" style="padding: 20px 50px 50px;">
+        <p>
+            <button class="btn btn-primary" data-bs-target="#UploadModal" data-bs-toggle="modal" onclick="UploadModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder2" viewBox="0 0 16 16">
+                    <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-9zM2.5 3a.5.5 0 0 0-.5.5V6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5zM14 7H2v5.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V7z" />
+                </svg>
+                匯入資料
+            </button>
+            <button class="btn btn-primary" value="新增學生" onclick="location.href='@Url.Action("StudentCreate", "Course", new { cid = Model.CourseId})'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                </svg>
+                新增學生
+            </button>
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        姓名
+                    </th>
+                    <th>
+                        學號
+                    </th>
+                    <th>
+                        組別
+                    </th>
+                    <th>
+                        性別
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="number">
+                @foreach (var item in Model.Students)
+                {
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentSex)
+                        </td>
+                        <td class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" onclick="location.href='@Url.Action("StudentEdit", "Course", new { sid = item.StudentId, cid = Model.CourseId})'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" onclick="location.href='@Url.Action("StudentDelete", "Course",new { sid = item.StudentId, cid = Model.CourseId})'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*@Html.Partial("_UploadFile")*@
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/bootbox.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script src="~/Scripts/locales/zh-TW.js"></script>
+    <script src="~/Content/bootstrap-fileinput/themes/fa/theme.js"></script>
+    <script>
+        window.onload = function () {
+            var tableLine = document.getElementById("number");
+            for (var i = 0; i < tableLine.rows.length; i++) {
+                tableLine.rows[i].cells[0].innerHTML = (i + 1);
+            }
+        }
+        $(function () {
+        $("#file").fileinput({
+            theme: 'fa',
+            language: 'zh-TW',
+            uploadUrl: '@Url.Action("Upload", "Course", new { CID = Model.CourseId})',
+            textEncoding: 'utf-8',
+            required: true,
+            showBrowse: true,
+            browseOnZoneClick: true,
+            dropZoneEnabled: true,
+            allowedFileExtensions: ["xls", "xlsx"],//只能選擇xls,和xlsx格式的檔案提交
+            //maxFileSize: 0,//單位為kb，如果為0表示不限制檔案大小
+            /*不同檔案圖示配置*/
+            previewFileIconSettings: {
+                'docx': '<i class="fa fa-file-word-o text-primary" ></i>',
+                'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+                'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+                'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                'doc': '<i class="fa fa-file-word-o text-primary"></i>',
+                'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+                'ppt': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                'htm': '<i class="fa fa-file-code-o text-info"></i>',
+                'txt': '<i class="fa fa-file-text-o text-info"></i>',
+                'mov': '<i class="fa fa-file-movie-o text-warning"></i>',
+                'mp3': '<i class="fa fa-file-audio-o text-warning"></i>',
+                'jpg': '<i class="fa fa-file-photo-o text-danger"></i>',
+                'gif': '<i class="fa fa-file-photo-o text-muted"></i>',
+                'png': '<i class="fa fa-file-photo-o text-primary"></i>'
+            },
+            layoutTemplates: { actionUpload: '' },
+            /*上傳成功之後執行*/
+            fileuploaded: $("#file").on("fileuploaded", function (event, data, previewId, index) {
+                //alert("新增成功")
+                location.reload();
+            }),
+
+            /*上傳出錯誤處理*/
+            fileerror: $('#file').on('fileerror', function (event, data, msg) {
+             }),
+        });
+    });
+    </script>
+}
+

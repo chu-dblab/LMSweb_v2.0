@@ -2,7 +2,7 @@
 
 namespace LMSweb.ViewModels.Course
 {
-    public class EditViewModel
+    public class CourseEditViewModel
     {
         [Display(Name = "課程名稱")]
         public string CourseName { get; set; } = null!;

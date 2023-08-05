@@ -30,7 +30,7 @@ namespace LMSweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateViewModel courseViewModel)
+        public ActionResult Create(CourseCreateViewModel courseViewModel)
         {
             /*
              * 新增課程到資料庫
@@ -67,7 +67,7 @@ namespace LMSweb.Controllers
             {
                 return NotFound();
             }
-            var courseViewModel = new EditViewModel
+            var courseViewModel = new CourseEditViewModel
             {
                 CourseName = course.Cname,
                 TestType = course.TestType,
@@ -76,7 +76,7 @@ namespace LMSweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(string cid, EditViewModel courseViewModel)
+        public ActionResult Edit(string cid, CourseEditViewModel courseViewModel)
         {
             /*
              *  透過id找到課程，並將資料更新到資料庫
@@ -111,7 +111,7 @@ namespace LMSweb.Controllers
             {
                 return NotFound();
             }
-            var delsteViewModel = new DeleteViewModel
+            var delsteViewModel = new CourseDeleteViewModel
             {
                 TeacherName = TeacherName,
                 CourseID = course.Cid,
@@ -122,7 +122,7 @@ namespace LMSweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(string cid, DeleteViewModel courseViewModel)
+        public ActionResult Delete(string cid, CourseDeleteViewModel courseViewModel)
         {
             /*
              * 透過id找到課程，並將資料從資料庫刪除

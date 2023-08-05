@@ -26,42 +26,42 @@ namespace LMSweb.Migrations
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S001",
                 column: "StudentName",
                 value: "林世楷");
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S002",
                 column: "StudentName",
                 value: "李國禎");
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S003",
                 column: "StudentName",
                 value: "許盈琪");
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S004",
                 column: "StudentName",
                 value: "Kevin");
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S005",
                 column: "StudentName",
                 value: "Vivian");
 
             migrationBuilder.UpdateData(
                 table: "Students",
-                keyColumn: "StudentID",
+                keyColumn: "StudentId",
                 keyValue: "S006",
                 column: "StudentName",
                 value: "Amy");

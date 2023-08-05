@@ -15,6 +15,8 @@ public partial class Student
 
     public string StudentName { get; set; }
 
+    public string? Sex { get; set; }
+
     public virtual Course? Course { get; set; }
 
     public virtual Group? Group { get; set; }

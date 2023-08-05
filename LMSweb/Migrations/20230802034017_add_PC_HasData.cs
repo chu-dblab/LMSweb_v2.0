@@ -19,7 +19,7 @@ namespace LMSweb.Migrations
 
             migrationBuilder.InsertData(
                 table: "Questions",
-                columns: new[] { "QuestionID", "CourseID", "EProcedureID", "QContent", "QType" },
+                columns: new[] { "QuestionID", "CourseId", "EProcedureID", "QContent", "QType" },
                 values: new object[] { "PC01", null, "7", "該組評價合理嗎?", "0" });
 
             migrationBuilder.InsertData(
