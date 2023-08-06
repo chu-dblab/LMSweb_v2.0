@@ -2,7 +2,6 @@
 using LMSweb.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace LMSweb.Controllers
 {
@@ -20,7 +19,7 @@ namespace LMSweb.Controllers
 
         public IActionResult Home()
         {
-            var sid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;   //抓出當初記載Claims陣列中的SID
+            var sid = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的SID
 
             if (sid == null)
             {
@@ -28,7 +27,7 @@ namespace LMSweb.Controllers
             }
 
             var gid = (from s in _context.Students
-                       where s.StudentId == sid
+                       where s.StudentId == sid.Value
                        select s.GroupId).FirstOrDefault();
 
             var results = (from c in _context.Courses
@@ -55,6 +54,11 @@ namespace LMSweb.Controllers
                     GroupName = x.Gname,
                     GroupStudent = new List<GroupStudentHomeViewModel>()
                 }).FirstOrDefault();
+
+            if (data == null)
+            {
+                return NotFound();
+            }
 
             foreach (var item in results)
             {

@@ -3,11 +3,10 @@ using LMSweb.Models;
 using LMSweb.ViewModels.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace LMSweb.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Teacher")]
     public class CourseController : Controller
     {
         private readonly ILogger<StudentController> _logger;
@@ -36,18 +35,21 @@ namespace LMSweb.Controllers
              * 新增課程到資料庫
              */
 
-            var UID = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;   //抓出當初記載Claims陣列中的TID
+            var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的TID
+            if (UID == null)
+            {
+                return Unauthorized();
+            }
 
             if (ModelState.IsValid)
             {
                 Course course = new Course
                 {
-                    TeacherId = UID,
+                    TeacherId = UID.Value,
                     CreateTime = DateTime.Now,
                     Cid = $"C{DateTime.Now.ToString("yyMMddHHmmss")}",
                     Cname = courseViewModel.Name,
                     TestType = courseViewModel.TestType,
-                    // 以下欄位要根據TestType來決定其值，或是要刪除這兩個欄位
                 };
                 _context.Courses.Add(course);
                 _context.SaveChanges();
@@ -104,20 +106,23 @@ namespace LMSweb.Controllers
              * 透過id找到課程，並將資料傳到 View                   
              */
 
-            var course = _context.Courses.FirstOrDefault(x => x.Cid == cid);
-            var TeacherId = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
-            var TeacherName = _context.Teachers.FirstOrDefault(x => x.TeacherId == TeacherId).TeacherName;
-            if (course == null)
+            var TeacherId = User.Claims.FirstOrDefault(x => x.Type == "UID");
+            if (TeacherId == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
-            var delsteViewModel = new CourseDeleteViewModel
-            {
-                TeacherName = TeacherName,
-                CourseID = course.Cid,
-                CourseName = course.Cname,
-                TestType = course.TestType,
-            };
+
+           var delsteViewModel = (from c in _context.Courses
+                       join t in _context.Teachers on c.TeacherId equals TeacherId.Value
+                       where c.Cid == cid
+                       select new CourseDeleteViewModel
+                       {
+                           TeacherName = t.TeacherName,
+                           CourseID = c.Cid,
+                           CourseName = c.Cname,
+                           TestType = c.TestType,
+                       })
+                       .FirstOrDefault();
             return View(delsteViewModel);
         }
 

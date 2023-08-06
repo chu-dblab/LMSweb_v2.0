@@ -29,8 +29,4 @@
     <None Include="..\README.md" Link="README.md" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
-
 </Project>
