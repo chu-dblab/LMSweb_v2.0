@@ -151,5 +151,61 @@ namespace LMSweb.Controllers
 
             return View(data);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Edit(string mid, string cid)
+        {
+            var missionData = (from mission in _context.Missions
+                               from course in _context.Courses
+                               where mission.CourseId == course.Cid && mission.Mid == mid && mission.CourseId == cid
+                               select new MissionCreateViewModel
+                               {
+                                   CourseID = course.Cid,
+                                   CourseName = course.Cname,
+                                   PostData = new PostData()
+                                   {
+                                       Name = mission.Mname,
+                                       Contents = mission.Detail,
+                                       StartDate = mission.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                       EndDate = mission.EndDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                   }
+                               })
+                              .FirstOrDefault();
+            return View(missionData);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Edit(string mid, string cid, MissionCreateViewModel model)
+        {
+            var postData = model.PostData;
+            if (postData != null)
+            {
+                var original = _context.Missions
+                    .Where(m => m.CourseId == cid && m.Mid == mid)
+                    .FirstOrDefault();
+
+                var test_type = _context.Courses.Where(x => x.Cid == cid).Select(x => x.TestType).FirstOrDefault();
+                if (original.CurrentAction is null)
+                {
+                    original.CurrentAction = GlobalClass.DefaultCurrentStatus(test_type);
+                }
+                var newMission = new Mission
+                {
+                    CourseId = cid,
+                    Mid = mid,
+                    Mname = postData.Name,
+                    Detail = postData.Contents,
+                    StartDate = DateTime.Parse(postData.StartDate),
+                    EndDate = DateTime.Parse(postData.EndDate),
+                    CurrentAction = original.CurrentAction
+                };
+                _context.Entry(original).CurrentValues.SetValues(newMission);
+                _context.SaveChanges();
+                return RedirectToAction("Index", new { cid = newMission.CourseId });
+            }
+            return View(model);
+        }
     }
 }
