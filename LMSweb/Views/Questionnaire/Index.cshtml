@@ -1,4 +1,6 @@
-﻿@{
+﻿@model QuestionnaireIndexViewModel
+
+@{
 }
 
 @section topCSS {
@@ -47,12 +49,21 @@
 }
 
 <div class="container">
+
+    @*@Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml", 
+        new ViewTitlePartialViewModel { h1 = @$"任務名稱：{Model.MissionName}"})*@
+
     <div class="card m-3 p-3">
         <h1 class="w-auto m-2 fs-2" id="Title"></h1>
     </div>
     <div class="card m-3 p-3">
         <Questionnaire>
         </Questionnaire>
+
+    <div class="row justify-content-end">
+        <div class="col"></div>
+        <button class="btn btn-primary col-2" id="Submit">送出</button>
+        <div class="col-1"></div>
     </div>
 </div>
 
@@ -89,7 +100,7 @@
 
 <template id="MultipleChoice_Option">
     <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;">
-        <input class="form-check-input" type="checkbox" id="" value="option1">
+        <input class="form-check-input" type="checkbox" id="" value="">
         <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
             <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
         </label>
@@ -127,6 +138,15 @@
             console.log(Question);
             // 2. 顯示題庫
             await displayQuestions();
+
+            // 3. 送出
+             $("#Submit").click(async function () {
+                // 3.1 取得答案
+                var answers = await getAnswers();
+                console.log(answers);
+                // 3.2 送出答案
+                sendAnswers(answers);
+            });
         }
 
         async function getQuestions() {
@@ -136,7 +156,9 @@
                 redirect: 'follow'
             };
 
+            //https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4
             await fetch("https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4", requestOptions)
+            @*await fetch("@Url.Action("Index","QuestionnaireAPIController", new {TaskType = Model.TaskType, TaskType = Model.TaskType})", requestOptions)*@
                 .then(response => response.text())
                 // .then(result => {
                 //     output = JSON.parse(result);
@@ -174,6 +196,7 @@
                         var formCheck2 = $(template2);
                         console.log(template2);
                         formCheck2.find("input").attr("id", opt.optionId);
+                        formCheck2.find("input").attr("value", opt.content);
                         formCheck2.find("label").attr("for", opt.optionId);
                         formCheck2.find("label").attr("id", opt.optionId);
                         formCheck2.find("label").text(opt.content);
@@ -193,6 +216,7 @@
                         var formCheck2 = $(template2);
                         console.log(template2);
                         formCheck2.find("input").attr("id", opt.optionId);
+                        formCheck2.find("input").attr("value", opt.content);
                         formCheck2.find("label").attr("for", opt.optionId);
                         formCheck2.find("label").attr("id", opt.optionId);
                         formCheck2.find("label").text(opt.content);
@@ -211,6 +235,83 @@
                     formCheck.appendTo("Questionnaire");
                 }
             });
+        }
+
+        async function getAnswers() {
+
+            var Answers = [];
+            
+
+            Question.forEach(que => {
+                var ContentList = [];
+                if (que.type == "0") {
+                    var options = que.options;
+                    options.forEach(opt => {
+                        if (document.getElementById(opt.optionId).checked) {
+                            let CList = {
+                                "OptionId": opt.optionId,
+                                "OcontentContent": document.getElementById(opt.optionId).value
+                            };
+                            ContentList.push(CList);
+                        }
+                    });
+                }
+                else if (que.type == "1") {
+                    var options = que.options;
+                    options.forEach(opt => {
+                        if (document.getElementById(opt.optionId).checked) {
+                            let CList = {
+                                "OptionId": opt.optionId,
+                                "OcontentContent": document.getElementById(opt.optionId).value
+                            };
+                            ContentList.push(CList);
+                        }
+                    });
+                }
+                else if (que.type == "2") {
+                    var ContentList = [{
+                        "OcontentContent": document.getElementById("exampleFormControlTextarea1").value
+                    }];
+                }
+
+                var answer = {
+                    "QuestionId": que.questionId,
+                    "Content": ContentList
+                };
+
+                Answers.push(answer);
+            });
+
+            return Answers;
+        }
+
+        async function sendAnswers(answers) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var send = {
+                "UID" : "S001",
+                "MissionId" : "M230807184445",
+                "Answers" : answers
+            };
+
+            console.log(send);
+
+            var raw = JSON.stringify(send);
+
+            console.log(raw);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            await fetch("https://localhost:7197/api/Questionnaire", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
         }
     </script>
 }
