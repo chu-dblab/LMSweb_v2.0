@@ -335,7 +335,7 @@ namespace LMSweb.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult Copy(string currentCID, MissionCreateViewModel formdata)
         {
-            if (ModelState.IsValid)
+            if (formdata != null)
             {
                 var test_type = _context.Courses.Where(x => x.Cid == currentCID).Select(x => x.TestType).FirstOrDefault();
                 var missionData = new Mission

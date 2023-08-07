@@ -1,0 +1,78 @@
+﻿@model SelectMissionViewModel
+@{
+    ViewBag.Title = "SelectMission";
+
+    // 編號用變數
+    int k = 1;
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CurrentCourseID , ActiveIndex = 0})
+    </ul>
+}
+
+<div class="container">
+
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel {
+    h1 = "複製任務",
+    h2 = "" })
+
+    <div class="card m-3 p-4">
+        <h4><b>複製任務</b></h4>
+        <hr />
+        @* 這邊 table 會偏左 暫時找不到原因 使用 ms-3 先作業面校正 *@
+        <table id="table_id" class="table table-striped ms-3">
+            <thead>
+                <tr class="row w-100">
+                    <th class="col-1">
+                        編號
+                    </th>
+                    <th class="col">
+                        @Html.DisplayNameFor(model => model.Missions[0].Name)
+                    </th>
+                    <th class="col-3">
+                        @Html.DisplayNameFor(model => model.Missions[0].TaskDetail)
+                    </th>
+                    <th class="col">
+                        @Html.DisplayNameFor(model => model.Missions[0].StartDate)
+                    </th>
+                    <th class="col">
+                        @Html.DisplayNameFor(model => model.Missions[0].EndDate)
+                    </th>
+                    <th class="col"></th>
+                </tr>
+            </thead>
+            <tbody id="number">
+                @foreach (var item in Model.Missions)
+                {
+                    <tr class="row w-100">
+                        <td class="pt-3 col-1">
+                            @(k++)
+                        </td>
+                        <td class="pt-3 col">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="pt-3 col-3">
+                            @Html.DisplayFor(modelItem => item.TaskDetail)
+                        </td>
+                        <td class="pt-3 col">
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td class="pt-3 col">
+                            @Html.DisplayFor(modelItem => item.EndDate)
+
+                        </td>
+                        <td class="pt-2 col">
+                            <a href="@Url.Action("Copy", "Mission", new { mid = item.TaskID, selectedCID = Model.CourseID, currentCID = Model.CurrentCourseID })" class="btn btn-primary w-auto mx-2">
+                                <i class="bi bi-plus-lg"></i>
+                                複製此任務
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+﻿@model MissionCreateViewModel
+@{
+    ViewBag.Title = "複製任務";
+    string CurrentCourseID = (string)ViewData["CurrentCourseID"];
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = CurrentCourseID , ActiveIndex = 0})
+    </ul>
+}
+
+
+<div class="container">
+
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel {
+    h1 = "複製任務",
+    h2 = "" })
+
+    <div class="card m-3 p-4">
+        <h4 class="fs-3 text-center my-1">複製任務</h4>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3 my-1">
+                @Html.LabelFor(model => model.PostData.Name, htmlAttributes: new { @class = "form-label ms-2 fs-5 my-1" })
+                <div class="row mx-1">
+                    @Html.TextBoxFor(model => model.PostData.Name, new { @class = "form-control col-12 fs-5" })
+                    @Html.ValidationMessageFor(model => model.PostData.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3 my-1">
+                @Html.LabelFor(model => model.PostData.Contents, new { @class = "form-label ms-2 fs-5 my-1" })
+                <div class="row mx-1">
+
+                    @Html.TextAreaFor(model => model.PostData.Contents, new { @class = "form-control col-12 fs-5", rows = "10" })
+                    @Html.ValidationMessageFor(model => model.PostData.Contents, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3 my-1">
+                @Html.LabelFor(model => model.PostData.StartDate, htmlAttributes: new { @class = "form-label ms-2 fs-5 my-1" })
+                <div class="row mx-1">
+                    @Html.TextBoxFor(model => model.PostData.StartDate, new { @class = "form-control", type = "datetime-local" })
+                    @Html.ValidationMessageFor(model => model.PostData.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3 my-1">
+                @Html.LabelFor(model => model.PostData.EndDate, htmlAttributes: new { @class = "form-label ms-2 fs-5 my-1" })
+                <div class="row mx-1">
+
+                    @Html.TextBoxFor(model => model.PostData.EndDate, new { @class = "form-control", type = "datetime-local" })
+                    @Html.ValidationMessageFor(model => model.PostData.EndDate, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="row">
+                    <input type="submit" value="儲存" class="btn btn-primary w-auto px-5 ms-auto" />
+                    <a class="btn btn-secondary w-auto px-5 ms-1 me-3" href="@Url.Action("Index", "Mission" , new { cid = Model.CourseID })">取消</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
