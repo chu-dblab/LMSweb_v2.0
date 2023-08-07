@@ -3,5 +3,7 @@
     public class TeacherNavViewModel
     {
         public string CourseID { get; set; }
+
+        public int ActiveIndex { get; set; }
     }
 }
