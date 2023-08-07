@@ -24,6 +24,7 @@
         else return "組別Type錯誤";
     }
 }
+
 <div class="container">
 
     @*<div class="card row flex-wrap d-flex m-3">
@@ -58,7 +59,7 @@
                             <p class="h6"> @GetTypeString(item.TestType)</p>
 
                             <hr />
-                            @Html.ActionLink("進入課程", "Index", "Missions", new { cid = item.CourseID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("進入課程", "Index", "Mission", new { cid = item.CourseID }, new { @class = "btn btn-primary" })
                             <a type="button" class="btn btn-link p-1" href="@Url.Action("Edit", "Course", new { cid = item.CourseID })">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>

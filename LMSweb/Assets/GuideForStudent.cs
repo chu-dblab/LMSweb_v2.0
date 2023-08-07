@@ -87,23 +87,23 @@ namespace LMSweb.Assets
                 // 判斷流程圖是否上傳
                 else if (execution.CurrentStatus == "100")
                 {
-                    var Draw = db.StudentDraws.Where(x => x.GID == student.GID && x.MID == mid).FirstOrDefault();
+                    //var Draw = db.StudentDraws.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
 
-                    if (Draw != null)
-                    {
-                        execution.CurrentStatus = "210";
-                    }
+                    //if (Draw != null)
+                    //{
+                    //    execution.CurrentStatus = "210";
+                    //}
                 }
 
                 // 判斷程式碼是否上傳
                 else if (execution.CurrentStatus == "210")
                 {
-                    var Code = db.StudentCodes.Where(x => x.GID == student.GID && x.MID == mid).FirstOrDefault();
+                    //var Code = db.StudentCodes.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
 
-                    if (Code != null)
-                    {
-                        execution.CurrentStatus = "221";
-                    }
+                    //if (Code != null)
+                    //{
+                    //    execution.CurrentStatus = "221";
+                    //}
                 }
                 db.SaveChanges();
             }
@@ -126,23 +126,23 @@ namespace LMSweb.Assets
                 // 判斷流程圖是否上傳
                 else if (execution.CurrentStatus == "100000")
                 {
-                    var Draw = db.StudentDraws.Where(x => x.GID == student.GID && x.MID == mid).FirstOrDefault();
+                    //var Draw = db.StudentDraws.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
 
-                    if (Draw != null)
-                    {
-                        execution.CurrentStatus = "210000";
-                    }
+                    //if (Draw != null)
+                    //{
+                    //    execution.CurrentStatus = "210000";
+                    //}
                 }
 
                 // 判斷程式碼是否上傳
                 else if (execution.CurrentStatus == "210000")
                 {
-                    var Code = db.StudentCodes.Where(x => x.GID == student.GID && x.MID == mid).FirstOrDefault();
+                    //var Code = db.StudentCodes.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
 
-                    if (Code != null)
-                    {
-                        execution.CurrentStatus = "221000";
-                    }
+                    //if (Code != null)
+                    //{
+                    //    execution.CurrentStatus = "221000";
+                    //}
                 }
                 db.SaveChanges();
             }
