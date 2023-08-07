@@ -269,5 +269,93 @@ namespace LMSweb.Controllers
                 return RedirectToAction("Index", new { cid = cid });
             }
         }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult SelectCourses(string cid)
+        {
+            var tid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+            var courses = _context.Courses.Where(c => c.TeacherId == tid).Select(x => new TeacherHomeViewModel
+            {
+                CourseID = x.Cid,
+                CourseName = x.Cname,
+                TestType = x.TestType
+            });
+            ViewData["CurrentCourseID"] = cid;
+            return View(courses.ToList());
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult SelectMissions(string selectedCID, string currentCID)
+        {
+            var tasklist = _context.Missions.Where(m => m.CourseId == selectedCID).Select(s => new TaskData
+            {
+                TaskID = s.Mid,
+                Name = s.Mname,
+                TaskDetail = s.Detail,
+                StartDate = s.StartDate.ToString(),
+                EndDate = s.StartDate.ToString()
+            }).ToList();
+
+            var course = _context.Courses.Find(selectedCID);
+            var data = new SelectMissionViewModel
+            {
+                CurrentCourseID = currentCID,
+                CourseID = course.Cid,
+                CourseName = course.Cname,
+                TestType = course.TestType,
+                Missions = tasklist
+            };
+            return View(data);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Copy(string mid, string selectedCID, string currentCID)
+        {
+            var missionData = (from mission in _context.Missions
+                               from course in _context.Courses
+                               where mission.CourseId == course.Cid && mission.Mid == mid && course.Cid == selectedCID
+                               select new MissionCreateViewModel
+                               {
+                                   CourseID = course.Cid,
+                                   CourseName = course.Cname,
+                                   PostData = new PostData()
+                                   {
+                                       MID = mission.Mid,
+                                       Name = mission.Mname,
+                                       Contents = mission.Detail,
+                                       StartDate = mission.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                       EndDate = mission.EndDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                   }
+                               }).FirstOrDefault();
+            ViewData["CurrentCourseID"] = currentCID;
+            return View(missionData);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Copy(string currentCID, MissionCreateViewModel formdata)
+        {
+            if (ModelState.IsValid)
+            {
+                var test_type = _context.Courses.Where(x => x.Cid == currentCID).Select(x => x.TestType).FirstOrDefault();
+                var missionData = new Mission
+                {
+                    CourseId = currentCID,
+                    Mid = $"M{DateTime.Now.ToString("yyMMddHHmmss")}",
+                    Mname = formdata.PostData.Name,
+                    Detail = formdata.PostData.Contents,
+                    StartDate = DateTime.Parse(formdata.PostData.StartDate),
+                    EndDate = DateTime.Parse(formdata.PostData.EndDate),
+                    CurrentAction = GlobalClass.DefaultCurrentStatus(test_type)
+                };
+                formdata.CourseID = currentCID;
+                _context.Missions.Add(missionData);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", new { cid = formdata.CourseID });
+            }
+
+            return View(formdata);
+        }
     }
 }
