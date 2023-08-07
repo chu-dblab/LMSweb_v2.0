@@ -5,7 +5,6 @@ using LMSweb.ViewModels;
 using LMSweb.ViewModels.Mission;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Security.Claims;
 
 namespace LMSweb.Controllers
@@ -206,6 +205,69 @@ namespace LMSweb.Controllers
                 return RedirectToAction("Index", new { cid = newMission.CourseId });
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Teacher")]
+        public IActionResult Delete(string mid, string cid)
+        {
+            if (mid == null || cid == null)
+            {
+                return NotFound();
+            }
+
+            var mission = _context.Missions
+                .Where(m => m.CourseId == cid && m.Mid == mid)
+                .FirstOrDefault();
+
+            if (mission == null)
+            {
+                return View("Index", new { cid = cid });
+            }
+
+            var vm = new MissionIndexViewModel()
+            {
+                CourseID = cid,
+                CourseName = _context.Courses.Find(cid).Cname ?? string.Empty,
+                Missions = new List<MissionData>()
+                {
+                    new MissionData
+                    {
+                        MID = mission.Mid,
+                        Name = mission.Mname,
+                        StartDate = mission.StartDate,
+                        EndDate = mission.EndDate,
+                        Detail = mission.Detail,
+                    }
+                }
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
+        public IActionResult Delete(string mid, string cid, MissionIndexViewModel vm)
+        {
+            if(mid == null || cid == null)
+            {
+                return NotFound();
+            }
+
+            var mission = _context.Missions
+                .Where(m => m.CourseId == cid && m.Mid == mid)
+                .FirstOrDefault();
+
+            if(mission == null)
+            {
+                return NotFound();
+            } else
+            {
+                _context.Missions.Remove(mission);
+                _context.SaveChanges();
+                return RedirectToAction("Index", new { cid = cid });
+            }
         }
     }
 }

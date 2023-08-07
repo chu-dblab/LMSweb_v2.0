@@ -1,0 +1,78 @@
+﻿@model MissionIndexViewModel
+
+@{
+    ViewBag.Title = "Delete";
+
+    MissionData mis = Model.Missions.FirstOrDefault();
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CourseID , ActiveIndex = 0})
+    </ul>
+}
+
+<div class="container">
+
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel { 
+        h1 = @$"課程名稱：{Model.CourseName}",
+        h2 = "" })
+
+    <div class="card m-3 p-3">
+        <h4 class="fs-3 text-center my-1">刪除任務</h4>
+        <div>
+            <hr />
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-dark fs-4">
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </li>
+                <li class="list-group-item list-group-item-light fs-5">
+                    @Html.DisplayFor(model => model.CourseName)
+                </li>
+                @* ----------------------------------------------- *@
+                <li class="list-group-item list-group-item-dark fs-4">
+                    @Html.DisplayNameFor(model => mis.Name)
+                </li>
+                <li class="list-group-item list-group-item-light fs-5">
+                    @Html.DisplayFor(model => mis.Name)
+                </li>
+                @* ----------------------------------------------- *@
+                <li class="list-group-item list-group-item-dark fs-4">
+                    @Html.DisplayNameFor(model => mis.StartDate)
+                </li>
+                <li class="list-group-item list-group-item-light fs-5">
+                    @Html.DisplayFor(model => mis.StartDate)
+                </li>
+                @* ----------------------------------------------- *@
+                <li class="list-group-item list-group-item-dark fs-4">
+                    @Html.DisplayNameFor(model => mis.EndDate)
+                </li>
+                <li class="list-group-item list-group-item-light fs-5">
+                    @Html.DisplayFor(model => mis.EndDate)
+                </li>
+                @* ----------------------------------------------- *@
+                <li class="list-group-item list-group-item-dark fs-4">
+                    @Html.DisplayNameFor(model => mis.Detail)
+                </li>
+                <li class="list-group-item list-group-item-light fs-5">
+                    @Html.DisplayFor(model => mis.Detail)
+                </li>
+            </ul>
+            <hr />
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3 row">
+                    <h5 class="col text-success fs-3 fw-bold">確認要刪除此任務?</h5>
+                    <div class="col row">
+                        <input type="submit" value="刪除" class="btn btn-primary w-auto px-5 ms-auto" />
+                        <input type="button" value="取消" class="btn btn-secondary w-auto px-5 ms-1 me-3" onclick="location.href='@Url.Action("Index", "Mission" , new { cid = Model.CourseID })'" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
