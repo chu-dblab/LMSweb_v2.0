@@ -1,4 +1,5 @@
-﻿@model MissionIndexViewModel
+﻿@using LMSweb.Assets;
+@model MissionIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -16,7 +17,10 @@
 
 
 <div class="container">
-    @*@AllHelper.CouresTitleForTeacherView(Model.CourseName, Model.TestType)*@
+
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml", 
+        new ViewTitlePartialViewModel { h1 = @$"課程名稱：{Model.CourseName}",
+                                        h2 = GlobalClass.GetTypeString(Model.TestType) })
 
     <div class="card m-3 p-4">
         <div class="row mb-3">

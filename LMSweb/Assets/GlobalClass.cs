@@ -42,5 +42,21 @@
             MultipleChoice = 1,
             EssayQuestion = 2
         }
+
+        public static string GetTypeString(int input)
+        {
+            string[] str =
+            {
+                "控制組",
+                "實驗組一：自我調節",
+                "實驗組二：同儕互評",
+                "實驗組三：社會共享調節",
+                "實驗組四：互動式同儕互評",
+                "實驗組五：社會共享調節 & 互動式同儕互評",
+                "組別Type錯誤"
+            };
+
+            return str[input];
+        }
     }
 }

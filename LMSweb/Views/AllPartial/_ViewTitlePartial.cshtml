@@ -1,0 +1,19 @@
+﻿@model ViewTitlePartialViewModel
+
+@{
+    var h1 = Model.h1;
+    var h2 = Model.h2;
+}
+
+<div class="card m-3 p-3">
+    @if(h1 != null && h1 != "")
+    {
+        <h1 class="w-auto m-2 fs-2">@h1</h1>
+    }
+
+    @if(h2 != null && h2 != "")
+    {
+        <h3 class="w-auto m-2 fs-4">@h2</h3>
+    }
+    
+</div>

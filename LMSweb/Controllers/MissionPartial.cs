@@ -8,5 +8,10 @@ namespace LMSweb.Controllers
         {
             return View();
         }
+
+        public ActionResult _DetailDataListGroupTemplatePartial()
+        {
+            return View();
+        }
     }
 }

@@ -144,6 +144,13 @@
             new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
         },
     };
+
+    List<DetailDataListGroupTemplatePartialViewModel> DetailDataListGroupTemplatePartialViewModels = new List<DetailDataListGroupTemplatePartialViewModel>
+    {
+        new DetailDataListGroupTemplatePartialViewModel { Title = "題目內容", Content = Model.Content, MinHeight = 300 },
+        new DetailDataListGroupTemplatePartialViewModel { Title = "開始時間", Content = Model.StartDate.ToString() },
+        new DetailDataListGroupTemplatePartialViewModel { Title = "結束時間", Content = Model.EndDate.ToString() },
+    };
 }
 
 @section NavPills {
@@ -315,6 +322,12 @@
                     @MissionsHelper.GetDetailDataListGroupTemplate(
                     Html.DisplayNameFor(model => model.EndDate),
                     Html.DisplayFor(model => model.EndDate))*@
+
+                    
+                    @for(int i = 0; i < 3; i++)
+                    {
+                        @Html.Partial("~/Views/MissionPartial/_DetailDataListGroupTemplatePartial.cshtml", DetailDataListGroupTemplatePartialViewModels[i])
+                    }
 
                     @if (User.IsInRole("Teacher"))
                     {

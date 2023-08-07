@@ -14,7 +14,8 @@
 
 <div class="container">
 
-    @*@AllHelper.CouresTitleForTeacherView(Model.CourseName)*@
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml", 
+        new ViewTitlePartialViewModel { h1 = @$"課程名稱：{Model.CourseName}"})
 
     <div class="card m-3 p-4">
         @using (Html.BeginForm())

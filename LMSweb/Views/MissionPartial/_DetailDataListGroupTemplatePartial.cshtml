@@ -1,0 +1,23 @@
+﻿@model DetailDataListGroupTemplatePartialViewModel
+
+@{
+    var title = Model.Title;
+    var content = Model.Content;
+    int? minHeight;
+
+    if (Model.MinHeight != null)
+    {
+        minHeight = Model.MinHeight;
+    }
+    else
+    {
+        minHeight = 60;
+    }
+
+    var minHeightStr = @$"min-height: {minHeight}px";
+}
+
+<ul class="list-group">
+    <li class="list-group-item list-group-item-dark">@title</li>
+    <li class="list-group-item list-group-item-light text-with-newlines" style="@minHeightStr">@content</li>
+</ul>
