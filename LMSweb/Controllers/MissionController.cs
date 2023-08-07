@@ -1,9 +1,10 @@
 ﻿using LMSweb.Assets;
 using LMSweb.Data;
-using LMSweb.ViewModel;
+using LMSweb.Models;
+using LMSweb.ViewModels;
+using LMSweb.ViewModels.Mission;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Data;
 using System.Security.Claims;
 
@@ -56,6 +57,62 @@ namespace LMSweb.Controllers
             };
 
             return View(mission_list);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Create(string cid)
+        {
+            var course = _context.Courses.Find(cid);
+
+            var createModel = new MissionCreateViewModel
+            {
+                CourseID = cid,
+                CourseName = course.Cname ?? string.Empty,
+            };
+            return View(createModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Create(string cid, MissionCreateViewModel model)
+        {
+            //model.CourseID = cid;
+            //model.CourseName = _context.Courses.Find(cid).Cname ?? string.Empty;
+            PostData postData = model.PostData;
+            if (postData != null)
+            {
+                var test_type = _context.Courses.Where(x => x.Cid == cid).Select(x => x.TestType).FirstOrDefault();
+                var missionData = new Mission
+                {
+                    CourseId = cid,
+                    Mid = $"M{DateTime.Now.ToString("yyMMddHHmmss")}",
+                    Mname = postData.Name,
+                    Detail = postData.Contents,
+                    StartDate = DateTime.Parse(postData.StartDate),
+                    EndDate = DateTime.Parse(postData.EndDate),
+                    CurrentAction = GlobalClass.DefaultCurrentStatus(test_type)
+                };
+                _context.Missions.Add(missionData);
+                _context.SaveChanges();
+
+                //// 新增任務後，將該任務的資料新增至Executions資料表中
+                //var students = _context.Students.Where(x => x.CourseId == cid && x.IsLeader == true).ToList();
+                //foreach (var student in students)
+                //{
+                //    var executionData = new Execution
+                //    {
+                //        MissionId = missionData.Mid,
+                //        GroupId = student.GroupId ?? 0,
+                //        CurrentStatus = GlobalClass.DefaultCurrentStatus(test_type)
+                //    };
+                //    _context.Executions.Add(executionData);
+                //    _context.SaveChanges();
+                //}
+
+                return RedirectToAction("Index", new { cid = cid });
+            }
+            return View(model);
         }
 
         public IActionResult Details(string cid, string mid)

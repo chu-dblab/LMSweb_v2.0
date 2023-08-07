@@ -1,0 +1,30 @@
+﻿@model TaskGuideStapPartialViewModel
+@{
+
+    var CurrentAction = Model.CurrentAction;
+    var StapName = Model.StapName;
+    var k = Model.k;
+    //var buttonLink = Url.Action("Index", "Mission", new { CID = Model.CourseID, MID = Model.MissionID, TID = Model.TaskID, SID = Model.StudentID, AID = Model.ActionID, Step = k + 1 });
+
+    string[] str =
+    {
+        "step align-self-center opacity-50",
+        "step align-self-center active",
+        "step align-self-center"
+    };
+    string disabledString = "";
+    if ((Convert.ToInt32(CurrentAction[k]) - 48) == 0)
+    {
+        Model.buttonLink = "";
+        disabledString = "disabled";
+    }
+
+    // -48 是因為 char 轉 int 的關係
+}
+
+<div class="@str[Convert.ToInt32(CurrentAction[k])-48]" data-target="#test-vl-3">
+    <a class="step-trigger @disabledString" role="tab" id="stepper4trigger3" aria-controls="test-vl-3" href="@Model.buttonLink">
+        <span class="bs-stepper-circle">@(k + 1)</span>
+        <span class="bs-stepper-label">@StapName</span>
+    </a>
+</div>

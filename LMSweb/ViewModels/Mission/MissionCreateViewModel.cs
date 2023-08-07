@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMSweb.ViewModel
+namespace LMSweb.ViewModels.Mission
 {
     public class MissionCreateViewModel
     {
         public string CourseID { get; set; }
         public string CourseName { get; set; }
+        public PostData? PostData { get; set; }
+        
+    }
 
-        [Display(Name = "任務編號")]
-        public string MID { get; set; }
-
+    public class PostData
+    {
         [Display(Name = "任務名稱")]
         public string Name { get; set; }
 

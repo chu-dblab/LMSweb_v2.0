@@ -1,4 +1,4 @@
-﻿@model LMSweb.ViewModel.MissionIndexViewModel
+﻿@model MissionIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -16,7 +16,6 @@
 
 
 <div class="container">
-
     @*@AllHelper.CouresTitleForTeacherView(Model.CourseName, Model.TestType)*@
 
     <div class="card m-3 p-4">
@@ -27,12 +26,12 @@
             @if (User.IsInRole("Teacher"))
             {
                 <div class="col d-flex justify-content-end me-2">
-                    <a href="@Url.Action("Create", "Missions", new { CID = Model.CourseID})" class="btn btn-primary w-auto mx-2 my-auto">
+                    <a href="@Url.Action("Create", "Mission", new { CID = Model.CourseID})" class="btn btn-primary w-auto mx-2 my-auto">
                         <i class="bi bi-plus-lg"></i>
                         新增任務
                     </a>
 
-                    <a href="@Url.Action("SelectCourses", "Missions", new {cid = Model.CourseID})" class="btn btn-primary w-auto my-auto">
+                    <a href="@Url.Action("SelectCourses", "Mission", new {cid = Model.CourseID})" class="btn btn-primary w-auto my-auto">
                         <i class="bi bi-files"></i>
                         複製任務
                     </a>
@@ -80,15 +79,15 @@
                                 @Html.DisplayFor(modelItem => item.EndDate)
                             </td>
                             <td class="d-grid d-flex justify-content-end col">
-                                <a href="@Url.Action("Details","Missions", new { mid=item.MID, cid = Model.CourseID})" class="btn btn-primary my-auto">
+                                <a href="@Url.Action("Details","Mission", new { mid=item.MID, cid = Model.CourseID})" class="btn btn-primary my-auto">
                                     進入任務
                                 </a>
                                 @if (User.IsInRole("Teacher"))
                                 {
-                                    <a href="@Url.Action("Edit", "Missions", new {  mid = item.MID, cid = Model.CourseID})" class="btn btn-link">
+                                    <a href="@Url.Action("Edit", "Mission", new {  mid = item.MID, cid = Model.CourseID})" class="btn btn-link">
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>
-                                    <a href="@Url.Action("Delete", "Missions",new { mid=item.MID, cid=Model.CourseID})" class="btn btn-link">
+                                    <a href="@Url.Action("Delete", "Mission",new { mid=item.MID, cid=Model.CourseID})" class="btn btn-link">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>
                                 }

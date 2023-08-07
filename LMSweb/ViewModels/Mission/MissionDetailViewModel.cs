@@ -1,11 +1,6 @@
-﻿//using DocumentFormat.OpenXml.Wordprocessing;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMSweb.ViewModel
+namespace LMSweb.ViewModels
 {
     public class MissionDetailViewModel
     {
