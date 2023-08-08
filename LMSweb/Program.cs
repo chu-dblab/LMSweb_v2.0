@@ -1,4 +1,5 @@
 using LMSweb.Data;
+using LMSweb.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddTransient<FileUploadService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
