@@ -129,10 +129,10 @@ namespace LMSweb.Services
                         {
                             var _answer = new Models.Answer();
 
-                            var aid_str = @$"{answer.QuestionId}{DateTime.Now:yyyymmddhhmmss}";
+                            var aid_str = @$"{answer.QuestionId}{DateTime.Now:yyyyMMddHHmmss}";
 
                             _answer.Aid = aid_str;
-                            _answer.Acontent = $@"{option.OptionId},{option.OcontentContent}";
+                            _answer.Acontent = $@"{option.OptionId??""},{option.OcontentContent??""}";
                             _answer.Atime = DateTime.Now;
                             _answer.QuestionId = answer.QuestionId;
 
@@ -151,8 +151,6 @@ namespace LMSweb.Services
                         }
                     }
                 }
-
-                _context.SaveChanges();
             }
         }
     }
