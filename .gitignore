@@ -362,4 +362,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-/LMSweb/wwwroot/UploadFiles/Example.csv
+/LMSweb/wwwroot/UploadFiles/*.csv
+/LMSweb/wwwroot/UploadImgs/*.jpg
+/LMSweb/wwwroot/UploadImgs/*.png
+/LMSweb/wwwroot/UploadImgs/*.gif
+/LMSweb/wwwroot/UploadImgs/*.jpeg
+/LMSweb/wwwroot/UploadImgs/*.svg

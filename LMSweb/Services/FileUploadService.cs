@@ -10,7 +10,7 @@ namespace LMSweb.Services
             {
                 return null;
             }
-            string pathFile = await SaveFile(uploaded_file);
+            string pathFile = await SaveFile(uploaded_file, "uploadfiles");
             var students = ReadDataFromFile(pathFile);
             return students.Skip(1);
         }
@@ -36,9 +36,9 @@ namespace LMSweb.Services
             }
         }
 
-        public async Task<string> SaveFile(IFormFile uploaded_file)
+        public async Task<string> SaveFile(IFormFile uploaded_file, string directory)
         {
-            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploadfiles", uploaded_file.FileName);
+            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", directory, uploaded_file.FileName);
             using (var stream = new FileStream(pathFile, FileMode.Create))
             {
                 await uploaded_file.CopyToAsync(stream);
