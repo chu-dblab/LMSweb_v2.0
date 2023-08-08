@@ -19,12 +19,12 @@ namespace LMSweb.Assets
         private DateTime StartDate;
         private DateTime EndDate;
 
-        public GuideForStudent(string mid, string cid)
+        public GuideForStudent(string mid, string cid, LMSContext db)
         {
             this.mid = mid;
             this.cid = cid;
 
-            this.db = new LMSContext();
+            this.db = db;
 
             this.TestType = db.Courses.Find(cid).TestType;
             this.MissionData = db.Missions.Find(mid);
@@ -38,7 +38,7 @@ namespace LMSweb.Assets
             this.StartDate = MissionData.StartDate;
             this.EndDate = MissionData.EndDate;
         }
-        public GuideForStudent(string mid, string cid, string sid) : this(mid, cid)
+        public GuideForStudent(string mid, string cid, string sid, LMSContext db) : this(mid, cid, db)
         {
             this.sid = sid;
         }

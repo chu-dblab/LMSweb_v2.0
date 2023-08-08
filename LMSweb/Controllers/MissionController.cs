@@ -141,7 +141,7 @@ namespace LMSweb.Controllers
                 var sid = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的SID
                 var student = _context.Students.Find(sid.Value);
 
-                GuideForStudent _Guide = new GuideForStudent(mid, cid, sid.Value);
+                GuideForStudent _Guide = new GuideForStudent(mid, cid, sid.Value, _context);
                 _Guide.UpdateCurrentStatus();
                 data.CurrentStatus = _context.Executions.Where(x => x.GroupId == student.GroupId && x.MissionId == mid).First().CurrentStatus;
                 data.GroupName = _context.Groups.Where(x => x.Gid == student.GroupId).First().Gname;

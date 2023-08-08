@@ -20,10 +20,13 @@
     }
     else
     {
-        GuideString = Model.CurrentStatus;
+        GuideString = "11111";
+        UserTypeForGuide = 1;
+        KForGuideStapUrl = 1;
+        //GuideString = Model.CurrentStatus;
         TestType = TestType = Model.TestType;
-        if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
-        else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
+        //if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
+        //else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
 
     }
 
@@ -44,11 +47,11 @@
     GuideStapUrlList[1] = new string[]
     {
         "",
-        GoalSettingUrl,
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 1.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        "",
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 1.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        ""
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "自我反思", TaskType = 1.ToString(), TaskSteps = 4.ToString()}),
     };
 
     GuideStapUrlList[2] = new string[]
@@ -56,17 +59,17 @@
         "",
         DrawingUrl,
         CodingUrl,
-        ""
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 3.ToString()}),
     };
 
     GuideStapUrlList[3] = new string[]
     {
         "",
-        "",
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 3.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        "",
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 3.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        ""
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "團隊反思", TaskType = 3.ToString(), TaskSteps = 4.ToString()}),
     };
 
     GuideStapUrlList[4] = new string[]
@@ -74,76 +77,92 @@
         "",
         DrawingUrl,
         CodingUrl,
-        "",
-        ""
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 4.ToString(), TaskSteps = 2.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "評價回饋", TaskType = 4.ToString(), TaskSteps = 3.ToString()}),
     };
 
     GuideStapUrlList[5] = new string[]
     {
         "",
-        "",
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 5.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        "",
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 5.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        "",
-        "",
-        ""
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 5.ToString(), TaskSteps = 4.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "評價回饋", TaskType = 5.ToString(), TaskSteps = 5.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "團隊反思", TaskType = 5.ToString(), TaskSteps = 6.ToString()}),
     };
 
-    List<List<TaskGuideStapPartialViewModel>> TaskGuideStapPartialViewModels = new List<List<TaskGuideStapPartialViewModel>>
+
+    List<List<TaskGuideStapPartialViewModel>> TaskGuideStapPartialViewModels = new List<List<TaskGuideStapPartialViewModel>>();
+
+    int a = 0, b = 1;
+    // 控制組
+    var TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        // 控制組
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
-        // 實驗組一：自我調節
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "自我反思", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
-        // 實驗組二：同儕互評
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
-        // 實驗組三：社會共享調節
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
-        // 實驗組四：互動式同儕互評
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
-
-        // 實驗組五：社會共享調節 & 互動式同儕互評
-        new List<TaskGuideStapPartialViewModel>
-        {
-            new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-            new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = k, buttonLink = GuideStapUrlList[TestType][KForGuideStapUrl]},
-        },
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
     };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
+
+    a++; b = 1;
+    // 實驗組一 
+    TGSPvm = new List<TaskGuideStapPartialViewModel>
+    {
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "自我反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+    };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
+
+    a++; b = 1;
+    // 實驗組二：同儕互評
+    TGSPvm = new List<TaskGuideStapPartialViewModel>
+    {
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+    };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
+
+    a++; b = 1;
+    // 實驗組三：社會共享調節
+    TGSPvm = new List<TaskGuideStapPartialViewModel>
+    {
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+    };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
+
+    a++; b = 1;
+    // 實驗組四：互動式同儕互評
+    TGSPvm = new List<TaskGuideStapPartialViewModel>
+    {
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+    };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
+
+    a++; b = 1;
+    // 實驗組五：社會共享調節 & 互動式同儕互評
+    TGSPvm = new List<TaskGuideStapPartialViewModel>
+    {
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+    };
+    TaskGuideStapPartialViewModels.Add(TGSPvm);
 
     List<DetailDataListGroupTemplatePartialViewModel> DetailDataListGroupTemplatePartialViewModels = new List<DetailDataListGroupTemplatePartialViewModel>
     {
@@ -151,6 +170,7 @@
         new DetailDataListGroupTemplatePartialViewModel { Title = "開始時間", Content = Model.StartDate.ToString() },
         new DetailDataListGroupTemplatePartialViewModel { Title = "結束時間", Content = Model.EndDate.ToString() },
     };
+
 }
 
 @section NavPills {

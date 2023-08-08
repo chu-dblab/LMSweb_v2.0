@@ -4,6 +4,8 @@ using LMSweb.Services;
 using LMSweb.ViewModels.StudentManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace LMSweb.Controllers
 {
@@ -116,5 +118,48 @@ namespace LMSweb.Controllers
             }
             return View(vm);
         }
+
+        // GET: StudentEdit
+        public ActionResult StudentEdit(string sid, string cid)
+        {
+            if (sid == null)
+            {
+                return NotFound();
+            }
+
+            var student = _context.Students.Where(s => s.StudentId == sid).Single();
+            var vm = new StudentCreateViewModel()
+            {
+                CourseId = cid,
+                student = new ViewModels.StudentManagement.Student
+                {
+                    StudentId = student.StudentId,
+                    StudentName = student.StudentName,
+                    StudentSex = student.Sex,
+                },
+            };
+
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(vm);
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult StudentEdit([Bind(Include = "SID,CourseID,SName,SPassword,Sex,Score")] Student student)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(student).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("StudentManagement", "Course", new { student.CID });
+        //    }
+
+        //    return View(student);
+        //}
     }
 }

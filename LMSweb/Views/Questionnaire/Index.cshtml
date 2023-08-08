@@ -157,8 +157,8 @@
             };
 
             //https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4
-            await fetch("https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4", requestOptions)
-            @*await fetch("@Url.Action("Index","QuestionnaireAPIController", new {TaskType = Model.TaskType, TaskType = Model.TaskType})", requestOptions)*@
+            //await fetch("https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4", requestOptions)
+            await fetch("@Url.Action("Index","Home")api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskType", requestOptions)
                 .then(response => response.text())
                 // .then(result => {
                 //     output = JSON.parse(result);
