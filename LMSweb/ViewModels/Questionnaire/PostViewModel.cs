@@ -10,7 +10,7 @@
     public class Answer
     {
         public string? QuestionId { get; set; }
-        public AnswerContent Content { get; set; }
+        public List<AnswerContent> Content { get; set; }
     }
 
     public class AnswerContent

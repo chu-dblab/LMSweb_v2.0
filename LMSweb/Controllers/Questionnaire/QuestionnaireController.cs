@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LMSweb.ViewModels.Questionnaire;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers.Questionnaire
 {
     public class QuestionnaireController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(QuestionnaireIndexViewModel vm)
         {
-            return View();
+            return View(vm);
         }
     }
 }
