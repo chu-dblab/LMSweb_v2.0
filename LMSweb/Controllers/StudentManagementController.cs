@@ -32,7 +32,7 @@ namespace LMSweb.Controllers
             {
                 CourseId = cid,
                 CourseName = _context.Courses.FirstOrDefault(x => x.Cid == cid).Cname,
-                Students = _context.Students.Where(x => x.CourseId == cid).Select(x => new Student
+                Students = _context.Students.Where(x => x.CourseId == cid).Select(x => new ViewModels.StudentManagement.Student
                 {
                     StudentId = x.StudentId,
                     StudentName = x.StudentName,
@@ -70,6 +70,51 @@ namespace LMSweb.Controllers
                 _context.SaveChanges();
             }
             return Json(new { success = true });
+        }
+
+        // GET: StudentCreate
+        public ActionResult StudentCreate(string cid)
+        {
+            var vmodel = new StudentCreateViewModel();
+            vmodel.CourseId = cid;
+            var course = _context.Courses.Where(c => c.Cid == cid).Single();
+
+            vmodel.CourseName = course.Cname;
+
+            return View(vmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StudentCreate(StudentCreateViewModel vm)
+        {
+            if (vm != null)
+            {
+                var _student = new Models.Student()
+                {
+                    CourseId = vm.CourseId,
+                    StudentId = vm.student.StudentId,
+                    StudentName = vm.student.StudentName,
+                    Sex = vm.student.StudentSex,
+                    IsLeader = false,
+                };
+
+                var _User = new User()
+                {
+                    Id = vm.student.StudentId,
+                    Upassword = HashHelper.SHA256Hash(vm.student.StudentId),
+                    Name = vm.student.StudentName,
+                    Gender = vm.student.StudentSex,
+                    RoleName = "Student"
+                };
+
+                _context.Users.Add(_User);
+                _context.SaveChanges();
+                _context.Students.Add(_student);
+                _context.SaveChanges();
+                return RedirectToAction("Index","StudentManagement", new { cid = vm.CourseId });
+            }
+            return View(vm);
         }
     }
 }
