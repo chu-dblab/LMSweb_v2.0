@@ -10,16 +10,12 @@ namespace LMSweb.Services
             {
                 return null;
             }
-            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploadfiles", uploaded_file.FileName);
-            using (var stream = new FileStream(pathFile, FileMode.Create))
-            {
-               await uploaded_file.CopyToAsync(stream);
-            }
+            string pathFile = await SaveFile(uploaded_file);
 
             var import_student = File.ReadAllLines(pathFile);
-            var students = import_student.Skip(1).Select(x => new Student 
-            { 
-                StudentId = x.Split(',')[0], 
+            var students = import_student.Skip(1).Select(x => new Student
+            {
+                StudentId = x.Split(',')[0],
                 StudentName = x.Split(',')[1],
                 StudentSex = x.Split(',')[2],
             });
@@ -28,6 +24,17 @@ namespace LMSweb.Services
                 return null;
             }
             return students;
+        }
+
+        public async Task<string> SaveFile(IFormFile uploaded_file)
+        {
+            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploadfiles", uploaded_file.FileName);
+            using (var stream = new FileStream(pathFile, FileMode.Create))
+            {
+                await uploaded_file.CopyToAsync(stream);
+            }
+
+            return pathFile;
         }
     }
 }

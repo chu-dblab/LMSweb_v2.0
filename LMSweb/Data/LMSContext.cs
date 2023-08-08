@@ -250,7 +250,13 @@ public partial class LMSContext : DbContext
         modelBuilder.Entity<Provided>(entity =>
         {
             entity.HasKey(e => new {e.AnswerId, e.UserId});
+            entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.MissionId).HasColumnName("MissionID");
+
         });
+        modelBuilder.Entity<Provided>().HasIndex(e=>e.MissionId).IsUnique(false);
+        modelBuilder.Entity<Provided>().HasIndex(e=>e.UserId).IsUnique(false);
 
         /* 測試資料 */
         var test_users = new List<User>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace LMSweb.Models;
+﻿namespace LMSweb.Models;
 
 public partial class Execution
 {
