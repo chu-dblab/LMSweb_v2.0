@@ -4,8 +4,6 @@ using LMSweb.Services;
 using LMSweb.ViewModels.StudentManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace LMSweb.Controllers
 {
@@ -46,12 +44,13 @@ namespace LMSweb.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> Upload(string cid, IFormFile uploaded_file)
+        [HttpPost]
+        public async Task<IActionResult> Upload(string cid, IFormFile file)
         {
-           var students = await _fileUploadService.Upload(uploaded_file);
+           var students = await _fileUploadService.Upload(file);
             if (students == null)
             {
-                return RedirectToAction("Index", new { cid = cid });
+                return BadRequest();
             }
             foreach (var item in students)
             {

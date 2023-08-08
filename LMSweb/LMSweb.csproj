@@ -30,4 +30,9 @@
     <None Include="..\README.md" Link="README.md" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\UploadFiles\" />
+  </ItemGroup>
+
 </Project>

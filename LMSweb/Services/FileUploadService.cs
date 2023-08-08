@@ -11,19 +11,29 @@ namespace LMSweb.Services
                 return null;
             }
             string pathFile = await SaveFile(uploaded_file);
+            var students = ReadDataFromFile(pathFile);
+            return students.Skip(1);
+        }
 
-            var import_student = File.ReadAllLines(pathFile);
-            var students = import_student.Skip(1).Select(x => new Student
+        private static IEnumerable<Student> ReadDataFromFile(string filepath)
+        {
+            var reader = new StreamReader(filepath);
+            while(!reader.EndOfStream)
             {
-                StudentId = x.Split(',')[0],
-                StudentName = x.Split(',')[1],
-                StudentSex = x.Split(',')[2],
-            });
-            if (students.Any(x => string.IsNullOrEmpty(x.StudentId) || string.IsNullOrEmpty(x.StudentName) || string.IsNullOrEmpty(x.StudentSex)))
-            {
-                return null;
+                var line = reader.ReadLine();
+                if (line == null) break;
+                var values = line.Split(',');
+                if (string.IsNullOrEmpty(values[0]) && string.IsNullOrEmpty(values[1]) && string.IsNullOrEmpty(values[2])) break;
+                else
+                {
+                    yield return new Student
+                    {
+                        StudentId = values[0],
+                        StudentName = values[1],
+                        StudentSex = values[2]
+                    };
+                }
             }
-            return students;
         }
 
         public async Task<string> SaveFile(IFormFile uploaded_file)

@@ -28,10 +28,6 @@
       "destination": "wwwroot/lib/jasny-bootstrap/"
     },
     {
-      "library": "bootstrap-fileinput@5.5.2",
-      "destination": "wwwroot/lib/bootstrap-fileinput/"
-    },
-    {
       "library": "bootstrap-icons@1.10.5",
       "destination": "wwwroot/lib/bootstrap-icons/"
     },
@@ -42,6 +38,18 @@
     {
       "library": "bootstrap-select@1.13.18",
       "destination": "wwwroot/lib/bootstrap-select/"
+    },
+    {
+      "library": "bootbox.js@6.0.0",
+      "destination": "wwwroot/lib/bootbox.js/"
+    },
+    {
+      "library": "jquery.form@4.3.0",
+      "destination": "wwwroot/lib/jquery.form/"
+    },
+    {
+      "library": "bootstrap-fileinput@5.5.2",
+      "destination": "wwwroot/lib/bootstrap-fileinput/"
     }
   ]
 }
