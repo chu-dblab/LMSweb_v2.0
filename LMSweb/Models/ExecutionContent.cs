@@ -14,5 +14,5 @@ namespace LMSweb.Models
 
         public virtual Mission Mission { get; set; }
         public virtual Group Group { get; set; }
-    }
+    } 
 }

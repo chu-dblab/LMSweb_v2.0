@@ -1,0 +1,78 @@
+﻿@model SubmissionFileViewModel
+@{
+    ViewBag.Title = "StudentCoding";
+}
+
+@*@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @AllHelper.SetUnActiveNavData(Url.Action("Index", "Missions", new { CID = Model.CID }), "任務列表")
+    </ul>
+}*@
+
+<div class="container">
+    
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel {
+    h1 = @$"課程名稱：{Model.CourseName}",
+    h2 = "" })
+
+    <div class="card m-3 p-4">
+        <div class="mb-3">
+            <h5>@Model.MisstionName</h5>
+            @if (DateTime.Compare(Model.EndDate, DateTime.Now) <= 0)
+            {
+                if (Model.Path == null)
+                {
+                    <p class="text-danger">任務已到期，如需補交作業請通知指導老師!</p>
+                }
+                else
+                {
+                    <img src="~/UploadCode/@Model.Path" class="img-fluid" />
+                }
+            }
+            else
+            {
+                <div class="mb-3">
+                    <form action="@Url.Action("StudentCoding", "Student", new { mid = Model.MisstionId})" method="post" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <input type="file" accept=".png, .jpg, .jpeg" name="File" id="file" class="form-control" />
+                            <input type="submit" id="File" value="上傳" for="file" class="input-group-text">
+                        </div>
+                        <p>上傳檔預覽 :</p>
+                        <img id="demo" class="img-fluid" />
+                    </form>
+                </div>
+
+                if (Model.Path == null)
+                {
+                    <p>尚未上傳程式碼</p>
+                }
+                else
+                {
+                    <p>已上傳程式碼圖片</p>
+                    <img class="mb-3 img-fluid" src="~/UploadCode/@Model.Path" />
+                }
+            }
+        </div>
+
+        <a class="btn btn-secondary" href="@Url.Action("Details", "Missions", new {mid = Model.MisstionId })">返回任務</a>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        function myFunction() {
+            const myWindow = window.open('@Url.Action( "StudentMDetailWindow", "Student", new { MID = Model.MisstionId })', "", "width=800,height=800");
+        }
+        $('#file').change(function () {
+            var file = $('#file')[0].files[0];
+            var reader = new FileReader;
+            reader.onload = function (e) {
+                $('#demo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+}
