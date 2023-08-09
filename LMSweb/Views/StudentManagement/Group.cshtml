@@ -17,10 +17,10 @@
     <div class="card-header" style="padding: 30px 50px 8px 50px;">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link " href="@Url.Action("Index", "StudentManagement", new { CID = Model.CID})"><h5>修課名單</h5></a>
+                <a class="nav-link " href="@Url.Action("Index", "StudentManagement", new { cid = Model.CourseId})"><h5>修課名單</h5></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="true" href="@Url.Action("Group", "StudentManagement", new { CID = Model.CID})"><h5>分組名單</h5></a>
+                <a class="nav-link active" aria-current="true" href="@Url.Action("Group", "StudentManagement")"><h5>分組名單</h5></a>
             </li>
         </ul>
     </div>
@@ -52,13 +52,15 @@
                                 @for (int i = 0; i < Model.StudentList.Count(); i++)
                                 {
                                     if (i % 2 == 0)
-                                    {
+                                    {  
                                         @:<div class="row">
-                                        }
-                                        <input class="col-sm-2 check_student" style="margin-top:5px;" type="checkbox" id="@Model.StudentList[i].Text" name="all_student" value="@Model.StudentList[i].Value">
-                                        <label class="w-25 h-auto">@Model.StudentList[i].Text</label>
-                                        if (i % 2 == 1 || i == Model.StudentList.Count() - 1)
-                                        {
+                                    }
+
+                                    <input class="col-sm-2 check_student" style="margin-top:5px;" type="checkbox" id="@Model.StudentList[i].Text" name="all_student" value="@Model.StudentList[i].Value">
+                                    <label class="w-25 h-auto">@Model.StudentList[i].Text</label>
+                                    
+                                    if (i % 2 == 1 || i == Model.StudentList.Count() - 1)
+                                    {
                                         @:</div>
                                     }
                                 }

@@ -19,6 +19,8 @@ namespace LMSweb.ViewModels.StudentManagement
         [Display(Name = "性別")]
         public string StudentSex { get; set; }
         [Display(Name = "組別")]
-        public string GroupName { get; set; }
+        
+        public string? GroupName { get; set; }
+        public bool? IsStudent { get; set; }
     }
 }

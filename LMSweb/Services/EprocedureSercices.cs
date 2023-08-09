@@ -106,9 +106,9 @@ namespace LMSweb.Services
             EprocedureIdTable[5, 1] = "D";
             EprocedureIdTable[5, 2] = "4";
             EprocedureIdTable[5, 3] = "C";
-            EprocedureIdTable[5, 2] = "6";
-            EprocedureIdTable[5, 2] = "7";
-            EprocedureIdTable[5, 2] = "5";
+            EprocedureIdTable[5, 4] = "6";
+            EprocedureIdTable[5, 5] = "7";
+            EprocedureIdTable[5, 6] = "5";
 
             return EprocedureIdTable[TaskType, TaskSteps];
         }

@@ -29,7 +29,9 @@ namespace LMSweb.Controllers
             var GroupId = _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().GroupId;
             var MisstionId = _context.Executions.Where(x => x.GroupId == GroupId).FirstOrDefault().MissionId;
             var misstion = _context.Missions.Find(mid);
-
+            var cid = _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId;
+            
+            vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Cname;
             vm.MisstionId = MisstionId;
             vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Mname;
@@ -57,6 +59,7 @@ namespace LMSweb.Controllers
 
             var GroupId = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().GroupId;
             var MisstionId = _context.Executions.Where(x => x.GroupId == GroupId).FirstOrDefault().MissionId;
+            var cid = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId;
 
             var input_path = Path.GetExtension(vm.formFile.FileName);
             var fileExt = Path.GetExtension(input_path);
@@ -88,6 +91,7 @@ namespace LMSweb.Controllers
 
 
             // 重新修正 vm
+            vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Cname;
             vm.MisstionId = MisstionId;
             vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Mname;

@@ -164,14 +164,11 @@ namespace LMSweb.Controllers
         public IActionResult Group()
         {
             var vm = new GroupViewModel();
-            //vm.StudentList = GetStudent(cid);
-            //vm.students = db.Students.Where(x => x.Group != null && x.CID == cid).OrderBy(x => x.GID).ToList();
-            //vm.CID = cid;
 
-            //var course = db.Courses.Where(c => c.CID == cid).Single();
-            //vm.CName = course.CName;
+            //var sid = User.Claims.FirstOrDefault(x => x.Type == "UID");
 
-            //vm.groups = db.Groups.Where(g => g.CID == cid).ToList();
+            //vm.CourseId = _context.Students.Where(x => x.StudentId == sid.Value).FirstOrDefault().CourseId;
+            
 
             return View(vm);
         }

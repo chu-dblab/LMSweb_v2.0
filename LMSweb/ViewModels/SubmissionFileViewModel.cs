@@ -2,6 +2,7 @@
 {
     public class SubmissionFileViewModel
     {
+        public string? CourseId { get; set; }
         public string CourseName { get; set; }
         public string MisstionId { get; set; }
         public string MisstionName { get; set; }
