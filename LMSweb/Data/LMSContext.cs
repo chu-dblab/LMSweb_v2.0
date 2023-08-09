@@ -37,6 +37,7 @@ public partial class LMSContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Provided> Provideds { get; set; }
+    public virtual DbSet<ExecutionContent> ExecutionContents { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{
