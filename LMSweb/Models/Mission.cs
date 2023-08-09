@@ -21,4 +21,6 @@ public partial class Mission
     public virtual ICollection<Execution> Executions { get; set; } = new List<Execution>();
 
     public virtual Provided? Provided { get; set; }
+
+    public virtual ICollection<ExecutionContent> ExecutionContents { get; set; } = new List<ExecutionContent>();
 }
