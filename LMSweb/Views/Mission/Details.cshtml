@@ -30,8 +30,8 @@
 
     }
 
-    var DrawingUrl = Url.Action("StudentDrawing", "Student", new { mid = Model.MissionID, cid = Model.CourseID });
-    var CodingUrl = Url.Action("StudentCoding", "Student", new { mid = Model.MissionID, cid = Model.CourseID });
+    var DrawingUrl = Url.Action("Index", "SubmissionFile", new { mid = Model.MissionID, type = "D" });
+    var CodingUrl = Url.Action("Index", "SubmissionFile", new { mid = Model.MissionID, type = "C" });
     var GoalSettingUrl = Url.Action("GoalSettingForStudent", "Questions", new { mid = Model.MissionID});
 
     string[][] GuideStapUrlList = new string[6][];

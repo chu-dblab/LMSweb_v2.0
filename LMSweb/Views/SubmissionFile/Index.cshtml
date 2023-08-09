@@ -33,9 +33,9 @@
             else
             {
                 <div class="mb-3">
-                    <form action="@Url.Action("StudentCoding", "Student", new { mid = Model.MisstionId})" method="post" enctype="multipart/form-data">
+                    <form action="@Url.Action("Index", "SubmissionFile", new {mid = Model.MisstionId, type = Model.type})" method="post" enctype="multipart/form-data">
                         <div class="input-group mb-3">
-                            <input type="file" accept=".png, .jpg, .jpeg" name="File" id="file" class="form-control" />
+                            <input type="file" accept=".png, .jpg, .jpeg" name="formFile" id="file" class="form-control" />
                             <input type="submit" id="File" value="上傳" for="file" class="input-group-text">
                         </div>
                         <p>上傳檔預覽 :</p>
@@ -50,12 +50,12 @@
                 else
                 {
                     <p>已上傳程式碼圖片</p>
-                    <img class="mb-3 img-fluid" src="~/UploadCode/@Model.Path" />
+                    <img class="mb-3 img-fluid" src="~/UploadImgs/@Model.Path" />
                 }
             }
         </div>
 
-        <a class="btn btn-secondary" href="@Url.Action("Details", "Missions", new {mid = Model.MisstionId })">返回任務</a>
+        <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {mid = Model.MisstionId })">返回任務</a>
 
     </div>
 </div>
