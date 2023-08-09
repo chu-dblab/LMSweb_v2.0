@@ -41,16 +41,15 @@ namespace LMSweb.Controllers
             
             if(_ExecutionContent != null )
             {
-                vm.Path = _ExecutionContent.Path;
-            } 
-
+                vm.Path = "UploadImgs/" + _ExecutionContent.Path;
+            }
             return View(vm);
         }
 
         [HttpPost]
         public IActionResult Index(string mid, string type, SubmissionFileViewModel vm)
         {
-            if (vm.Path == null) { return NotFound(); }
+            //if (vm.Path == null) { return NotFound(); }
              
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的TID
 
@@ -59,7 +58,11 @@ namespace LMSweb.Controllers
             var GroupId = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().GroupId;
             var MisstionId = _context.Executions.Where(x => x.GroupId == GroupId).FirstOrDefault().MissionId;
 
-            var path = _fileUploadService.SaveFile(vm.formFile, "UploadImgs");
+            var input_path = Path.GetExtension(vm.formFile.FileName);
+            var fileExt = Path.GetExtension(input_path);
+            var fileNewName = $@"{MisstionId}{GroupId}{DateTime.Now.ToString("MMddHHmmss")}";
+
+            var path = _fileUploadService.SaveFile(vm.formFile, "UploadImgs", fileNewName + fileExt);
 
             if(path == null) { return NotFound(); }
 
@@ -67,9 +70,30 @@ namespace LMSweb.Controllers
             {
                 MissionId = MisstionId,
                 GroupId = GroupId ?? 0,
-                Path = vm.formFile.FileName ?? "no fileName",
+                Path = fileNewName + fileExt ?? "no fileName",
                 Type = vm.type ?? "no type",
             };
+
+            var _ExecutionContentDB = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == MisstionId && x.Type == type).FirstOrDefault();
+            if( _ExecutionContentDB == null )
+            {
+                _context.ExecutionContents.Add(_ExecutionContent);
+            } 
+            else
+            {
+                _ExecutionContentDB.Path = _ExecutionContent.Path;
+            }
+
+            _context.SaveChanges();
+
+
+            // 重新修正 vm
+            vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Cname;
+            vm.MisstionId = MisstionId;
+            vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Mname;
+            vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).EndDate;
+            vm.type = type;
+            vm.Path = "UploadImgs/" + _ExecutionContent.Path;
 
             return View(vm);
         }

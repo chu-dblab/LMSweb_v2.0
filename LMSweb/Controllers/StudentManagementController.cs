@@ -160,5 +160,20 @@ namespace LMSweb.Controllers
 
         //    return View(student);
         //}
+
+        public IActionResult Group()
+        {
+            var vm = new GroupViewModel();
+            //vm.StudentList = GetStudent(cid);
+            //vm.students = db.Students.Where(x => x.Group != null && x.CID == cid).OrderBy(x => x.GID).ToList();
+            //vm.CID = cid;
+
+            //var course = db.Courses.Where(c => c.CID == cid).Single();
+            //vm.CName = course.CName;
+
+            //vm.groups = db.Groups.Where(g => g.CID == cid).ToList();
+
+            return View(vm);
+        }
     }
 }

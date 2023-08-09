@@ -50,7 +50,7 @@
                 else
                 {
                     <p>已上傳程式碼圖片</p>
-                    <img class="mb-3 img-fluid" src="~/UploadImgs/@Model.Path" />
+                    <img class="mb-3 img-fluid" src="@Model.Path" />
                 }
             }
         </div>
@@ -63,9 +63,9 @@
 @section scripts
 {
     <script>
-        function myFunction() {
-            const myWindow = window.open('@Url.Action( "StudentMDetailWindow", "Student", new { MID = Model.MisstionId })', "", "width=800,height=800");
-        }
+        //function myFunction() {
+        //    const myWindow = window.open('@Url.Action( "StudentMDetailWindow", "Student", new { MID = Model.MisstionId })', "", "width=800,height=800");
+        //}
         $('#file').change(function () {
             var file = $('#file')[0].files[0];
             var reader = new FileReader;

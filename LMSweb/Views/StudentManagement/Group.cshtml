@@ -1,0 +1,324 @@
+﻿@*@model GroupViewModel
+@{
+    //Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CourseId, ActiveIndex = 1 })
+    </ul>
+}
+
+<div class="cardArticle">
+    <h4>@Model.CName</h4>
+    <p>學生分組</p>
+</div>
+<div class="card " style="box-sizing: border-box; width: 100%; max-width: 1200px; margin: 20px auto 20px; border-radius: 5px; border: 1px solid #dee2e6; border-color: #cdcdcd;">
+    <div class="card-header" style="padding: 30px 50px 8px 50px;">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link " href="@Url.Action("Index", "StudentManagement", new { CID = Model.CID})"><h5>修課名單</h5></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" href="@Url.Action("Group", "StudentManagement", new { CID = Model.CID})"><h5>分組名單</h5></a>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <div class="card-body" style="padding: 20px 50px 50px;">
+        <div class="mb-3">
+            <label>
+                分組數量 :
+                <input type="text" min="1" max="10" placeholder="需要分成多少組" v-model="groupNum" id="groupN" />
+            </label>
+            <button class="btn btn-primary" id="groupclick">隨機分組</button>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row justify-content-between">
+                            <div class="col-4">
+                                未分組名單
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">新增組別</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <div class="custom-control custom-checkbox container">
+                                @for (int i = 0; i < Model.StudentList.Count(); i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @:<div class="row">
+                                        }
+                                        <input class="col-sm-2 check_student" style="margin-top:5px;" type="checkbox" id="@Model.StudentList[i].Text" name="all_student" value="@Model.StudentList[i].Value">
+                                        <label class="w-25 h-auto">@Model.StudentList[i].Text</label>
+                                        if (i % 2 == 1 || i == Model.StudentList.Count() - 1)
+                                        {
+                                        @:</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        已分組名單
+                    </div>
+                    <div class="card-body">
+                        <br />
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">新增組別</h5>
+                                        <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="group_name" class="col-form-label">組別名稱</label>
+                                                <input type="text" class="form-control" id="group_name">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="group_name" class="col-form-label">已選組員</label>
+                                                <br />
+                                                <label id="selected_students">
+                                                </label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" aria-hidden="true" data-bs-dismiss="modal">關閉</button>
+                                        <button type="button" class="btn btn-primary" id="alert">創建</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach (var item in (Model.groups.OrderBy(x => x.GName.Length).ThenBy(x => x.GName)))
+                        {
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-11">
+                                            @Html.DisplayFor(modelItem => item.GName)
+                                            <a type="button" data-id="@item.GName" data-gid="@item.GID" class="open-Dialog " style="padding: 5px 5px 5px 5px" data-bs-toggle="modal" href="#editGnameModal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="col-1 my-auto">
+                                            <button type="button" class="btn-close groupclose" aria-label="btn-Close" aria-hidden="true" id="@item.GID"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @foreach (var stu in (item.Students.OrderBy(x => x.SID)))
+                                    {
+                                        <div class="row justify-content-betwee">
+                                            <div class="col-1">
+                                                @if (stu.IsLeader)
+                                                {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                        <path d="M8.5 12.794l-3.908 2.21.746-4.33L.5 6.706l4.33-.63L8.5 2.5l2.67 3.576 4.33.63-3.338 3.968.746 4.33z" />
+                                                    </svg>
+                                                }
+                                            </div>
+                                            <div class="col-2">
+                                                <p>@stu.SName&ensp;</p>
+                                            </div>
+                                            <div class="col">
+                                                <p>@stu.Sex</p>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn-close stuclose" aria-label="Close" aria-hidden="true" id="@stu.SID"></button>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="row mt-3">
+                                        <div class="col mt-1">
+                                            <a  class="btn btn-primary w-100" href="@Url.Action("ChangeLeader", "Course", new {gid = item.GID})">
+                                                變更組長
+                                            </a>
+                                        </div>
+                                        <div class="col mt-1">
+                                            <button type="button" class="btn btn-primary w-100 addGbtn" id="@item.GID">
+                                                加入組別
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            <br />
+                        }
+                        <div class="modal  hide" id="editGnameModal" tabindex="-1" aria-labelledby="editGnameModalLabel" aria-hidden="true">
+                            <form id="EditGnameForm" action="@Url.Action("EditGname", "Course")" method="post" enctype="multipart/form-data">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editGnameModalLabel">更改組別名稱</h5>
+                                            <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="group_name" class="col-form-label">組別名稱</label>
+                                                <input type="hidden" name="gid" id="gId" class="form-control" value="" />
+                                                <input type="text" name="gName" id="gName" class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" aria-hidden="true" data-bs-dismiss="modal">關閉</button>
+                                            <button type="submit" class="btn btn-primary">更改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("click", ".open-Dialog", function () {
+            var gname = $(this).data('id');
+            var gid = $(this).data('gid');
+            $(".modal-body #gName").val(gname);
+            $(".modal #gId").val(gid);
+        });
+    $('#exampleModal').on('show.bs.modal', function (event) {     //將選取的學生顯示在Modal上
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var modal = $(this)
+        var text = ''
+        $("input[name='all_student']").each(function () {
+            if ($(this).prop("checked")) {
+                text += $(this).attr('id') + '<br/>';
+            }
+        });
+        modal.find('#selected_students').html(text)
+    });
+
+    $('.addGbtn').click(function () {   //將已分好組別裡的某位學生加入其他組別
+        var otherGroupStudent = [];
+        var gid = this.id;
+        $("input[name='all_student']").each(function () {
+            if ($(this).prop("checked")) {
+                otherGroupStudent.push($(this).val());
+            }
+        });
+        console.log(otherGroupStudent);
+        console.log(gid);
+        $.ajax({
+            url: "@Url.Action("AddStuToOtherGroup", "Course")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({ gid: gid, StudentList : otherGroupStudent, CID : "@Model.CID" }),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            }
+        });
+    });
+
+    $('#alert').click(function () {    //儲存Modal的資料
+        console.log($('#group_name').val());
+        var students = [];
+        $("input[name='all_student']").each(function () {
+            if ($(this).prop("checked")) {
+                students.push($(this).val());
+            }
+        });
+        console.log(students);
+        $.ajax({
+            url: "@Url.Action("StudentGroup", "Course")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CID" }),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            }
+        });
+
+    });
+
+    $('#groupclick').click(function () {    //隨機分組
+        var students = [];
+        var gn = $("#groupN").val();
+        var cid = '@Model.CID';
+        console.log(gn);
+        $.ajax({
+            url: "@Url.Action("GroupN", "Course")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({ n: gn , cid : cid}),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            }
+        });
+        console.log(123);
+    })
+
+    $('.groupclose').click(function () {    //刪除已分好的組別
+        var gid = this.id;
+        $.ajax({
+            url: "@Url.Action("GroupDelete", "Course")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({ groupId: gid }),
+            success: function (response) {
+                window.location.reload();
+
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            }
+        });
+        console.log(123);
+    })
+
+    $('.stuclose').click(function () {   //刪除已分好的組別裡面的某位學生
+        var sid = this.id;
+        $.ajax({
+            url: "@Url.Action("GroupStudentDelete", "Course")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({groupStuId: sid}),
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            }
+        });
+    })
+    </script>
+}
+
+*@

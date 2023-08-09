@@ -38,7 +38,12 @@ namespace LMSweb.Services
 
         public async Task<string> SaveFile(IFormFile uploaded_file, string directory)
         {
-            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", directory, uploaded_file.FileName);
+            return await SaveFile(uploaded_file, directory, uploaded_file.FileName);
+        }
+
+        public async Task<string> SaveFile(IFormFile uploaded_file, string directory, string FileName)
+        {
+            string pathFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", directory, FileName);
             using (var stream = new FileStream(pathFile, FileMode.Create))
             {
                 await uploaded_file.CopyToAsync(stream);
