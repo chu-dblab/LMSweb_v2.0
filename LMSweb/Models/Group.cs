@@ -9,4 +9,6 @@ public partial class Group
     public virtual ICollection<Execution> Executions { get; set; } = new List<Execution>();
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+
+    public virtual ICollection<ExecutionContent> ExecutionContents { get; set; } = new List<ExecutionContent>();
 }
