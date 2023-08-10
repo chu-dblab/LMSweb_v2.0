@@ -1,6 +1,7 @@
 ﻿using LMSweb.Assets;
 using LMSweb.Data;
 using LMSweb.Models;
+using LMSweb.Services;
 using LMSweb.ViewModels;
 using LMSweb.ViewModels.Mission;
 using Microsoft.AspNetCore.Authorization;
@@ -95,19 +96,19 @@ namespace LMSweb.Controllers
                 _context.Missions.Add(missionData);
                 _context.SaveChanges();
 
-                //// 新增任務後，將該任務的資料新增至Executions資料表中
-                //var students = _context.Students.Where(x => x.CourseId == cid && x.IsLeader == true).ToList();
-                //foreach (var student in students)
-                //{
-                //    var executionData = new Execution
-                //    {
-                //        MissionId = missionData.Mid,
-                //        GroupId = student.GroupId ?? 0,
-                //        CurrentStatus = GlobalClass.DefaultCurrentStatus(test_type)
-                //    };
-                //    _context.Executions.Add(executionData);
-                //    _context.SaveChanges();
-                //}
+                // 新增任務後，將該任務的資料新增至Executions資料表中
+                var students = _context.Students.Where(x => x.CourseId == cid && x.IsLeader == true).ToList();
+                foreach (var student in students)
+                {
+                    var executionData = new Execution
+                    {
+                        MissionId = missionData.Mid,
+                        GroupId = student.GroupId ?? 0,
+                        CurrentStatus = GlobalClass.DefaultCurrentStatus(test_type)
+                    };
+                    _context.Executions.Add(executionData);
+                    _context.SaveChanges();
+                }
 
                 return RedirectToAction("Index", new { cid = cid });
             }
@@ -141,7 +142,7 @@ namespace LMSweb.Controllers
                 var sid = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的SID
                 var student = _context.Students.Find(sid.Value);
 
-                GuideForStudent _Guide = new GuideForStudent(mid, cid, sid.Value, _context);
+                GuideForStudent _Guide = new GuideForStudent(mid, cid, _context, sid.Value);
                 _Guide.UpdateCurrentStatus();
                 data.CurrentStatus = _context.Executions.Where(x => x.GroupId == student.GroupId && x.MissionId == mid).First().CurrentStatus;
                 data.GroupName = _context.Groups.Where(x => x.Gid == student.GroupId).First().Gname;

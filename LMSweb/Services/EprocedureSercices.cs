@@ -1,4 +1,5 @@
 ﻿using LMSweb.Data;
+using LMSweb.Models;
 using LMSweb.ViewModels.Questionnaire;
 
 namespace LMSweb.Services
@@ -28,16 +29,16 @@ namespace LMSweb.Services
                 var Questions = _context.Questions.Where(q => q.EprocedureId == eprocedureId).ToList();
 
                 output.Name = Eprocedure.Name ?? "";
-                output.Questions = new List<Question>();
+                output.Questions = new List<ViewModels.Questionnaire.Question>();
 
                 foreach (var question in Questions)
                 {
-                    var questionOutput = new Question();
+                    var questionOutput = new ViewModels.Questionnaire.Question();
 
                     questionOutput.QuestionId = question.QuestionId ?? "";
                     questionOutput.Content = question.Qcontent ?? "";
                     questionOutput.Type = question.Qtype ?? "";
-                    questionOutput.Options = new List<Option>();
+                    questionOutput.Options = new List<ViewModels.Questionnaire.Option>();
                     var options = _context.Options.Where(x => x.QuestionId == question.QuestionId).ToList();
 
                     // 如果是單選或是多選題，就把選項加進去
@@ -45,7 +46,7 @@ namespace LMSweb.Services
                     {
                         foreach (var option in options)
                         {
-                            var optionOutput = new Option();
+                            var optionOutput = new ViewModels.Questionnaire.Option();
 
                             optionOutput.OptionId = option.OptionID.ToString() ?? "";
                             optionOutput.Content = option.Ocontent ?? "";
@@ -55,7 +56,7 @@ namespace LMSweb.Services
                     }
                     else
                     {
-                        var optionOutput = new Option();
+                        var optionOutput = new ViewModels.Questionnaire.Option();
 
                         optionOutput.Content = "";
 
@@ -117,6 +118,8 @@ namespace LMSweb.Services
         {
             var uid = _context.Users.Find(postViewModel.UID);
 
+            List<string> aidList = new List<string>();
+
             if (uid != null)
             {
                 foreach (var answer in postViewModel.Answers)
@@ -139,19 +142,79 @@ namespace LMSweb.Services
                             _context.Answers.Add(_answer);
                             _context.SaveChanges();
 
-                            var _provided = new Models.Provided()
-                            {
-                                AnswerId = aid_str,
-                                MissionId = postViewModel.MissionId,
-                                UserId = postViewModel.UID
-                            };
-
-                            _context.Provideds.Add(_provided);
-                            _context.SaveChanges();
+                            aidList.Add(aid_str);
                         }
                     }
                 }
+
+                foreach(var aid in aidList)
+                {
+                    //var _context = new LMSContext();
+                    var provided = new Provided();
+
+                    provided.AnswerId = aid;
+                    provided.MissionId = postViewModel.MissionId;
+                    provided.UserId = postViewModel.UID;
+
+                    _context.Provideds.Add(provided);
+                    _context.SaveChanges();
+                    //_context.Dispose();
+                }
             }
+        }
+
+        // 判斷是否已經填寫過問卷
+        public bool IsAnswered(string uid, string missionId, string eprocedureId)
+        {
+            var Questions = _context.Questions.Where(q => q.EprocedureId == eprocedureId).ToList();
+            var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
+
+            if (provided.Count > 0)
+            {
+                foreach(var pro in provided)
+                {
+                    if(Questions.Any(x => pro.AnswerId.Contains(x.QuestionId) ))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // 取得某人某一主題答覆
+        public List<ViewModels.Questionnaire.Answer> GetAnswer(string uid, string missionId, string eprocedureId)
+        {
+            var Questions = _context.Questions.Where(q => q.EprocedureId == eprocedureId).ToList();
+            var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
+            var output = new List<ViewModels.Questionnaire.Answer>();
+
+            foreach (var que in Questions)
+            {
+                var answer = new ViewModels.Questionnaire.Answer();
+
+                answer.QuestionId = que.QuestionId;
+                answer.Qcontent = que.Qcontent;
+                answer.Content = new List<AnswerContent>();
+
+                foreach (var pro in provided)
+                {
+                    var ac = new AnswerContent();
+
+                    var a = _context.Answers.Find(pro.AnswerId);
+                    ac.OcontentContent = a.Acontent.Split(',')[1];
+
+                    answer.Content.Add(ac);
+                }
+
+                output.Add(answer);
+            }
+
+            return output;
         }
     }
 }

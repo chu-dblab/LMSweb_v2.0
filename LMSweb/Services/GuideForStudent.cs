@@ -1,7 +1,8 @@
-﻿using LMSweb.Data;
+﻿using LMSweb.Assets;
+using LMSweb.Data;
 using LMSweb.Models;
 
-namespace LMSweb.Assets
+namespace LMSweb.Services
 {
     public class GuideForStudent
     {
@@ -26,19 +27,19 @@ namespace LMSweb.Assets
 
             this.db = db;
 
-            this.TestType = db.Courses.Find(cid).TestType;
-            this.MissionData = db.Missions.Find(mid);
+            TestType = db.Courses.Find(cid).TestType;
+            MissionData = db.Missions.Find(mid);
 
-            this.Leaders = (from e in db.Executions
-                            join s in db.Students on e.GroupId equals s.GroupId
-                            join g in db.Groups on e.GroupId equals g.Gid
-                            where e.MissionId == mid && s.IsLeader == true
-                            select s).ToList();
+            StartDate = MissionData.StartDate;
+            EndDate = MissionData.EndDate;
 
-            this.StartDate = MissionData.StartDate;
-            this.EndDate = MissionData.EndDate;
+            Leaders = (from e in db.Executions
+                       join g in db.Groups on e.GroupId equals g.Gid
+                       join s in db.Students on e.GroupId equals s.GroupId
+                       where e.MissionId == mid && s.IsLeader == true
+                       select s).ToList();
         }
-        public GuideForStudent(string mid, string cid, string sid, LMSContext db) : this(mid, cid, db)
+        public GuideForStudent(string mid, string cid, LMSContext db, string sid) : this(mid, cid, db)
         {
             this.sid = sid;
         }

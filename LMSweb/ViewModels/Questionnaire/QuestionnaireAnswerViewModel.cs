@@ -1,12 +1,12 @@
 ﻿namespace LMSweb.ViewModels.Questionnaire
 {
-    public class QuestionnaireIndexViewModel
+    public class QuestionnaireAnswerViewModel
     {
-        public string UID { get; set; }
         public string CourseId { get; set; }
         public string MissionId { get; set; }
+
         public string MissionName { get; set; }
-        public string TaskType { get; set; }
-        public string TaskSteps { get; set; }
+        public string Title { get; set; }
+        public List<Answer> Answers { get; set; }
     }
 }

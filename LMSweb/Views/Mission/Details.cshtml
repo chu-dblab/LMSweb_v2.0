@@ -13,7 +13,8 @@
     // 這邊目前是測試用資料
     if (User.IsInRole("Teacher"))
     {
-        GuideString = Model.CurrentAction;
+        GuideString = "11111111";
+        //GuideString = Model.CurrentAction;
         TestType = TestType = Model.TestType;
         UserTypeForGuide = 0;
         KForGuideStapUrl = 0;
@@ -47,11 +48,11 @@
     GuideStapUrlList[1] = new string[]
     {
         "",
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 1.ToString(), TaskSteps = 0.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "目標設置", TaskType = 1.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 1.ToString(), TaskSteps = 2.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "學習監督", TaskType = 1.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "自我反思", TaskType = 1.ToString(), TaskSteps = 4.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "自我反思", TaskType = 1.ToString(), TaskSteps = 4.ToString()}),
     };
 
     GuideStapUrlList[2] = new string[]
@@ -59,17 +60,17 @@
         "",
         DrawingUrl,
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 3.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 3.ToString()}),
     };
 
     GuideStapUrlList[3] = new string[]
     {
         "",
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 3.ToString(), TaskSteps = 0.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "目標設置", TaskType = 3.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 3.ToString(), TaskSteps = 2.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "學習監督", TaskType = 3.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "團隊反思", TaskType = 3.ToString(), TaskSteps = 4.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "團隊反思", TaskType = 3.ToString(), TaskSteps = 4.ToString()}),
     };
 
     GuideStapUrlList[4] = new string[]
@@ -77,20 +78,20 @@
         "",
         DrawingUrl,
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 4.ToString(), TaskSteps = 2.ToString()}),
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "評價回饋", TaskType = 4.ToString(), TaskSteps = 3.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 4.ToString(), TaskSteps = 2.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "評價回饋", TaskType = 4.ToString(), TaskSteps = 3.ToString()}),
     };
 
     GuideStapUrlList[5] = new string[]
     {
         "",
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "目標設置", TaskType = 5.ToString(), TaskSteps = 0.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "目標設置", TaskType = 5.ToString(), TaskSteps = 0.ToString()}),
         DrawingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "學習監督", TaskType = 5.ToString(), TaskSteps = 2.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "學習監督", TaskType = 5.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "同儕互評", TaskType = 5.ToString(), TaskSteps = 4.ToString()}),
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "評價回饋", TaskType = 5.ToString(), TaskSteps = 5.ToString()}),
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ MissionName = "團隊反思", TaskType = 5.ToString(), TaskSteps = 6.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 5.ToString(), TaskSteps = 4.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "評價回饋", TaskType = 5.ToString(), TaskSteps = 5.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "團隊反思", TaskType = 5.ToString(), TaskSteps = 6.ToString()}),
     };
 
 

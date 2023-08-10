@@ -120,6 +120,7 @@
 </template>
 
 @section endJS {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         /*
             單選題    SingleChoice
@@ -138,13 +139,13 @@
             await displayQuestions();
 
             // 3. 送出
-             $("#Submit").click(async function () {
-                // 3.1 取得答案
-                var answers = await getAnswers();
-                console.log(answers);
-                // 3.2 送出答案
-                sendAnswers(answers);
-            });
+            // $("#Submit").click(async function () {
+            //    // 3.1 取得答案
+            //    var answers = await getAnswers();
+            //    console.log(answers);
+            //    // 3.2 送出答案
+            //    sendAnswers(answers);
+            //});
         }
 
         async function getQuestions() {
@@ -288,8 +289,8 @@
             myHeaders.append("Content-Type", "application/json");
 
             var send = {
-                "UID" : "S001",
-                "MissionId" : "M230807184445",
+                "UID" : "@Model.UID",
+                "MissionId" : "@Model.MissionId",
                 "Answers" : answers
             };
 
@@ -311,5 +312,30 @@
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
         }
+
+        // 確認送出
+        $("#Submit").click(async function () {
+            // 3.1 取得答案
+            var answers = await getAnswers();
+            console.log(answers);
+            // 3.2 送出答案
+            sendAnswers(answers);
+
+            Swal.fire({
+                title: '送出後無法更改喔，確定要送出嗎?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: '送出',
+                denyButtonText: `再想想`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Saved!', '', 'success')
+                    document.location.href="@Url.Action("Details","Mission")?cid=@Model.CourseId&mid=@Model.MissionId";
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
+        });
     </script>
 }

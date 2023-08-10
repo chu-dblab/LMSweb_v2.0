@@ -8,6 +8,7 @@ namespace LMSweb.Models
         public string AnswerId { get; set; } = null!;
         [Column(Order = 1)]
         public string UserId { get; set; } = null!;
+        [Column(Order = 2)]
         public string MissionId { get; set; } = null!;
         
         public virtual Answer Answer { get; set; } = null!;

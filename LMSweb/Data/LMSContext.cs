@@ -250,7 +250,7 @@ public partial class LMSContext : DbContext
 
         modelBuilder.Entity<Provided>(entity =>
         {
-            entity.HasKey(e => new {e.AnswerId, e.UserId});
+            entity.HasKey(e => new {e.AnswerId, e.UserId, e.MissionId});
             entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.MissionId).HasColumnName("MissionID");
