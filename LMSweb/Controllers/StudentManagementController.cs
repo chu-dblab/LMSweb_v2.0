@@ -28,19 +28,29 @@ namespace LMSweb.Controllers
                 return NotFound();
             }
 
-            var vm = new StudentManagementViewModel()
+            var vm = _context.Courses.Select(x=>new StudentManagementViewModel
+                        {
+                            CourseId = x.Cid,
+                            CourseName = x.Cname,
+                        })
+                        .FirstOrDefault(x => x.CourseId == cid);
+            if (vm == null)
             {
-                CourseId = cid,
-                CourseName = _context.Courses.FirstOrDefault(x => x.Cid == cid).Cname,
-                Students = _context.Students.Where(x => x.CourseId == cid).Select(x => new ViewModels.StudentManagement.Student
-                {
-                    StudentId = x.StudentId,
-                    StudentName = x.StudentName,
-                    StudentSex = x.Sex,
-                    GroupName = _context.Groups.FirstOrDefault(y => y.Gid == x.GroupId).Gname
-                }).ToList()
-            };
+                return NotFound();
+            }
 
+            var student_related_data = (from s in _context.Students
+                                        join g in _context.Groups on s.GroupId equals g.Gid
+                                        where s.CourseId == cid
+                                        select new ViewModels.StudentManagement.Student
+                                        {
+                                            StudentId = s.StudentId,
+                                            StudentName = s.StudentName,
+                                            StudentSex = s.Sex ?? "",
+                                            GroupName = g.Gname,
+                                        })
+                                        .ToList();
+            vm.Students = student_related_data;
             return View(vm);
         }
 
@@ -78,7 +88,12 @@ namespace LMSweb.Controllers
         {
             var vmodel = new StudentCreateViewModel();
             vmodel.CourseId = cid;
-            var course = _context.Courses.Where(c => c.Cid == cid).Single();
+            var course = _context.Courses.Find(cid);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
 
             vmodel.CourseName = course.Cname;
 
