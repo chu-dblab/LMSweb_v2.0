@@ -307,7 +307,7 @@
                 redirect: 'follow'
             };
 
-            await fetch("https://localhost:7197/api/Questionnaire", requestOptions)
+                await fetch("@Url.Action("Index","Home")api/Questionnaire", requestOptions)
                 .then(response => response.text())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));

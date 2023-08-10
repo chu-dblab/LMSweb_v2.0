@@ -132,7 +132,7 @@ namespace LMSweb.Services
                         {
                             var _answer = new Models.Answer();
 
-                            var aid_str = @$"{answer.QuestionId}{DateTime.Now:yyyyMMddHHmmss}";
+                            var aid_str = @$"{answer.QuestionId}{option.OptionId}{DateTime.Now:yyyyMMddHHmmss}";
 
                             _answer.Aid = aid_str;
                             _answer.Acontent = $@"{option.OptionId??""},{option.OcontentContent??""}";
@@ -149,7 +149,7 @@ namespace LMSweb.Services
 
                 foreach(var aid in aidList)
                 {
-                    //var _context = new LMSContext();
+                    
                     var provided = new Provided();
 
                     provided.AnswerId = aid;
@@ -158,7 +158,6 @@ namespace LMSweb.Services
 
                     _context.Provideds.Add(provided);
                     _context.SaveChanges();
-                    //_context.Dispose();
                 }
             }
         }
