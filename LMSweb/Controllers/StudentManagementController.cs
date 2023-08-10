@@ -40,7 +40,8 @@ namespace LMSweb.Controllers
             }
 
             var student_related_data = (from s in _context.Students
-                                        join g in _context.Groups on s.GroupId equals g.Gid
+                                        join g in _context.Groups on s.GroupId equals g.Gid into StudentGroup
+                                        from g in StudentGroup.DefaultIfEmpty()
                                         where s.CourseId == cid
                                         select new ViewModels.StudentManagement.Student
                                         {
