@@ -147,18 +147,23 @@ namespace LMSweb.Services
                     }
                 }
 
-                foreach(var aid in aidList)
+                var provided = new Provided();
+                
+                foreach (var aid in aidList)
                 {
-                    
-                    var provided = new Provided();
-
                     provided.AnswerId = aid;
                     provided.MissionId = postViewModel.MissionId;
                     provided.UserId = postViewModel.UID;
 
-                    _context.Provideds.Add(provided);
-                    _context.SaveChanges();
+                    var p = _context.Provideds.Where(x => x.UserId == postViewModel.UID && x.MissionId == postViewModel.MissionId && x.AnswerId == aid).FirstOrDefault();
+                    
+                    if (p == null)
+                    {
+                        _context.Provideds.Add(provided);
+                        _context.SaveChanges();
+                    }
                 }
+                
             }
         }
 
@@ -202,12 +207,15 @@ namespace LMSweb.Services
 
                 foreach (var pro in provided)
                 {
-                    var ac = new AnswerContent();
+                    if ( pro.AnswerId.Contains(que.QuestionId) )
+                    {
+                        var ac = new AnswerContent();
 
-                    var a = _context.Answers.Find(pro.AnswerId);
-                    ac.OcontentContent = a.Acontent.Split(',')[1];
+                        var a = _context.Answers.Find(pro.AnswerId);
+                        ac.OcontentContent = a.Acontent.Split(',')[1];
 
-                    answer.Content.Add(ac);
+                        answer.Content.Add(ac);
+                    }
                 }
 
                 output.Add(answer);
