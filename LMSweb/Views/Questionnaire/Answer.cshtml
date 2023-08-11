@@ -10,37 +10,41 @@
     new ViewTitlePartialViewModel { h1 = $"{Model.Title}", h2 = @$"任務名稱：{Model.MissionName}"})
 
     <div class="card m-3 p-3">
-        <table class="table table-striped">
-            <thead>
-                <tr class="row mx-1">
-                    <th class="col-1">編號</th>
-                    <th class="col-6">
-                        @Html.DisplayNameFor(model => model.Answers[0].Qcontent)
-                    </th>
-                    <th class="col">
-                        @Html.DisplayNameFor(model => model.Answers[0].Content[0].OcontentContent)
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="number">
-                @foreach(var answer in Model.Answers)
-                { 
-                    <tr class="row bg-white mx-1">
-                        <td class="col-1 align-self-center py-3">
-                            <span class='ms-2'>@(k++)</span>
-                        </td>
-                        <td class="col-3 align-self-center py-3">
-                            @Html.DisplayFor(model => answer.Qcontent)
-                        </td>
-                        <td class="startTime col align-self-center py-3">
-                            @foreach(var content in answer.Content)
-                            {
-                                @Html.DisplayFor(model => content.OcontentContent) <br/>
-                            }
-                        </td>
+        <div class="m-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="row">
+                        <th class="col-1">編號</th>
+                        <th class="col-6">
+                            @Html.DisplayNameFor(model => model.Answers[0].Qcontent)
+                        </th>
+                        <th class="col">
+                            @*@Html.DisplayNameFor(model => model.Answers[0].Content[0].OcontentContent)*@
+                            答案
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="number">
+                    @foreach (var answer in Model.Answers)
+                    {
+                        <tr class="row">
+                            <td class="col-1">
+                                <span class='ms-2'>@(k++)</span>
+                            </td>
+                            <td class="col-3">
+                                @Html.DisplayFor(model => answer.Qcontent)
+                            </td>
+                            <td class="col">
+                                @foreach (var content in answer.Content)
+                                {
+                                    @Html.DisplayFor(model => content.OcontentContent) <br />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {cid = Model.CourseId ,mid = Model.MissionId })">返回任務</a>
     </div>
 </div>

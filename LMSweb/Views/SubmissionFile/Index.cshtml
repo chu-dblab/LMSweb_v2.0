@@ -33,7 +33,7 @@
             else
             {
                 <div class="mb-3">
-                    <form action="@Url.Action("Index", "SubmissionFile", new {mid = Model.MisstionId, type = Model.type})" method="post" enctype="multipart/form-data">
+                    <form action="@Url.Action("Index", "SubmissionFile", new {mid = Model.MissionId, type = Model.type})" method="post" enctype="multipart/form-data">
                         <div class="input-group mb-3">
                             <input type="file" accept=".png, .jpg, .jpeg" name="formFile" id="file" class="form-control" />
                             <input type="submit" id="File" value="上傳" for="file" class="input-group-text">
@@ -55,7 +55,7 @@
             }
         </div>
 
-        <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {cid = Model.CourseId ,mid = Model.MisstionId })">返回任務</a>
+        <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {cid = Model.CourseId ,mid = Model.MissionId })">返回任務</a>
 
     </div>
 </div>
@@ -64,7 +64,7 @@
 {
     <script>
         //function myFunction() {
-        //    const myWindow = window.open('@Url.Action( "StudentMDetailWindow", "Student", new { MID = Model.MisstionId })', "", "width=800,height=800");
+        //    const myWindow = window.open('@Url.Action( "StudentMDetailWindow", "Student", new { MID = Model.MissionId })', "", "width=800,height=800");
         //}
         $('#file').change(function () {
             var file = $('#file')[0].files[0];

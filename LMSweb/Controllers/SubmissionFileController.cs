@@ -33,7 +33,7 @@ namespace LMSweb.Controllers
             
             vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Cname;
-            vm.MisstionId = MisstionId;
+            vm.MissionId = MisstionId;
             vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Mname;
             vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).EndDate;
             
@@ -93,7 +93,7 @@ namespace LMSweb.Controllers
             // 重新修正 vm
             vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Cname;
-            vm.MisstionId = MisstionId;
+            vm.MissionId = MisstionId;
             vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Mname;
             vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).EndDate;
             vm.type = type;
