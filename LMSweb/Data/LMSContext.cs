@@ -414,6 +414,16 @@ public partial class LMSContext : DbContext
         {
             new ExperimentalProcedure
             {
+                EprocedureId = "D",
+                Name = "畫流程圖"
+            },
+            new ExperimentalProcedure
+            {
+                EprocedureId = "C",
+                Name = "寫程式碼"
+            },
+            new ExperimentalProcedure
+            {
                 EprocedureId = "0",
                 Name = "目標設置"
             },
