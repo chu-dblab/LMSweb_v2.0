@@ -58,5 +58,21 @@
 
             return str[input];
         }
+
+        public static List<string> GetTaskStepsString(int TaskType)
+        {
+
+            List<List<string>> TaskStepsTable = new List<List<string>>()
+            {
+                new List<string>() {"D", "C"},
+                new List<string>() {"0", "D", "1", "C", "2"},
+                new List<string>() {"D", "C", "6"},
+                new List<string>() {"3", "D", "4", "C", "5"},
+                new List<string>() {"D", "C", "6", "7"},
+                new List<string>() {"3", "D", "4", "C", "6", "7", "5"},
+            };
+
+            return TaskStepsTable[TaskType];
+        }
     }
 }

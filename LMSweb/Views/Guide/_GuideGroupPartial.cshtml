@@ -1,0 +1,48 @@
+﻿@model GuideGroup
+
+@{
+    int k = 0;
+    var TotalStap = Model.CurrentStatus.Count();
+    string sName = "";
+}
+
+<h3 class="ms-3 col-12">@Model.GroupName</h3>
+
+<div id="stepper1" class="bs-stepper col-10">
+    <div class="bs-stepper-header" role="tablist">
+
+        @foreach(var Step in Model.CurrentStatus)
+        {
+            if (k != 0 && Step.ToString() == "1")
+            {
+                <div class="bs-stepper-line"></div>
+            }
+            
+            <div class="step" data-target="#@($"{Model.GroupId}{++k}")">
+                <button type="button" class="step-trigger" role="tab" id="@($"{Model.GroupId}{k}")" aria-controls="@($"{Model.GroupId}{k}")">
+                    <span class="bs-stepper-circle">@(k)</span>
+
+                    @if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
+                    {
+                        sName = Model.StepsName.ToArray()[k-1];
+                    }
+                    else
+                    {
+                        sName = "";
+                    }
+
+                    <span class="bs-stepper-label">@sName</span>
+                </button>
+            </div>
+
+            @if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
+            {
+                <div class="bs-stepper-line"></div>
+            }
+        }
+    </div>
+</div>
+
+<a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="#">批改作業</a>
+
+
