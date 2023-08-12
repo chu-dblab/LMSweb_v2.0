@@ -1,7 +1,4 @@
-﻿@*@model GroupViewModel
-@{
-    //Layout = "~/Views/Shared/_TeacherLayout.cshtml";
-}
+﻿@model GroupViewModel
 
 @section NavPills {
     <ul class="nav nav-pills me-auto ms-3">
@@ -9,11 +6,25 @@
     </ul>
 }
 
+@section topCSS{
+    <style>
+        .student_group {
+            box-sizing: border-box; 
+            width: 100%; 
+            max-width: 1200px; 
+            margin: 20px auto 20px; 
+            border-radius: 5px; 
+            border: 1px solid #dee2e6; 
+            border-color: #cdcdcd;
+        }
+    </style>
+}
+
 <div class="cardArticle">
-    <h4>@Model.CName</h4>
+    <h4>@Model.CourseName</h4>
     <p>學生分組</p>
 </div>
-<div class="card " style="box-sizing: border-box; width: 100%; max-width: 1200px; margin: 20px auto 20px; border-radius: 5px; border: 1px solid #dee2e6; border-color: #cdcdcd;">
+<div class="card student_group">
     <div class="card-header" style="padding: 30px 50px 8px 50px;">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
@@ -56,7 +67,8 @@
                                         @:<div class="row">
                                     }
 
-                                    <input class="col-sm-2 check_student" style="margin-top:5px;" type="checkbox" id="@Model.StudentList[i].Text" name="all_student" value="@Model.StudentList[i].Value">
+                                    <input class="col-sm-2 check_student" style="margin-top:5px;" type="checkbox" id="@Model.StudentList[i].Text" 
+                                            name="all_student" value="@Model.StudentList[i].Value">
                                     <label class="w-25 h-auto">@Model.StudentList[i].Text</label>
                                     
                                     if (i % 2 == 1 || i == Model.StudentList.Count() - 1)
@@ -109,56 +121,52 @@
                             </div>
                         </div>
 
-                        @foreach (var item in (Model.groups.OrderBy(x => x.GName.Length).ThenBy(x => x.GName)))
+                        @foreach (var item in (Model.Groups))
                         {
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-11">
-                                            @Html.DisplayFor(modelItem => item.GName)
-                                            <a type="button" data-id="@item.GName" data-gid="@item.GID" class="open-Dialog " style="padding: 5px 5px 5px 5px" data-bs-toggle="modal" href="#editGnameModal">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                                                </svg>
+                                            @Html.DisplayFor(modelItem => item.GroupName)
+                                            <a type="button" data-id="@item.GroupName" data-gid="@item.GroupId" class="open-Dialog" style="padding: 5px 5px 5px 5px" data-bs-toggle="modal" href="#editGnameModal">
+                                                <i class="bi bi-pencil-fill"></i>
                                             </a>
                                         </div>
                                         <div class="col-1 my-auto">
-                                            <button type="button" class="btn-close groupclose" aria-label="btn-Close" aria-hidden="true" id="@item.GID"></button>
+                                            <button type="button" class="btn-close groupclose" aria-label="btn-Close" aria-hidden="true" id="@item.GroupId"></button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var stu in (item.Students.OrderBy(x => x.SID)))
+                                    @foreach (var stu in (item.Students))
                                     {
                                         <div class="row justify-content-betwee">
                                             <div class="col-1">
                                                 @if (stu.IsLeader)
                                                 {
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                        <path d="M8.5 12.794l-3.908 2.21.746-4.33L.5 6.706l4.33-.63L8.5 2.5l2.67 3.576 4.33.63-3.338 3.968.746 4.33z" />
-                                                    </svg>
+                                                    <i class="bi bi-star-fill"></i>
                                                 }
                                             </div>
                                             <div class="col-2">
-                                                <p>@stu.SName&ensp;</p>
+                                                <p>@stu.StudentName</p>
                                             </div>
                                             <div class="col">
-                                                <p>@stu.Sex</p>
+                                                <p>@stu.StudentSex</p>
                                             </div>
                                             <div class="col-1">
-                                                <button type="button" class="btn-close stuclose" aria-label="Close" aria-hidden="true" id="@stu.SID"></button>
+                                                <button type="button" class="btn-close stuclose" aria-label="Close" aria-hidden="true" id="@stu.StudentId"></button>
                                             </div>
                                         </div>
                                     }
 
                                     <div class="row mt-3">
                                         <div class="col mt-1">
-                                            <a  class="btn btn-primary w-100" href="@Url.Action("ChangeLeader", "Course", new {gid = item.GID})">
+                                            <a  class="btn btn-primary w-100" href="@Url.Action("ChangeLeader", "StudentManagement", new {gid = item.GroupId, cid = Model.CourseId})">
                                                 變更組長
                                             </a>
                                         </div>
                                         <div class="col mt-1">
-                                            <button type="button" class="btn btn-primary w-100 addGbtn" id="@item.GID">
+                                            <button type="button" class="btn btn-primary w-100 addGbtn" id="@item.GroupId">
                                                 加入組別
                                             </button>
                                         </div>
@@ -170,7 +178,7 @@
                             <br />
                         }
                         <div class="modal  hide" id="editGnameModal" tabindex="-1" aria-labelledby="editGnameModalLabel" aria-hidden="true">
-                            <form id="EditGnameForm" action="@Url.Action("EditGname", "Course")" method="post" enctype="multipart/form-data">
+                            <form id="EditGroupNameForm" action="@Url.Action("EditGroupName", "StudentManagement")" method="post">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -198,7 +206,7 @@
         </div>
     </div>
 </div>
-
+@*
 @section scripts {
     <script>
         $(document).on("click", ".open-Dialog", function () {
