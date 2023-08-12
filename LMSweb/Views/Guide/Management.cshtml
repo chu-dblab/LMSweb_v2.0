@@ -1,0 +1,28 @@
+﻿@model GuideManagementViewModel
+
+@{
+    ViewData["Title"] = "Management";
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CourseId , ActiveIndex = 0})
+    </ul>
+}
+
+<div class="container">
+    <div class="card m-3 p-3">
+        <h1>各組繳交狀況</h1>
+    </div>
+
+    <div class="card m-3 p-3">
+        <div class="mt-2 row ">
+
+            @foreach (var group in Model.Groups)
+            {
+                @Html.Partial("~/Views/Guide/_GuideGroupPartial.cshtml", group );
+            }
+        </div>
+    </div>
+</div>
+
