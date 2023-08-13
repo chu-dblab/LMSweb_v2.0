@@ -110,6 +110,9 @@ namespace LMSweb.Controllers
                     _context.SaveChanges();
                 }
 
+                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+                _EvaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
+
                 return RedirectToAction("Index", new { cid = cid });
             }
             return View(model);

@@ -671,10 +671,80 @@ public partial class LMSContext : DbContext
             },
             new Question
             {
+                QuestionId = "PEA01",
+                EprocedureId = "6",
+                Qtype = "2",
+                Qcontent = "我們想稱讚這組的流程圖或程式碼"
+            },
+            new Question
+            {
+                QuestionId = "PEA02",
+                EprocedureId = "6",
+                Qtype = "2",
+                Qcontent = "我們想批評這組的流程圖或程式碼"
+            },
+            new Question
+            {
+                QuestionId = "PEC03",
+                EprocedureId = "6",
+                Qtype = "2",
+                Qcontent = "我們想指出這組有錯誤的地方"
+            },
+            new Question
+            {
+                QuestionId = "PEM07",
+                EprocedureId = "6",
+                Qtype = "2",
+                Qcontent = "我們想請這組想想看如何改進他們的流程圖或程式碼"
+            },
+            new Question
+            {
+                QuestionId = "PEIR08",
+                EprocedureId = "6",
+                Qtype = "2",
+                Qcontent = "我們想說跟這組的作品無關的評論"
+            },
+            new Question
+            {
                 QuestionId = "PC01",
                 EprocedureId = "7",
                 Qtype = "0",
                 Qcontent = "該組評價合理嗎?"
+            },
+            new Question
+            {
+                QuestionId = "PCA01",
+                EprocedureId = "7",
+                Qtype = "2",
+                Qcontent = "我們想稱讚這組給的評語"
+            },
+            new Question
+            {
+                QuestionId = "PCA02",
+                EprocedureId = "7",
+                Qtype = "2",
+                Qcontent = "我們想批評這組給的評語"
+            },
+            new Question
+            {
+                QuestionId = "PCC03",
+                EprocedureId = "7",
+                Qtype = "2",
+                Qcontent = "我們想指出這組給的評語有錯誤的地方"
+            },
+            new Question
+            {
+                QuestionId = "PCM07",
+                EprocedureId = "7",
+                Qtype = "2",
+                Qcontent = "我們想請這組想想看如何改進他們的評語"
+            },
+            new Question
+            {
+                QuestionId = "PCIR08",
+                EprocedureId = "7",
+                Qtype = "2",
+                Qcontent = "我們想說跟這組的評語無關的回饋"
             },
         };
         modelBuilder.Entity<Question>().HasData(test_Question);
