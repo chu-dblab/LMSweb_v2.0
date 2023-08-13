@@ -38,6 +38,7 @@ public partial class LMSContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Provided> Provideds { get; set; }
     public virtual DbSet<ExecutionContent> ExecutionContents { get; set; }
+    public virtual DbSet<EvaluationCoaching> EvaluationCoachings { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{
@@ -132,6 +133,15 @@ public partial class LMSContext : DbContext
             entity.Property(e => e.Gname)
                 .HasMaxLength(128)
                 .HasColumnName("GName");
+            entity.Property(e => e.CourseId)
+                .HasMaxLength(128)
+                .HasColumnName("CourseID");
+
+            entity.HasOne(d => d.Course)
+                .WithMany(d => d.Groups)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Courses_Groups");
         });
 
         modelBuilder.Entity<Mission>(entity =>
@@ -267,6 +277,35 @@ public partial class LMSContext : DbContext
         });
         modelBuilder.Entity<ExecutionContent>().HasIndex(e=>e.MissionId).IsUnique(false);
         modelBuilder.Entity<ExecutionContent>().HasIndex(e=>e.GroupId).IsUnique(false);
+
+        modelBuilder.Entity<EvaluationCoaching>(entity =>
+        {
+            entity.HasKey(e => new {e.AUID, e.BUID});
+            entity.Property(e => e.AUID)
+                .HasMaxLength(128)
+                .HasColumnName("AUID");
+            entity.Property(e => e.BUID)
+                .HasMaxLength(128)
+                .HasColumnName("BUID");
+            entity.Property(e => e.MissionId)
+                .HasMaxLength(128)
+                .HasColumnName("MissionID");
+            entity.HasIndex(e=>e.MissionId).IsUnique(false);
+
+            entity.HasOne(d => d.AUser).WithMany(p => p.EvaluationCoachingAUsers)
+               .HasForeignKey(d => d.AUID)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_EvaluationCoaching_AUsers");
+
+            entity.HasOne(d => d.BUser).WithMany(p => p.EvaluationCoachingBUsers)
+                .HasForeignKey(d => d.BUID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EvaluationCoaching_BUsers");
+
+            entity.HasOne(d => d.Mission).WithMany(p => p.EvaluationCoachings)
+                .HasForeignKey(d => d.MissionId)
+                .HasConstraintName("FK_EvaluationCoaching_Missions");
+        });
 
         /* 測試資料 */
         var test_users = new List<User>

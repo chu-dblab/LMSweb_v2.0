@@ -36,7 +36,7 @@ namespace LMSweb.Controllers
                 CourseId = x.Cid,
                 CourseName = x.Cname,
             })
-                        .FirstOrDefault(x => x.CourseId == cid);
+            .FirstOrDefault(x => x.CourseId == cid);
             if (vm == null)
             {
                 return NotFound();
@@ -199,6 +199,7 @@ namespace LMSweb.Controllers
                 {
                     StudentId = x.StudentId,
                     StudentName = x.StudentName,
+                    StudentSex = x.Sex,
                     IsLeader = x.IsLeader
                 }).OrderBy(x => x.StudentId).ToList()
             });

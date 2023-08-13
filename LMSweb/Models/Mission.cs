@@ -23,4 +23,5 @@ public partial class Mission
     public virtual Provided? Provided { get; set; }
 
     public virtual ICollection<ExecutionContent> ExecutionContents { get; set; } = new List<ExecutionContent>();
+    public virtual ICollection<EvaluationCoaching> EvaluationCoachings { get; set; } = new List<EvaluationCoaching>();
 }

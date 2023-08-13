@@ -42,6 +42,7 @@ namespace LMSweb.Services
                 group = new Models.Group
                 {
                     Gid = gid,
+                    CourseId = cid,
                     Gname = $"第{i}組",
                 };
                 _context.Groups.Add(group);
