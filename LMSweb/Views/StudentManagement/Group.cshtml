@@ -206,7 +206,7 @@
         </div>
     </div>
 </div>
-@*
+
 @section scripts {
     <script>
         $(document).on("click", ".open-Dialog", function () {
@@ -241,7 +241,7 @@
             url: "@Url.Action("AddStuToOtherGroup", "Course")",
             method: "post",
             contentType: 'application/json',
-            data: JSON.stringify({ gid: gid, StudentList : otherGroupStudent, CID : "@Model.CID" }),
+            data: JSON.stringify({ gid: gid, StudentList : otherGroupStudent, CID : "@Model.CourseId" }),
             success: function (response) {
                 window.location.reload();
             },
@@ -261,10 +261,10 @@
         });
         console.log(students);
         $.ajax({
-            url: "@Url.Action("StudentGroup", "Course")",
+            url: "@Url.Action("Index", "Home")",
             method: "post",
             contentType: 'application/json',
-            data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CID" }),
+            data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CourseId" }),
             success: function (response) {
                 window.location.reload();
             },
@@ -278,13 +278,13 @@
     $('#groupclick').click(function () {    //隨機分組
         var students = [];
         var gn = $("#groupN").val();
-        var cid = '@Model.CID';
+        var cid = '@Model.CourseId';
         console.log(gn);
         $.ajax({
-            url: "@Url.Action("GroupN", "Course")",
+            url: `@Url.Action("Index", "Home")api/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
             method: "post",
             contentType: 'application/json',
-            data: JSON.stringify({ n: gn , cid : cid}),
+            //data: JSON.stringify({ RandomNumber: gn , cid : cid}),
             success: function (response) {
                 window.location.reload();
             },
@@ -331,4 +331,3 @@
     </script>
 }
 
-*@
