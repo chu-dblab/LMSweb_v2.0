@@ -4,6 +4,7 @@ using LMSweb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    partial class LMSContextModelSnapshot : ModelSnapshot
+    [Migration("20230813045842_AddFKCourseAndGroup")]
+    partial class AddFKCourseAndGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,35 +82,6 @@ namespace LMSweb.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("LMSweb.Models.EvaluationCoaching", b =>
-                {
-                    b.Property<string>("AUID")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("AUID")
-                        .HasComment("給評價者編號");
-
-                    b.Property<string>("BUID")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("BUID")
-                        .HasComment("接受評價者編號");
-
-                    b.Property<string>("MissionId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("MissionID");
-
-                    b.HasKey("AUID", "BUID");
-
-                    b.HasIndex("BUID");
-
-                    b.HasIndex("MissionId");
-
-                    b.ToTable("EvaluationCoachings");
                 });
 
             modelBuilder.Entity("LMSweb.Models.Execution", b =>
@@ -1269,34 +1243,6 @@ namespace LMSweb.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("LMSweb.Models.EvaluationCoaching", b =>
-                {
-                    b.HasOne("LMSweb.Models.User", "AUser")
-                        .WithMany("EvaluationCoachingAUsers")
-                        .HasForeignKey("AUID")
-                        .IsRequired()
-                        .HasConstraintName("FK_EvaluationCoaching_AUsers");
-
-                    b.HasOne("LMSweb.Models.User", "BUser")
-                        .WithMany("EvaluationCoachingBUsers")
-                        .HasForeignKey("BUID")
-                        .IsRequired()
-                        .HasConstraintName("FK_EvaluationCoaching_BUsers");
-
-                    b.HasOne("LMSweb.Models.Mission", "Mission")
-                        .WithMany("EvaluationCoachings")
-                        .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_EvaluationCoaching_Missions");
-
-                    b.Navigation("AUser");
-
-                    b.Navigation("BUser");
-
-                    b.Navigation("Mission");
-                });
-
             modelBuilder.Entity("LMSweb.Models.Execution", b =>
                 {
                     b.HasOne("LMSweb.Models.Group", "Group")
@@ -1480,8 +1426,6 @@ namespace LMSweb.Migrations
 
             modelBuilder.Entity("LMSweb.Models.Mission", b =>
                 {
-                    b.Navigation("EvaluationCoachings");
-
                     b.Navigation("ExecutionContents");
 
                     b.Navigation("Executions");
@@ -1503,10 +1447,6 @@ namespace LMSweb.Migrations
 
             modelBuilder.Entity("LMSweb.Models.User", b =>
                 {
-                    b.Navigation("EvaluationCoachingAUsers");
-
-                    b.Navigation("EvaluationCoachingBUsers");
-
                     b.Navigation("Provided");
 
                     b.Navigation("Student");
