@@ -1,6 +1,6 @@
 ﻿using LMSweb.Data;
 using LMSweb.Models;
-using LMSweb.Views.StudentManagement;
+using LMSweb.ViewModels.StudentManagement;
 
 namespace LMSweb.Services
 {
@@ -20,19 +20,6 @@ namespace LMSweb.Services
             /* 獲取原本資料 */
             var course = _context.Courses.Find(cid);
             var student_list = _context.Students.Where(x => x.CourseId == cid).ToList();
-            var student_has_group = student_list.Where(s => s.GroupId != null);
-            var group_list = _context.Groups.Select(g => new ViewModels.StudentManagement.Group
-            {
-                GroupId = g.Gid,
-                GroupName = g.Gname,
-                Students = student_has_group.Where(s => s.GroupId == g.Gid)
-                .Select(x => new ViewModels.StudentManagement.Student
-                {
-                    StudentId = x.StudentId,
-                    StudentName = x.StudentName,
-                    IsLeader = x.IsLeader
-                }).OrderBy(x => x.StudentId).ToList()
-            });
 
             // 產生隨機碼
             var random = new Random();
@@ -46,13 +33,13 @@ namespace LMSweb.Services
             var GroupList = new List<int>();
 
             // Gid 編碼規則：隨機數字 + 三位數字
-            var group = new Group();
+            var group = new Models.Group();
             for (int i = 1; i <= n; i++)
             {
                 var gid = Convert.ToInt32($"{random_number.ToString()}{i:D3}");
                 GroupList.Add(gid);
 
-                group = new Group
+                group = new Models.Group
                 {
                     Gid = gid,
                     Gname = $"第{i}組",

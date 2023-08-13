@@ -1,6 +1,6 @@
 ﻿using LMSweb.Data;
 using LMSweb.Services;
-using LMSweb.Views.StudentManagement;
+using LMSweb.ViewModels.StudentManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers

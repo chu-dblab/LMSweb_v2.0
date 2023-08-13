@@ -1,4 +1,4 @@
-﻿namespace LMSweb.Views.StudentManagement
+﻿namespace LMSweb.ViewModels.StudentManagement
 {
     public class GroupRandomCreateViewModel
     {
