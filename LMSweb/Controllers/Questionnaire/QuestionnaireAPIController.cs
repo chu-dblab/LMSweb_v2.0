@@ -108,7 +108,7 @@ namespace LMSweb.Controllers.Questionnaire
                 else if(vm.EprocedureId == "6")
                 {
                     EprocedureSercices.SaveAnswerByEvaluation(vm);
-                    Debug.WriteLine(vm);
+                    //Debug.WriteLine(vm);
                 }
                
                 return Ok();

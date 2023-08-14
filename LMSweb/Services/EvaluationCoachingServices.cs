@@ -41,7 +41,7 @@ namespace LMSweb.Services
                     var randomIndex = random.Next(0, LeaderGroupCount);
                     var randomStudentId = LeaderGroupList[randomIndex];
 
-                    while (LeaderId == randomStudentId.StudentId || !LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
+                    while (LeaderId == randomStudentId.StudentId || LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
                     {
                         randomIndex = random.Next(0, LeaderGroupCount);
                         randomStudentId = LeaderGroupList[randomIndex];
