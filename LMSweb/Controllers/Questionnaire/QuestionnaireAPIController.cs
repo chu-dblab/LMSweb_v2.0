@@ -17,13 +17,33 @@ namespace LMSweb.Controllers.Questionnaire
             _context = context;
         }
 
-        [HttpGet]
-        // Get: api/Questionnaire
-        public IActionResult Get(int tasktype, int tasksteps)
+        //[HttpGet]
+        //// Get: api/Questionnaire
+        //public IActionResult Get(int tasktype, int tasksteps)
+        //{
+        //    var ReGetVM = new ReGetViewModel();
+        //    var EprocedureSercices = new EprocedureSercices(_context);
+        //    var EprocedureId = EprocedureSercices.GetEprocedureId(tasktype, tasksteps);
+
+        //    if (EprocedureId == "D" || EprocedureId == "C")
+        //    {
+        //        return NotFound();
+        //    }
+        //    var Topic = EprocedureSercices.GetEprocedureContent(EprocedureId);
+
+        //    if (Topic == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ReGetVM.Topic = Topic;
+        //    return Ok(ReGetVM);
+        //}
+
+        public IActionResult Get(int tasktype, int tasksteps, string? groupLeaderId)
         {
             var ReGetVM = new ReGetViewModel();
             var EprocedureSercices = new EprocedureSercices(_context);
-            var EprocedureId = EprocedureSercices.GetEprocedureId(tasktype,tasksteps);
+            var EprocedureId = EprocedureSercices.GetEprocedureId(tasktype, tasksteps);
 
             if (EprocedureId == "D" || EprocedureId == "C")
             {
@@ -33,9 +53,48 @@ namespace LMSweb.Controllers.Questionnaire
 
             if (Topic == null)
             {
-                return NotFound();                
+                return NotFound();
             }
             ReGetVM.Topic = Topic;
+
+            if(groupLeaderId != null)
+            {
+                var _Evaluation = new LMSweb.ViewModels.Questionnaire.Evaluation();
+
+                var group = (from s in _context.Students
+                             from ec in _context.ExecutionContents
+                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId
+                             select new
+                             {
+                                 GroupId = s.GroupId,
+                                 GroupLeaderId = groupLeaderId,
+                             }).FirstOrDefault();
+
+                _Evaluation.GroupId = group.GroupId.ToString();
+                _Evaluation.GroupLeaderId = group.GroupLeaderId;
+
+                var D_url = (from ec in _context.ExecutionContents
+                             from s in _context.Students
+                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "D"
+                             select new
+                             {
+                                 DrawingUrl = ec.Path,
+                             }).FirstOrDefault();
+
+                var C_url = (from ec in _context.ExecutionContents
+                             from s in _context.Students
+                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "C"
+                             select new
+                             {
+                                 CodingUrl = ec.Path,
+                             }).FirstOrDefault();
+
+                _Evaluation.DrawingUrl = "UploadImgs/" + D_url.DrawingUrl;
+                _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
+
+                ReGetVM.Evaluation = _Evaluation;
+            }
+
             return Ok(ReGetVM);
         }
 

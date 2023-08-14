@@ -7,6 +7,10 @@ namespace LMSweb.ViewModels.Questionnaire
         public string UID { get; set; }
         public string MissionId { get; set; }
         public List<Answer> Answers { get; set; }
+        
+        // 如果是互動式同儕互評，需要提供被評人的 UID 與步驟 ID
+        public string? PostUid { get; set; }
+        public string? EprocedureId { get; set; }
     }
 
     public class Answer

@@ -3,6 +3,8 @@
     public class ReGetViewModel
     {
         public Topic Topic { get; set; } = null!;
+        public Evaluation? Evaluation { get; set; 
+        }
     }
 
     public class Topic
@@ -23,5 +25,13 @@
     {
         public string? OptionId { get; set; }
         public string Content { get; set; } = null!;
+    }
+
+    public class Evaluation
+    {
+        public string GroupId { get; set; } = null!;
+        public string GroupLeaderId { get; set; } = null!;
+        public string DrawingUrl { get; set; } = null!;
+        public string CodingUrl { get; set; } = null!;
     }
 }

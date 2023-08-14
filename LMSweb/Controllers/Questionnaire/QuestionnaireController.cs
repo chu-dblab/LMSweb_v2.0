@@ -3,6 +3,7 @@ using LMSweb.Data;
 using LMSweb.Services;
 using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Mvc;
+using static LMSweb.Assets.GlobalClass;
 
 namespace LMSweb.Controllers.Questionnaire
 {
@@ -26,13 +27,19 @@ namespace LMSweb.Controllers.Questionnaire
 
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");
             var eid = eprocedureServices.GetEprocedureId(Convert.ToInt32(vm.TaskType), Convert.ToInt32(vm.TaskSteps));
-
+            
             if (eprocedureServices.IsAnswered(UID.Value, vm.MissionId, eid))
             {
                 return RedirectToAction("Answer", "Questionnaire", new { cid = vm.CourseId, mid = vm.MissionId, EprocedureId = eid });
             }
 
             vm.UID = UID.Value;
+            vm.EprocedureId = eid;
+            if (eid == "6")
+            {
+                var ECservices = new EvaluationCoachingServices(_context);
+                vm.EvaluationGroupIdList = ECservices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
+            }
 
             return View(vm);
         }

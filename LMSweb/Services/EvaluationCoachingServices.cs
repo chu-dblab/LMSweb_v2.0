@@ -71,5 +71,13 @@ namespace LMSweb.Services
 
             _context.SaveChanges();
         }
+
+        public List<string> GetEvaluationLeaderList(string mid, string uid)
+        {
+            var LeaderGroupList = (from ec in _context.EvaluationCoachings
+                                   where ec.MissionId == mid && ec.AUID == uid
+                                   select ec.BUID).ToList();
+            return LeaderGroupList;
+        }
     }
 }

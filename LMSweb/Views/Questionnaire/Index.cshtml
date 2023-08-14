@@ -1,6 +1,7 @@
 ﻿@model QuestionnaireIndexViewModel
 
 @{
+    string[] GroupName = new string[] { "A組", "B組", "C組" };
 }
 
 @section topCSS {
@@ -56,10 +57,42 @@
     <div class="card m-3 p-3">
         <h1 class="w-auto m-2 fs-2" id="Title"></h1>
     </div>
+
+    @if(Model.EprocedureId == "6")
+    {
+        <div class="card m-3 p-3">
+            <div class="row">
+                <div class="col-4">
+                    <h3 class="w-auto m-2 fs-3">評量群組</h3>
+                </div>
+                <div class="col-8">
+                    <select class="form-select" aria-label="Default select example" id="EvaluationGroupId">
+                        <option selected>請選擇評量群組</option>
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            <option value="@Model.EvaluationGroupIdList[i]">@GroupName[i]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 my-3"></div>
+                <div class="col-6">
+                    <h3 class="text-center">流程圖</h3>
+                    <img src="" class="img-thumbnail" id="Drawing-img">
+                </div>
+                <div class="col-6">
+                    <h3 class="text-center">程式碼</h3>
+                    <img src="" class="img-thumbnail" id="Coding-img">
+                </div>
+
+            </div>
+            
+            
+        </div>
+    }
+
     <div class="card m-3 p-3">
         <Questionnaire>
         </Questionnaire>
-
     <div class="row justify-content-end">
         <div class="col"></div>
         <button class="btn btn-primary col-2" id="Submit">送出</button>
@@ -121,6 +154,13 @@
 
 @section endJS {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(Model.EprocedureId == "6")
+    {
+        <script>
+            var EvaluationGroupIdList = @Html.Raw(Json.Serialize(Model.EvaluationGroupIdList));
+        </script>
+    }
     <script>
         /*
             單選題    SingleChoice
@@ -130,22 +170,23 @@
         var Title;
         var Question;
         var questions;
+        var Evaluation;
+
+        var EprocedureId = "@Model.EprocedureId";
+        var Host = "@Url.Action("Index", "Home")"
 
         window.onload = async function () {
+            //console.log(EvaluationGroupIdList);
             // 1. 取得題庫
             questions = await getQuestions();
             console.log(Question);
             // 2. 顯示題庫
             await displayQuestions();
 
-            // 3. 送出
-            // $("#Submit").click(async function () {
-            //    // 3.1 取得答案
-            //    var answers = await getAnswers();
-            //    console.log(answers);
-            //    // 3.2 送出答案
-            //    sendAnswers(answers);
-            //});
+            if (EprocedureId == "6") {
+                // 3. 繪製圖片
+                await drawImage();
+            }
         }
 
         async function getQuestions() {
@@ -155,21 +196,28 @@
                 redirect: 'follow'
             };
 
-            //https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4
-            //await fetch("https://localhost:7197/api/Questionnaire?tasktype=1&tasksteps=4", requestOptions)
-            await fetch("@Url.Action("Index","Home")api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskSteps", requestOptions)
+            var fetchUrl = ""
+
+            if(EprocedureId == "6")
+            {
+                fetchUrl = `${Host}api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskSteps&groupLeaderId=B10702028002`
+            }
+            else
+            {
+                fetchUrl = `${Host}api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskSteps`
+            }
+
+            await fetch(fetchUrl, requestOptions)
                 .then(response => response.text())
-                // .then(result => {
-                //     output = JSON.parse(result);
-                // })
                 .then((data) => {
                     // 在这里你可以使用解析后的数据
-                    console.log(data);
                     output = JSON.parse(data);
                     console.log(output.topic);
+                    Evaluation = output.evaluation;
                     output = output.topic;
                     Title = output.name;
                     Question = output.questions;
+                    console.log(Evaluation);
                 })
                 .catch(error => console.log('error', error));
 
@@ -307,7 +355,7 @@
                 redirect: 'follow'
             };
 
-                await fetch("@Url.Action("Index","Home")api/Questionnaire", requestOptions)
+                await fetch(`${Host}api/Questionnaire`, requestOptions)
                 .then(response => response.text())
                 .then(result => console.log(result))
                 .catch(error => console.log('error', error));
@@ -337,5 +385,11 @@
                 }
             })
         });
+
+        // 繪製圖片
+        function drawImage() {
+            $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
+            $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
+        }
     </script>
 }
