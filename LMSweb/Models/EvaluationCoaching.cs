@@ -12,6 +12,9 @@ namespace LMSweb.Models
 
         public string MissionId { get; set; } = null!;
 
+        public string? Evaluation { get; set; }
+        public string? Coaching { get; set; }
+
         public virtual User? AUser { get; set; }
         public virtual User? BUser { get; set; }
         public virtual Mission? Mission { get; set; }

@@ -4,9 +4,9 @@ namespace LMSweb.Models
 {
     public class ExecutionContent
     {
-        [Column(Order = 0)]
+        public int Id { get; set; }
+
         public string MissionId { get; set; }
-        [Column(Order = 1)]
         public int GroupId { get; set; }
         public string Path { get; set; }
         public string Type { get; set; }

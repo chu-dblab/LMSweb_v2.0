@@ -4,6 +4,7 @@ using LMSweb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMSweb.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    partial class LMSContextModelSnapshot : ModelSnapshot
+    [Migration("20230813124706_add_Evaluation_Coaching")]
+    partial class add_Evaluation_Coaching
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,20 +142,15 @@ namespace LMSweb.Migrations
 
             modelBuilder.Entity("LMSweb.Models.ExecutionContent", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("MissionId")
+                        .HasColumnType("nvarchar(128)")
+                        .HasColumnName("MissionID")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int")
-                        .HasColumnName("GroupID");
-
-                    b.Property<string>("MissionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("MissionID");
+                        .HasColumnName("GroupID")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("Path")
                         .IsRequired()
@@ -162,7 +160,7 @@ namespace LMSweb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MissionId", "GroupId");
 
                     b.HasIndex("GroupId");
 

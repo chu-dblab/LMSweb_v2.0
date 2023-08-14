@@ -271,7 +271,8 @@ public partial class LMSContext : DbContext
 
         modelBuilder.Entity<ExecutionContent>(entitl =>
         {
-            entitl.HasKey(e => new {e.MissionId, e.GroupId});
+            entitl.HasKey(e => e.Id);
+            entitl.Property(e => e.Id).ValueGeneratedOnAdd();
             entitl.Property(e => e.MissionId).HasColumnName("MissionID");
             entitl.Property(e => e.GroupId).HasColumnName("GroupID");
         });
@@ -291,6 +292,11 @@ public partial class LMSContext : DbContext
                 .HasMaxLength(128)
                 .HasColumnName("MissionID");
             entity.HasIndex(e=>e.MissionId).IsUnique(false);
+
+            entity.Property(e => e.Evaluation)
+                .HasColumnType("nvarchar(MAX)");
+            entity.Property(e => e.Coaching)
+                .HasColumnType("nvarchar(MAX)");
 
             entity.HasOne(d => d.AUser).WithMany(p => p.EvaluationCoachingAUsers)
                .HasForeignKey(d => d.AUID)
