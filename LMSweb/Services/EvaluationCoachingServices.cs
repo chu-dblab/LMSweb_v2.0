@@ -25,17 +25,11 @@ namespace LMSweb.Services
                               }).ToList();
 
             // 每組隨機分配 3 個互評對象
-
             foreach (var leader in LeaderList)
             {
                 var LeaderId = leader.StudentId;
-                var LeaderGroupId = (from s in _context.Students
-                                     where s.StudentId == LeaderId
-                                     select s.GroupId).FirstOrDefault();
 
-                var LeaderGroupList = (from s in _context.Students
-                                       where s.GroupId == LeaderGroupId
-                                       select s.StudentId).ToList();
+                var LeaderGroupList = LeaderList.ToList();
 
                 var LeaderGroupCount = LeaderGroupList.Count;
 
@@ -47,25 +41,24 @@ namespace LMSweb.Services
                     var randomIndex = random.Next(0, LeaderGroupCount);
                     var randomStudentId = LeaderGroupList[randomIndex];
 
-                    while (LeaderGroupListRandom.Contains(randomStudentId) || randomStudentId == LeaderId)
+                    while (LeaderId == randomStudentId.StudentId || !LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
                     {
                         randomIndex = random.Next(0, LeaderGroupCount);
                         randomStudentId = LeaderGroupList[randomIndex];
                     }
 
-                    LeaderGroupListRandom.Add(randomStudentId);
+                    LeaderGroupListRandom.Add(randomStudentId.StudentId);
                 }
 
+                var evaluationCoaching = new EvaluationCoaching();
                 foreach (var studentId in LeaderGroupListRandom)
                 {
-                    var evaluationCoaching = new EvaluationCoaching
-                    {
-                        MissionId = mid,
-                        AUID = LeaderId,
-                        BUID = studentId,
-                    };
-
+                    evaluationCoaching.MissionId = mid;
+                    evaluationCoaching.AUID = LeaderId;
+                    evaluationCoaching.BUID = studentId;
+                    
                     _context.EvaluationCoachings.Add(evaluationCoaching);
+                    _context.SaveChanges();
                 }
             }
 

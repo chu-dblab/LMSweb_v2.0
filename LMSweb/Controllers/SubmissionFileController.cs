@@ -27,19 +27,18 @@ namespace LMSweb.Controllers
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;   //抓出當初記載Claims陣列中的TID
 
             var GroupId = _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().GroupId;
-            var MisstionId = _context.Executions.Where(x => x.GroupId == GroupId).FirstOrDefault().MissionId;
             var misstion = _context.Missions.Find(mid);
             var cid = _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId;
             
             vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Cname;
-            vm.MissionId = MisstionId;
-            vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Mname;
+            vm.MissionId = mid;
+            vm.MisstionName = _context.Missions.Find(mid).Mname;
             vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).EndDate;
             
             if (UID == null || misstion == null) { return NotFound(); }
 
-            var _ExecutionContent = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == MisstionId && x.Type == type).FirstOrDefault();
+            var _ExecutionContent = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == mid && x.Type == type).FirstOrDefault();
             
             if(_ExecutionContent != null )
             {
@@ -58,12 +57,11 @@ namespace LMSweb.Controllers
             if (UID == null) { return NotFound(); }
 
             var GroupId = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().GroupId;
-            var MisstionId = _context.Executions.Where(x => x.GroupId == GroupId).FirstOrDefault().MissionId;
             var cid = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId;
 
             var input_path = Path.GetExtension(vm.formFile.FileName);
             var fileExt = Path.GetExtension(input_path);
-            var fileNewName = $@"{MisstionId}{GroupId}{DateTime.Now.ToString("MMddHHmmss")}";
+            var fileNewName = $@"{mid}{GroupId}{DateTime.Now.ToString("MMddHHmmss")}";
 
             var path = _fileUploadService.SaveFile(vm.formFile, "UploadImgs", fileNewName + fileExt);
 
@@ -71,13 +69,13 @@ namespace LMSweb.Controllers
 
             var _ExecutionContent = new ExecutionContent()
             {
-                MissionId = MisstionId,
+                MissionId = mid,
                 GroupId = GroupId ?? 0,
                 Path = fileNewName + fileExt ?? "no fileName",
                 Type = vm.type ?? "no type",
             };
 
-            var _ExecutionContentDB = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == MisstionId && x.Type == type).FirstOrDefault();
+            var _ExecutionContentDB = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == mid && x.Type == type).FirstOrDefault();
             if( _ExecutionContentDB == null )
             {
                 _context.ExecutionContents.Add(_ExecutionContent);
@@ -93,8 +91,8 @@ namespace LMSweb.Controllers
             // 重新修正 vm
             vm.CourseId = cid;
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Cname;
-            vm.MissionId = MisstionId;
-            vm.MisstionName = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).Mname;
+            vm.MissionId = mid;
+            vm.MisstionName = _context.Missions.Find(mid).Mname;
             vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId).EndDate;
             vm.type = type;
             vm.Path = "UploadImgs/" + _ExecutionContent.Path;

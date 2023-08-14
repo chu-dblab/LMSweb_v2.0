@@ -221,24 +221,31 @@
                 var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
 
                 console.log(EvaluationGroupIdList);
+                GroupIndex = localStorage.getItem("GroupIndex");
+                console.log(GroupIndex);
 
-                fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
+                fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
             }
             else
             {
                 fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
             }
 
+            console.log("fetchUrl");
+            console.log(fetchUrl);
+
             await fetch(fetchUrl, requestOptions)
                 .then(response => response.text())
                 .then((data) => {
                     // 在这里你可以使用解析后的数据
                     output = JSON.parse(data);
+                    console.log("topic");
                     console.log(output.topic);
                     Evaluation = output.evaluation;
                     output = output.topic;
                     Title = output.name;
                     Question = output.questions;
+                    console.log("Evaluation");
                     console.log(Evaluation);
                 })
                 .catch(error => console.log('error', error));
@@ -299,6 +306,7 @@
                     let template = $("#EssayQuestion_body").html();
                     var formCheck = $(template);
 
+                    formCheck.find("textarea").attr("id", que.questionId);
                     formCheck.find("#Q_number").text(k++);
                     formCheck.find("#Q_name").text(que.content);
                     formCheck.appendTo("Questionnaire");
@@ -306,10 +314,35 @@
             });
         }
 
+        async function drawOptionValue()
+        {
+                Question.forEach(que => {
+                    var ContentList = [];
+                    if (que.type == "0") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                document.getElementById(opt.optionId).checked = false;
+                            }
+                        });
+                    }
+                    else if (que.type == "1") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                document.getElementById(opt.optionId).checked = false;
+                            }
+                        });
+                    }
+                    else if (que.type == "2") {
+                        document.getElementById(que.questionId).value = "";
+                    }
+                });
+
+        }
         async function getAnswers() {
 
             var Answers = [];
-            
 
             Question.forEach(que => {
                 var ContentList = [];
@@ -339,7 +372,7 @@
                 }
                 else if (que.type == "2") {
                     var ContentList = [{
-                        "OcontentContent": document.getElementById("exampleFormControlTextarea1").value
+                            "OcontentContent": document.getElementById(que.questionId).value
                     }];
                 }
 
@@ -350,6 +383,9 @@
 
                 Answers.push(answer);
             });
+
+            console.log("Answers");
+            console.log(Answers);
 
             return Answers;
         }
@@ -405,27 +441,29 @@
                 showCancelButton: true,
                 confirmButtonText: '送出',
                 denyButtonText: `再想想`,
+                preConfirm: async () => {
+                    if (GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
+                    {
+                        GroupIndex++;
+                        await localStorage.setItem("GroupIndex", GroupIndex);
+                        localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+                        questions = await getQuestions();
+                        console.log(Question);
+                        await drawOptionValue();
+                        await drawImage();
+                    }
+                    else {
+                        localStorage.clear();
+                        document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                    }
+                },
             }).then((result) => async function() {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
 
                     await Swal.fire('Saved!', '', 'success')
 
-                    if(GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
-                    {
-                        GroupIndex++;
-                        localStorage.setItem("GroupIndex", GroupIndex);
-                        localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
-                        questions = await getQuestions();
-                        console.log(Question);
-                        await displayQuestions();
-                        await drawImage();
-                    }
-                    else
-                    {
-                        localStorage.clear();
-                        document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
-                    }
+                    
                 } else if (result.isDenied) {
                     Swal.fire('Changes are not saved', '', 'info')
                 }

@@ -62,17 +62,11 @@ namespace LMSweb.Controllers.Questionnaire
             {
                 var _Evaluation = new LMSweb.ViewModels.Questionnaire.Evaluation();
 
-                var group = (from s in _context.Students
-                             from ec in _context.ExecutionContents
-                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId
-                             select new
-                             {
-                                 GroupId = s.GroupId,
-                                 GroupLeaderId = groupLeaderId,
-                             }).FirstOrDefault();
+                var gL = _context.Students.Find(groupLeaderId);
+                var groupId = _context.Students.Find(groupLeaderId).GroupId;
 
-                _Evaluation.GroupId = group.GroupId.ToString();
-                _Evaluation.GroupLeaderId = group.GroupLeaderId;
+                _Evaluation.GroupId = groupId.ToString();
+                _Evaluation.GroupLeaderId = groupLeaderId;
 
                 var D_url = (from ec in _context.ExecutionContents
                              from s in _context.Students
@@ -113,7 +107,7 @@ namespace LMSweb.Controllers.Questionnaire
                 }
                 else if(vm.EprocedureId == "6")
                 {
-                    //EprocedureSercices.SaveAnswerByEvaluation(vm);
+                    EprocedureSercices.SaveAnswerByEvaluation(vm);
                     Debug.WriteLine(vm);
                 }
                

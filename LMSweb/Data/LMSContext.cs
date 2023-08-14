@@ -281,7 +281,7 @@ public partial class LMSContext : DbContext
 
         modelBuilder.Entity<EvaluationCoaching>(entity =>
         {
-            entity.HasKey(e => new {e.AUID, e.BUID});
+            entity.HasKey(e => new {e.AUID, e.BUID, e.MissionId});
             entity.Property(e => e.AUID)
                 .HasMaxLength(128)
                 .HasColumnName("AUID");
