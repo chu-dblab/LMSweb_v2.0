@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using LMSweb.ViewModels.Questionnaire;
 using LMSweb.Services;
 using LMSweb.Data;
+using System.Diagnostics;
 
 namespace LMSweb.Controllers.Questionnaire
 {
@@ -100,14 +101,22 @@ namespace LMSweb.Controllers.Questionnaire
 
         // POST: api/Questionnaire
         [HttpPost]
-        public IActionResult Post([FromBody] PostViewModel VM)
+        public IActionResult Post([FromBody] PostViewModel vm)
         {
-            if (VM == null) { return NotFound(); }
+            var EprocedureSercices = new EprocedureSercices(_context);
+            if (vm == null) { return NotFound(); }
             else
             {
-                var EprocedureSercices = new EprocedureSercices(_context);
-                EprocedureSercices.SaveAnswer(VM);
-
+                if(vm.EprocedureId == null)
+                {
+                    EprocedureSercices.SaveAnswer(vm);
+                }
+                else if(vm.EprocedureId == "6")
+                {
+                    //EprocedureSercices.SaveAnswerByEvaluation(vm);
+                    Debug.WriteLine(vm);
+                }
+               
                 return Ok();
             }
         }

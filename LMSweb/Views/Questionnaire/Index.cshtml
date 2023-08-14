@@ -159,6 +159,8 @@
     {
         <script>
             var EvaluationGroupIdList = @Html.Raw(Json.Serialize(Model.EvaluationGroupIdList));
+
+            localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
         </script>
     }
     <script>
@@ -171,12 +173,25 @@
         var Question;
         var questions;
         var Evaluation;
+        var GroupIndex = 0;
+        localStorage.setItem("GroupIndex", GroupIndex);
 
         var EprocedureId = "@Model.EprocedureId";
+        localStorage.setItem("EprocedureId", EprocedureId);
         var Host = "@Url.Action("Index", "Home")"
+        localStorage.setItem("Host", Host);
+
+        var vm;
+        localStorage.setItem("vm", `@Json.Serialize(Model)`)
 
         window.onload = async function () {
-            //console.log(EvaluationGroupIdList);
+
+            GroupIndex = localStorage.getItem("GroupIndex");
+            EprocedureId = localStorage.getItem("EprocedureId");
+            Host = localStorage.getItem("Host");
+
+            vm = JSON.parse(localStorage.getItem("vm"));
+
             // 1. 取得題庫
             questions = await getQuestions();
             console.log(Question);
@@ -190,6 +205,9 @@
         }
 
         async function getQuestions() {
+
+            console.log("getQuestions");
+
             var output;
             var requestOptions = {
                 method: 'GET',
@@ -200,11 +218,15 @@
 
             if(EprocedureId == "6")
             {
-                fetchUrl = `${Host}api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskSteps&groupLeaderId=B10702028002`
+                var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
+
+                console.log(EvaluationGroupIdList);
+
+                fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
             }
             else
             {
-                fetchUrl = `${Host}api/Questionnaire?tasktype=@Model.TaskType&tasksteps=@Model.TaskSteps`
+                fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
             }
 
             await fetch(fetchUrl, requestOptions)
@@ -337,10 +359,18 @@
             myHeaders.append("Content-Type", "application/json");
 
             var send = {
-                "UID" : "@Model.UID",
-                "MissionId" : "@Model.MissionId",
+                "UID" : vm.uid,
+                "MissionId" : vm.missionId,
                 "Answers" : answers
             };
+
+            if(vm.eprocedureId == "6")
+            {
+                var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
+
+                send.PostUid = EvaluationGroupIdList[GroupIndex],
+                send.EprocedureId = EprocedureId
+            }
 
             console.log(send);
 
@@ -375,11 +405,27 @@
                 showCancelButton: true,
                 confirmButtonText: '送出',
                 denyButtonText: `再想想`,
-            }).then((result) => {
+            }).then((result) => async function() {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    Swal.fire('Saved!', '', 'success')
-                    document.location.href="@Url.Action("Details","Mission")?cid=@Model.CourseId&mid=@Model.MissionId";
+
+                    await Swal.fire('Saved!', '', 'success')
+
+                    if(GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
+                    {
+                        GroupIndex++;
+                        localStorage.setItem("GroupIndex", GroupIndex);
+                        localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+                        questions = await getQuestions();
+                        console.log(Question);
+                        await displayQuestions();
+                        await drawImage();
+                    }
+                    else
+                    {
+                        localStorage.clear();
+                        document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                    }
                 } else if (result.isDenied) {
                     Swal.fire('Changes are not saved', '', 'info')
                 }
