@@ -121,62 +121,68 @@
                             </div>
                         </div>
 
-                        @foreach (var item in (Model.Groups))
+                        @if(Model.Groups != null)
                         {
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-11">
-                                            @Html.DisplayFor(modelItem => item.GroupName)
-                                            <a type="button" data-id="@item.GroupName" data-gid="@item.GroupId" class="open-Dialog" style="padding: 5px 5px 5px 5px" data-bs-toggle="modal" href="#editGnameModal">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                        </div>
-                                        <div class="col-1 my-auto">
-                                            <button type="button" class="btn-close groupclose" aria-label="btn-Close" aria-hidden="true" id="@item.GroupId"></button>
+                            @foreach (var item in (Model.Groups))
+                            {
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-11">
+                                                @Html.DisplayFor(modelItem => item.GroupName)
+                                                <a type="button" data-id="@item.GroupName" data-gid="@item.GroupId" class="open-Dialog" style="padding: 5px 5px 5px 5px" data-bs-toggle="modal" href="#editGnameModal">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-1 my-auto">
+                                                <button type="button" class="btn-close groupclose" aria-label="btn-Close" aria-hidden="true" id="@item.GroupId"></button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var stu in (item.Students))
-                                    {
-                                        <div class="row justify-content-betwee">
-                                            <div class="col-1">
-                                                @if (stu.IsLeader)
-                                                {
-                                                    <i class="bi bi-star-fill"></i>
-                                                }
+                                    <div class="card-body">
+                                        @if(item.Students != null)
+                                        {
+                                            @foreach (var stu in item.Students)
+                                            {
+                                                <div class="row justify-content-betwee">
+                                                    <div class="col-1">
+                                                        @if (stu.IsLeader)
+                                                        {
+                                                            <i class="bi bi-star-fill"></i>
+                                                        }
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <p>@stu.StudentName</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p>@stu.StudentSex</p>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <button type="button" class="btn-close stuclose" aria-label="Close" aria-hidden="true" id="@stu.StudentId"></button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="row mt-3">
+                                            <div class="col mt-1">
+                                                <a  class="btn btn-primary w-100" href="@Url.Action("ChangeLeader", "StudentManagement", new {gid = item.GroupId, cid = Model.CourseId})">
+                                                    變更組長
+                                                </a>
                                             </div>
-                                            <div class="col-2">
-                                                <p>@stu.StudentName</p>
+                                            <div class="col mt-1">
+                                                <button type="button" class="btn btn-primary w-100 addGbtn" id="@item.GroupId">
+                                                    加入組別
+                                                </button>
                                             </div>
-                                            <div class="col">
-                                                <p>@stu.StudentSex</p>
-                                            </div>
-                                            <div class="col-1">
-                                                <button type="button" class="btn-close stuclose" aria-label="Close" aria-hidden="true" id="@stu.StudentId"></button>
-                                            </div>
-                                        </div>
-                                    }
-
-                                    <div class="row mt-3">
-                                        <div class="col mt-1">
-                                            <a  class="btn btn-primary w-100" href="@Url.Action("ChangeLeader", "StudentManagement", new {gid = item.GroupId, cid = Model.CourseId})">
-                                                變更組長
-                                            </a>
-                                        </div>
-                                        <div class="col mt-1">
-                                            <button type="button" class="btn btn-primary w-100 addGbtn" id="@item.GroupId">
-                                                加入組別
-                                            </button>
                                         </div>
                                     </div>
-                                </div>
 
                                 
-                            </div>
-                            <br />
+                                </div>
+                                <br />
+                            }
                         }
+                        
                         <div class="modal  hide" id="editGnameModal" tabindex="-1" aria-labelledby="editGnameModalLabel" aria-hidden="true">
                             <form id="EditGroupNameForm" action="@Url.Action("EditGroupName", "StudentManagement")" method="post">
                                 <div class="modal-dialog">
