@@ -1,5 +1,6 @@
 ﻿using LMSweb.Data;
 using LMSweb.Models;
+using LMSweb.ViewModels.Questionnaire;
 
 namespace LMSweb.Services
 {
@@ -56,7 +57,7 @@ namespace LMSweb.Services
                     evaluationCoaching.MissionId = mid;
                     evaluationCoaching.AUID = LeaderId;
                     evaluationCoaching.BUID = studentId;
-                    
+
                     _context.EvaluationCoachings.Add(evaluationCoaching);
                     _context.SaveChanges();
                 }
@@ -71,6 +72,120 @@ namespace LMSweb.Services
                                    where ec.MissionId == mid && ec.AUID == uid
                                    select ec.BUID).ToList();
             return LeaderGroupList;
+        }
+
+        public List<string> GetCoachingLeaderList(string mid, string uid)
+        {
+            var LeaderGroupList = (from ec in _context.EvaluationCoachings
+                                   where ec.MissionId == mid && ec.BUID == uid
+                                   select ec.AUID).ToList();
+            return LeaderGroupList;
+        }
+
+        public CoachingScore GetClassAgv(string mid)
+        {
+            var ClassScore = (from ec in _context.EvaluationCoachings
+                              where ec.MissionId == mid
+                              select ec.Evaluation).ToList();
+
+            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+            scoreDict.Add("PE01", 0);
+            scoreDict.Add("PE02", 0);
+            scoreDict.Add("PE03", 0);
+
+            foreach (var item in ClassScore)
+            {
+                var score = item.Split(',').ToList();
+                var scoreList = new List<int>();
+
+                foreach (var s in score)
+                {
+                    var scoreSplit = s.Split(':').ToList();
+                    if (scoreDict.ContainsKey(scoreSplit[0]))
+                    {
+                        scoreDict[key: scoreSplit[0]] += GetScore(int.Parse(scoreSplit[1]));
+                    }
+                }
+            }
+
+            var ClassAgv = new CoachingScore();
+            ClassAgv.PE01 = scoreDict["PE01"] / ClassScore.Count;
+            ClassAgv.PE02 = scoreDict["PE02"] / ClassScore.Count;
+            ClassAgv.PE03 = scoreDict["PE03"] / ClassScore.Count;
+
+            return ClassAgv;
+        }
+
+        public CoachingGroup GetCoachingGroup(string mid, string buid, string auid)
+        {
+            var group = new CoachingGroup();
+            group.Evaluation = new List<string>();
+
+            var group_score = (from ec in _context.EvaluationCoachings
+                               where ec.MissionId == mid && ec.BUID == buid && ec.AUID == auid
+                               select ec.Evaluation).FirstOrDefault();
+
+            var group_score_list = group_score.Split(',').ToList();
+
+            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+            scoreDict.Add("PE01", 0);
+            scoreDict.Add("PE02", 0);
+            scoreDict.Add("PE03", 0);
+
+            foreach (var item in group_score_list)
+            {
+                var score = item.Split(':').ToList();
+                if (scoreDict.ContainsKey(score[0]))
+                {
+                    scoreDict[key: score[0]] = GetScore(int.Parse(score[1]));
+                }
+                else
+                {
+                    if (score.Count() > 1)
+                        group.Evaluation.Add(score[1]);
+                }
+            }
+
+            group.CoachingScore = new CoachingScore();
+            group.CoachingScore.PE01 = scoreDict["PE01"];
+            group.CoachingScore.PE02 = scoreDict["PE02"];
+            group.CoachingScore.PE03 = scoreDict["PE03"];
+
+            return group;
+        }
+
+        public Coaching GetCoaching(string mid, string uid)
+        {
+            var output = new Coaching();
+            output.Groups = new List<CoachingGroup>();
+
+            var CoachingLeaderList = GetCoachingLeaderList(mid, uid);
+
+            output.ClassAgv = GetClassAgv(mid);
+
+            foreach (var leader in CoachingLeaderList)
+            {
+                var group = GetCoachingGroup(mid, uid, leader);
+                output.Groups.Add(group);
+            }
+
+            return output;
+        }
+
+        private int GetScore(int optionId)
+        {
+            var score = 0;
+            
+            var option = _context.Options.Where(x => x.OptionID == optionId).FirstOrDefault();
+
+            if (option != null)
+            {
+                score = int.Parse(option.Ocontent);
+            }
+
+            return score;
         }
     }
 }

@@ -3,8 +3,8 @@
     public class ReGetViewModel
     {
         public Topic Topic { get; set; } = null!;
-        public Evaluation? Evaluation { get; set; 
-        }
+        public Evaluation? Evaluation { get; set; }
+        public Coaching? Coaching { get; set; }
     }
 
     public class Topic
@@ -33,5 +33,25 @@
         public string GroupLeaderId { get; set; } = null!;
         public string DrawingUrl { get; set; } = null!;
         public string CodingUrl { get; set; } = null!;
+    }
+
+    public class Coaching 
+    {
+        public CoachingScore ClassAgv { get; set; } = null!;
+
+        public List<CoachingGroup> Groups { get; set; } = null!;
+    }
+
+    public class CoachingScore
+    {
+        public double PE01 { get; set; }
+        public double PE02 { get; set; }
+        public double PE03 { get; set; }
+    }
+
+    public class CoachingGroup
+    {
+        public CoachingScore CoachingScore { get; set; } = null!;
+        public List<string> Evaluation { get; set; } = null!;
     }
 }

@@ -40,7 +40,7 @@ namespace LMSweb.Controllers.Questionnaire
         //    return Ok(ReGetVM);
         //}
 
-        public IActionResult Get(int tasktype, int tasksteps, string? groupLeaderId)
+        public IActionResult Get(int tasktype, int tasksteps, string? groupLeaderId, string? mid, string? uid)
         {
             var ReGetVM = new ReGetViewModel();
             var EprocedureSercices = new EprocedureSercices(_context);
@@ -60,34 +60,48 @@ namespace LMSweb.Controllers.Questionnaire
 
             if(groupLeaderId != null)
             {
-                var _Evaluation = new LMSweb.ViewModels.Questionnaire.Evaluation();
+                if (EprocedureId == "6")
+                {
+                    var _Evaluation = new LMSweb.ViewModels.Questionnaire.Evaluation();
 
-                var gL = _context.Students.Find(groupLeaderId);
-                var groupId = _context.Students.Find(groupLeaderId).GroupId;
+                    var gL = _context.Students.Find(groupLeaderId);
+                    var groupId = _context.Students.Find(groupLeaderId).GroupId;
 
-                _Evaluation.GroupId = groupId.ToString();
-                _Evaluation.GroupLeaderId = groupLeaderId;
+                    _Evaluation.GroupId = groupId.ToString();
+                    _Evaluation.GroupLeaderId = groupLeaderId;
 
-                var D_url = (from ec in _context.ExecutionContents
-                             from s in _context.Students
-                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "D"
-                             select new
-                             {
-                                 DrawingUrl = ec.Path,
-                             }).FirstOrDefault();
+                    var D_url = (from ec in _context.ExecutionContents
+                                 from s in _context.Students
+                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "D"
+                                 select new
+                                 {
+                                     DrawingUrl = ec.Path,
+                                 }).FirstOrDefault();
 
-                var C_url = (from ec in _context.ExecutionContents
-                             from s in _context.Students
-                             where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "C"
-                             select new
-                             {
-                                 CodingUrl = ec.Path,
-                             }).FirstOrDefault();
+                    var C_url = (from ec in _context.ExecutionContents
+                                 from s in _context.Students
+                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "C"
+                                 select new
+                                 {
+                                     CodingUrl = ec.Path,
+                                 }).FirstOrDefault();
 
-                _Evaluation.DrawingUrl = "UploadImgs/" + D_url.DrawingUrl;
-                _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
+                    _Evaluation.DrawingUrl = "UploadImgs/" + D_url.DrawingUrl;
+                    _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
 
-                ReGetVM.Evaluation = _Evaluation;
+                    ReGetVM.Evaluation = _Evaluation;
+                } 
+                else if(EprocedureId == "7")
+                {
+                    var _Coaching = new LMSweb.ViewModels.Questionnaire.Coaching();
+
+                    var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+
+                    if(mid != null && uid != null)
+                        _Coaching = _EvaluationCoachingServices.GetCoaching(mid, uid);
+
+                    ReGetVM.Coaching = _Coaching;
+                }
             }
 
             return Ok(ReGetVM);
