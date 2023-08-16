@@ -8,13 +8,14 @@
     int k = 1;
 }
 
-
-@section NavPills {
-    <ul class="nav nav-pills me-auto ms-3">
-        @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CourseID , ActiveIndex = 0})
-    </ul>
+@if (User.IsInRole("Teacher"))
+{
+    @section NavPills {
+        <ul class="nav nav-pills me-auto ms-3">
+            @Html.Partial("~/Views/Nav/_TeacherNavPartial.cshtml", new TeacherNavViewModel { CourseID = Model.CourseID , ActiveIndex = 0})
+        </ul>
+    }
 }
-
 
 <div class="container">
 
