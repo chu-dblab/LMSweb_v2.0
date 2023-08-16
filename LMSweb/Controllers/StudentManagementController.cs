@@ -187,29 +187,49 @@ namespace LMSweb.Controllers
 
         public IActionResult Group(string cid)
         {
-            var course = _context.Courses.Find(cid);
-            var student_list = _context.Students.Where(x => x.CourseId == cid);
-            var student_has_group = student_list.Where(s => s.GroupId != null);
-            var group_list = _context.Groups.Select(g => new ViewModels.StudentManagement.Group
+            if (cid == null)
             {
-                GroupId = g.Gid,
-                GroupName = g.Gname,
-                Students = student_has_group.Where(s => s.GroupId == g.Gid)
-                .Select(x => new ViewModels.StudentManagement.Student
-                {
-                    StudentId = x.StudentId,
-                    StudentName = x.StudentName,
-                    StudentSex = x.Sex,
-                    IsLeader = x.IsLeader
-                }).OrderBy(x => x.StudentId).ToList()
-            });
+                return RedirectToAction("Home", "Teacher");
+            }
+            var course = _context.Courses.Find(cid);
+            if (course == null)
+            {
+                return RedirectToAction("Index", "StudentManagement", new { cid = cid });
+            }
+
+            var student_list = _context.Students.Where(x => x.CourseId == cid && x.GroupId == null).ToList();
+
+
+            var data = (from s in _context.Students
+                        join g in _context.Groups on s.GroupId equals g.Gid
+                        where s.CourseId == cid && g.CourseId == cid
+                        select new { g.Gid, g.Gname, s.StudentId, s.StudentName, s.Sex, s.IsLeader })
+                        .OrderBy(x => x.Gname.Length)
+                        .ThenBy(x => x.Gname)
+                        .ToList();
+
+            var group_list = data.Select(x => new { x.Gid, x.Gname }).Distinct()
+                                .Select(g=> new ViewModels.StudentManagement.Group
+                                {
+                                    GroupId = g.Gid,
+                                    GroupName = g.Gname,
+                                    Students = data.Where(c => c.Gid == g.Gid)
+                                                .Select(d => new ViewModels.StudentManagement.Student
+                                                {
+                                                    StudentId = d.StudentId,
+                                                    StudentName = d.StudentName,
+                                                    StudentSex = d.Sex,
+                                                    IsLeader = d.IsLeader
+                                                }).ToList()
+                                })
+                                .ToList();
 
             var vm = new GroupViewModel
             {
                 CourseId = course.Cid,
                 CourseName = course.Cname,
-                StudentList = new MultiSelectList(student_list.Where(x => x.GroupId == null), "StudentId", "StudentName").ToList(),
-                Groups = group_list.OrderBy(x => x.GroupName.Length).ThenBy(x => x.GroupName).ToList(),
+                StudentList = new MultiSelectList(student_list, "StudentId", "StudentName").ToList(),
+                Groups = group_list,
             };
             return View(vm);
         }
