@@ -90,18 +90,19 @@ namespace LMSweb.Controllers.Questionnaire
                     _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
 
                     ReGetVM.Evaluation = _Evaluation;
-                } 
-                else if(EprocedureId == "7")
-                {
-                    var _Coaching = new LMSweb.ViewModels.Questionnaire.Coaching();
-
-                    var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
-
-                    if(mid != null && uid != null)
-                        _Coaching = _EvaluationCoachingServices.GetCoaching(mid, uid);
-
-                    ReGetVM.Coaching = _Coaching;
                 }
+            }
+
+            if (EprocedureId == "7")
+            {
+                var _Coaching = new LMSweb.ViewModels.Questionnaire.Coaching();
+
+                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+
+                if (mid != null && uid != null)
+                    _Coaching = _EvaluationCoachingServices.GetCoaching(mid, uid);
+
+                ReGetVM.Coaching = _Coaching;
             }
 
             return Ok(ReGetVM);
