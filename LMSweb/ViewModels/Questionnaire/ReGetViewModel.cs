@@ -52,6 +52,7 @@
 
     public class CoachingGroup
     {
+        public bool IsSubmit { get; set; }
         public string GroupLeaderId { get; set; } = null!;
         public CoachingScore CoachingScore { get; set; } = null!;
         public List<string> Evaluation { get; set; } = null!;

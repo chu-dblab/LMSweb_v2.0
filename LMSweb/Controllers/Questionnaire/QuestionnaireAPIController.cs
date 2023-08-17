@@ -87,8 +87,17 @@ namespace LMSweb.Controllers.Questionnaire
                                      CodingUrl = ec.Path,
                                  }).FirstOrDefault();
 
-                    _Evaluation.DrawingUrl = "UploadImgs/" + D_url.DrawingUrl;
-                    _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
+                    if(D_url == null)
+                        _Evaluation.DrawingUrl = "";
+                    else
+                        _Evaluation.DrawingUrl = "UploadImgs/" + D_url.DrawingUrl;
+
+                    if (C_url == null)
+                        _Evaluation.CodingUrl = "";
+                    else
+                        _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
+
+                    
 
                     ReGetVM.Evaluation = _Evaluation;
                 }
@@ -131,8 +140,8 @@ namespace LMSweb.Controllers.Questionnaire
                 }
                 else if(vm.EprocedureId == "7")
                 {
-                    //_EvaluationCoachingServices.SaveAnswerByCoaching(vm);
-                    Debug.WriteLine(vm);
+                    _EvaluationCoachingServices.SaveAnswerByCoaching(vm);
+                    //Debug.WriteLine(vm);
                 }
                
                 return Ok();

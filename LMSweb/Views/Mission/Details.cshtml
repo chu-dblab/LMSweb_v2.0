@@ -21,13 +21,13 @@
     }
     else
     {
-        GuideString = "11111111";
+        // GuideString = "11111111";
         UserTypeForGuide = 1;
         KForGuideStapUrl = 1;
-        //GuideString = Model.CurrentStatus;
+        GuideString = Model.CurrentStatus;
         TestType = TestType = Model.TestType;
-        //if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
-        //else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
+        if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
+        else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
 
     }
 
@@ -60,7 +60,7 @@
         "",
         DrawingUrl,
         CodingUrl,
-        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 3.ToString()}),
+        Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 2.ToString()}),
     };
 
     GuideStapUrlList[3] = new string[]

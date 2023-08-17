@@ -67,7 +67,8 @@
     {
         <div class="card m-3 p-3">
             <div class="row">
-                <div class="col-4">
+                <div class="col-12" id="evaluation_title"></div>
+                @* <div class="col-4">
                     <h3 class="w-auto m-2 fs-3">評量群組</h3>
                 </div>
                 <div class="col-8">
@@ -78,7 +79,7 @@
                             <option value="@Model.EvaluationGroupIdList[i]">@GroupName[i]</option>
                         }
                     </select>
-                </div>
+                </div> *@
                 <div class="col-12 my-3"></div>
                 <div class="col-6">
                     <h3 class="text-center">流程圖</h3>
@@ -115,8 +116,6 @@
                 </div>
                 <div class="col-1"></div>
 
-
-
                 <div class="col-1"></div>
                 <div class="col-10" id="EvaluationText"></div>
                 <div class="col-1"></div>
@@ -125,17 +124,7 @@
         </div>
     }
 
-
-
-    <div class="card m-3 p-3">
-        <Questionnaire>
-        </Questionnaire>
-        <div class="row justify-content-end">
-            <div class="col"></div>
-            <button class="btn btn-primary col-2" id="Submit">送出</button>
-            <div class="col-1"></div>
-        </div>
-    </div>
+    <div class="card m-3 p-3" id="Questionnaire"></div>
 
     <template id="SingleChoice_body">
         <!-- 單選題 -->
@@ -235,6 +224,7 @@
             // -------------回饋----------------
             var ChartData = {};
             var GroupName = ["A組", "B組", "C組", "D組", "E組", "F組", "G組", "H組"];
+            var GroupIsSubmit = [];
 
             window.onload = async function () {
 
@@ -251,10 +241,11 @@
                 await displayQuestions();
 
                 if (EprocedureId == "6") {
-                    // 3. 繪製圖片
-                    await drawImage();
+                    await setEvaluationTitle();
+                    if (!((EprocedureId == "6") && (Evaluation.drawingUrl == "" || Evaluation.codingUrl == ""))) await drawImage();
+                    
                 } else if (EprocedureId == "7") {
-                    // 3. 繪製圖片
+                    await setGroupIsSubmit();
                     await drawBTN();
                     await setChartData();
                     await drawChart();
@@ -315,6 +306,7 @@
             }
 
             async function displayQuestions() {
+                $("#Questionnaire").empty();
                 $("#Title").text(Title);
                 var k = 1;
                 var optId = 1;
@@ -339,7 +331,7 @@
                             formCheck2.find("label").text(opt.content);
                             formCheck.find("#Optiona").append(formCheck2);
                         });
-                        formCheck.appendTo("Questionnaire");
+                        formCheck.appendTo("#Questionnaire");
                     }
                     else if (que.type == "1") {
                         var options = que.options;
@@ -359,7 +351,7 @@
                             formCheck2.find("label").text(opt.content);
                             formCheck.find("#Optiona").append(formCheck2);
                         });
-                        formCheck.appendTo("Questionnaire");
+                        formCheck.appendTo("#Questionnaire");
                     }
                 });
                 Question.forEach(que => {
@@ -370,9 +362,27 @@
                         formCheck.find("textarea").attr("id", que.questionId);
                         formCheck.find("#Q_number").text(k++);
                         formCheck.find("#Q_name").text(que.content);
-                        formCheck.appendTo("Questionnaire");
+                        formCheck.appendTo("#Questionnaire");
                     }
                 });
+
+                $("#Questionnaire").append(`<div class="row justify-content-end">
+                                                <div class="col"></div>
+                                                <button class="btn btn-primary col-2" id="Submit" onclick="Submit()">送出</button>
+                                                <div class="col-1"></div>
+                                            </div>`)
+
+                if ((EprocedureId == "6") && (Evaluation.drawingUrl == "" || Evaluation.codingUrl == "")) { 
+                    $("#Questionnaire").empty();
+                    $("#Questionnaire").hide();
+                }
+                else if ((EprocedureId == "7" && GroupIndex == 0) || (EprocedureId == "7" && GroupIsSubmit[GroupIndex - 1] == true))
+                {
+                    $("#Questionnaire").empty();
+                    $("#Questionnaire").hide();
+                } else {
+                    $("#Questionnaire").show();
+                }
             }
 
             async function drawOptionValue() {
@@ -464,7 +474,14 @@
                     var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
 
                     send.PostUid = EvaluationGroupIdList[GroupIndex],
-                        send.EprocedureId = EprocedureId
+                    send.EprocedureId = EprocedureId
+                }
+
+                else if (vm.eprocedureId == "7")
+                {
+                    GroupIsSubmit[GroupIndex - 1] = true;
+                    send.PostUid = Coaching.groups[GroupIndex-1].groupLeaderId,
+                    send.EprocedureId = EprocedureId
                 }
 
                 console.log(send);
@@ -487,7 +504,7 @@
             }
 
             // 確認送出
-            $("#Submit").click(async function () {
+            async function Submit() {
                 // 3.1 取得答案
                 var answers = await getAnswers();
                 console.log(answers);
@@ -510,6 +527,26 @@
                             console.log(Question);
                             await drawOptionValue();
                             await drawImage();
+                        } else if (EprocedureId == "7") {
+                            let out = true;
+                            GroupIsSubmit.forEach((g, index) => {
+                                if (g == false) out = false; 
+                            })
+
+                            if(out == true)
+                            {
+                                localStorage.clear();
+                                document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                            }
+                            else
+                            {
+                                await localStorage.setItem("GroupIndex", GroupIndex);
+                                questions = await getQuestions();
+                                await displayQuestions();
+                                await showEvaluationText(GroupIndex);
+                                await setChartData();
+                                await drawChart();
+                            }
                         }
                         else {
                             localStorage.clear();
@@ -527,7 +564,7 @@
                         Swal.fire('Changes are not saved', '', 'info')
                     }
                 })
-            });
+            }
 
             // 繪製圖片
             function drawImage() {
@@ -654,6 +691,7 @@
                 GroupIndex = index;
                 await localStorage.setItem("GroupIndex", GroupIndex);
                 questions = await getQuestions();
+                await displayQuestions();
                 await showEvaluationText(GroupIndex);
                 await setChartData();
                 await drawChart();
@@ -671,6 +709,39 @@
                         $("#EvaluationText").append(p);
                     })
                 }
+            }
+
+            // 設定 GroupIsSubmit 的值
+            async function setGroupIsSubmit() {
+                if (Coaching.groups.length > 0) {
+                    Coaching.groups.forEach((g, index) => {
+                        if (g.isSubmit == true) {
+                            GroupIsSubmit[index] = true;
+                        }
+                        else {
+                            GroupIsSubmit[index] = false;
+                        }
+                    });
+                }
+                console.log("GroupIsSubmit");
+                console.log(GroupIsSubmit);
+            }
+
+            // 設定 evaluation_title 的值
+            async function setEvaluationTitle() {
+                $("#evaluation_title").empty();
+
+                var str = "";
+
+                if (!((EprocedureId == "6") && (Evaluation.drawingUrl == "" || Evaluation.codingUrl == ""))) {
+                    str = `請給予該組評價`
+                } else {
+                    str = `該組別還未送出答案`
+                }
+                
+                var title = `<h3 class="w-auto m-2 fs-3">${str}</h3>`;
+                $("#evaluation_title").append(title);
+                $("#evaluation_title").show();
             }
         </script>
     }

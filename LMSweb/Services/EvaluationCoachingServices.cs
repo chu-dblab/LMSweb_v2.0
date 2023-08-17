@@ -159,9 +159,16 @@ namespace LMSweb.Services
 
             var group_score = (from ec in _context.EvaluationCoachings
                                where ec.MissionId == mid && ec.BUID == buid && ec.AUID == auid
-                               select ec.Evaluation).FirstOrDefault();
+                               select new
+                               {
+                                   ec.Evaluation,
+                                   ec.Coaching
+                               }).FirstOrDefault();
 
-            var group_score_list = group_score.Split(',').ToList();
+            if (group_score.Coaching != null)
+                group.IsSubmit = true;
+
+            var group_score_list = group_score.Evaluation.Split(',').ToList();
 
             Dictionary<string, int> scoreDict = new Dictionary<string, int>();
 

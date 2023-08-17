@@ -1,6 +1,7 @@
 ﻿using LMSweb.Assets;
 using LMSweb.Data;
 using LMSweb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMSweb.Services
 {
@@ -88,23 +89,19 @@ namespace LMSweb.Services
                 // 判斷流程圖是否上傳
                 else if (execution.CurrentStatus == "100")
                 {
-                    //var Draw = db.StudentDraws.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
-
-                    //if (Draw != null)
-                    //{
-                    //    execution.CurrentStatus = "210";
-                    //}
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "210";
+                    }
                 }
 
                 // 判斷程式碼是否上傳
                 else if (execution.CurrentStatus == "210")
                 {
-                    //var Code = db.StudentCodes.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
-
-                    //if (Code != null)
-                    //{
-                    //    execution.CurrentStatus = "221";
-                    //}
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "221";
+                    }
                 }
                 db.SaveChanges();
             }
@@ -124,26 +121,49 @@ namespace LMSweb.Services
                     execution.CurrentStatus = "100000";
                 }
 
-                // 判斷流程圖是否上傳
+                // 判斷目標設置是否填寫
                 else if (execution.CurrentStatus == "100000")
                 {
-                    //var Draw = db.StudentDraws.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
+                    if (HasQuestion(student.StudentId, mid, "0"))
+                    {
+                        execution.CurrentStatus = "210000";
+                    }
+                }
 
-                    //if (Draw != null)
-                    //{
-                    //    execution.CurrentStatus = "210000";
-                    //}
+                // 判斷流程圖是否上傳
+                else if (execution.CurrentStatus == "210000")
+                {
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "221000";
+                    }
+                }
+
+                // 判斷任務監控是否填寫
+                else if (execution.CurrentStatus == "221000")
+                {
+                    if (HasQuestion(student.StudentId, mid, "1"))
+                    {
+                        execution.CurrentStatus = "222100";
+                    }
                 }
 
                 // 判斷程式碼是否上傳
-                else if (execution.CurrentStatus == "210000")
+                else if (execution.CurrentStatus == "222100")
                 {
-                    //var Code = db.StudentCodes.Where(x => x.GID == student.GroupId && x.MID == mid).FirstOrDefault();
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "222210";
+                    }
+                }
 
-                    //if (Code != null)
-                    //{
-                    //    execution.CurrentStatus = "221000";
-                    //}
+                // 判斷自我反思是否填寫
+                else if (execution.CurrentStatus == "222210")
+                {
+                    if (HasQuestion(student.StudentId, mid, "2"))
+                    {
+                        execution.CurrentStatus = "222221";
+                    }
                 }
                 db.SaveChanges();
             }
@@ -156,6 +176,37 @@ namespace LMSweb.Services
                 Student student;
                 Execution execution;
                 SetExecutionByCurrentStatus(out student, out execution);
+                
+                // 開啟第一步驟
+                if (execution.CurrentStatus == "0000")
+                {
+                    execution.CurrentStatus = "1000";
+                }
+
+                else if (execution.CurrentStatus == "1000")
+                {
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "2100";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "2100")
+                {
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "2210";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "2210")
+                {
+                    if (HasEvaluation(sid, mid))
+                    {
+                        execution.CurrentStatus = "2221";
+                    }
+                }
+                db.SaveChanges();
             }
         }
 
@@ -166,6 +217,58 @@ namespace LMSweb.Services
                 Student student;
                 Execution execution;
                 SetExecutionByCurrentStatus(out student, out execution);
+
+                // 開啟第一步驟畫流程圖
+                if (execution.CurrentStatus == "000000")
+                {
+                    execution.CurrentStatus = "100000";
+                }
+
+                // 判斷目標設置是否填寫
+                else if (execution.CurrentStatus == "100000")
+                {
+                    if (HasQuestion(student.StudentId, mid, "3"))
+                    {
+                        execution.CurrentStatus = "210000";
+                    }
+                }
+
+                // 判斷流程圖是否上傳
+                else if (execution.CurrentStatus == "210000")
+                {
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "221000";
+                    }
+                }
+
+                // 判斷任務監控是否填寫
+                else if (execution.CurrentStatus == "221000")
+                {
+                    if (HasQuestion(student.StudentId, mid, "4"))
+                    {
+                        execution.CurrentStatus = "222100";
+                    }
+                }
+
+                // 判斷程式碼是否上傳
+                else if (execution.CurrentStatus == "222100")
+                {
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "222210";
+                    }
+                }
+
+                // 判斷自我反思是否填寫
+                else if (execution.CurrentStatus == "222210")
+                {
+                    if (HasQuestion(student.StudentId, mid, "5"))
+                    {
+                        execution.CurrentStatus = "222221";
+                    }
+                }
+                db.SaveChanges();
             }
         }
 
@@ -176,6 +279,45 @@ namespace LMSweb.Services
                 Student student;
                 Execution execution;
                 SetExecutionByCurrentStatus(out student, out execution);
+
+                // 開啟第一步驟
+                if (execution.CurrentStatus == "00000")
+                {
+                    execution.CurrentStatus = "10000";
+                }
+
+                else if (execution.CurrentStatus == "10000")
+                {
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "21000";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "21000")
+                {
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "22100";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "22100")
+                {
+                    if (HasEvaluation(sid, mid))
+                    {
+                        execution.CurrentStatus = "22210";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "22210")
+                {
+                    if (HasCoaching(sid, mid))
+                    {
+                        execution.CurrentStatus = "22221";
+                    }
+                }
+                db.SaveChanges();
             }
         }
 
@@ -186,6 +328,74 @@ namespace LMSweb.Services
                 Student student;
                 Execution execution;
                 SetExecutionByCurrentStatus(out student, out execution);
+
+                // 開啟第一步驟畫流程圖
+                if (execution.CurrentStatus == "00000000")
+                {
+                    execution.CurrentStatus = "10000000";
+                }
+
+                // 判斷目標設置是否填寫
+                else if (execution.CurrentStatus == "10000000")
+                {
+                    if (HasQuestion(student.StudentId, mid, "3"))
+                    {
+                        execution.CurrentStatus = "21000000";
+                    }
+                }
+
+                // 判斷流程圖是否上傳
+                else if (execution.CurrentStatus == "21000000")
+                {
+                    if (HasDraw((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "22100000";
+                    }
+                }
+
+                // 判斷任務監控是否填寫
+                else if (execution.CurrentStatus == "22100000")
+                {
+                    if (HasQuestion(student.StudentId, mid, "4"))
+                    {
+                        execution.CurrentStatus = "22210000";
+                    }
+                }
+
+                // 判斷程式碼是否上傳
+                else if (execution.CurrentStatus == "22210000")
+                {
+                    if (HasCode((int)student.GroupId))
+                    {
+                        execution.CurrentStatus = "22221000";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "22221000")
+                {
+                    if (HasEvaluation(sid, mid))
+                    {
+                        execution.CurrentStatus = "22222100";
+                    }
+                }
+
+                else if (execution.CurrentStatus == "22222100")
+                {
+                    if (HasCoaching(sid, mid))
+                    {
+                        execution.CurrentStatus = "22222210";
+                    }
+                }
+
+                // 判斷反思是否填寫
+                else if (execution.CurrentStatus == "22222210")
+                {
+                    if (HasQuestion(student.StudentId, mid, "5"))
+                    {
+                        execution.CurrentStatus = "22222221";
+                    }
+                }
+                db.SaveChanges();
             }
         }
 
@@ -206,6 +416,75 @@ namespace LMSweb.Services
                 db.SaveChanges();
                 execution = db.Executions.Find(student.GroupId, mid);
             }
+        }
+
+        private bool HasDraw(int gid)
+        {
+            var Draw = db.ExecutionContents.Where(x => x.GroupId == gid && x.MissionId == mid && x.Type == "D").FirstOrDefault();
+            if (Draw != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool HasCode(int gid)
+        {
+            var Code = db.ExecutionContents.Where(x => x.GroupId == gid && x.MissionId == mid && x.Type == "C").FirstOrDefault();
+            if (Code != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool HasQuestion(string uid, string missionId, string eprocedureId)
+        {
+            var _EprocedureSercices = new EprocedureSercices(db);
+
+            return _EprocedureSercices.IsAnswered(uid, missionId, eprocedureId);
+        }
+
+        private bool HasEvaluation(string uid, string missionId)
+        {
+            var _EvaluationCoachingServices = new EvaluationCoachingServices(db);
+
+            var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(mid, uid);
+
+            foreach (var buid in buid_list)
+            {
+                var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == uid && x.BUID == buid).FirstOrDefault();
+                if (evaluation == null || evaluation.Evaluation == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool HasCoaching(string uid, string missionId)
+        {
+            var _EvaluationCoachingServices = new EvaluationCoachingServices(db);
+
+            var auid_list = _EvaluationCoachingServices.GetCoachingLeaderList(mid, uid);
+
+            foreach (var auid in auid_list)
+            {
+                var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == auid && x.BUID == uid).FirstOrDefault();
+                if (evaluation == null || evaluation.Coaching == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -33,10 +33,20 @@ namespace LMSweb.Controllers.Questionnaire
 
             vm.UID = UID.Value;
             vm.EprocedureId = eid;
+            vm.EvaluationGroupIdList = new List<string>();
             if (eid == "6")
             {
                 var ECservices = new EvaluationCoachingServices(_context);
-                vm.EvaluationGroupIdList = ECservices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
+                var _EvaluationGroupIdList = ECservices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
+
+                foreach( var _EvaluationGroupId in _EvaluationGroupIdList )
+                {
+                    var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == vm.UID && x.BUID == _EvaluationGroupId && x.MissionId == vm.MissionId).FirstOrDefault().Evaluation;
+                    if(_EvaluationGroup == null)
+                    {
+                        vm.EvaluationGroupIdList.Add(_EvaluationGroupId);
+                    }
+                }
             }
 
             return View(vm);
