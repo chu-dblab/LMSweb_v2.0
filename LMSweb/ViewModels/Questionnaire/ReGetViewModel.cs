@@ -38,6 +38,7 @@
     public class Coaching 
     {
         public CoachingScore ClassAgv { get; set; } = null!;
+        public CoachingScore GroupAgv { get; set; } = null!;
 
         public List<CoachingGroup> Groups { get; set; } = null!;
     }
@@ -51,6 +52,7 @@
 
     public class CoachingGroup
     {
+        public string GroupLeaderId { get; set; } = null!;
         public CoachingScore CoachingScore { get; set; } = null!;
         public List<string> Evaluation { get; set; } = null!;
     }

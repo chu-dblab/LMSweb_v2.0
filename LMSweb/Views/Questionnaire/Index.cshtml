@@ -1,7 +1,7 @@
 ﻿@model QuestionnaireIndexViewModel
 
 @{
-    string[] GroupName = new string[] { "A組", "B組", "C組" };
+    string[] GroupName = new string[] { "A組", "B組", "C組", "D組", "E組", "F組", "G組", "H組" };
 }
 
 @section topCSS {
@@ -9,21 +9,25 @@
         input[type="radio"], input[type="checkbox"] {
             display: none;
         }
-        input[type="radio"]:checked+label, input[type="checkbox"]:checked+label {
-            background-color: #007bff;
-            color: white;
-            border-radius: 10px;
-        }
-        input[type="radio"]:checked+label:hover, input[type="checkbox"]:checked+label:hover {
-            background-color: #007bff;
-            color: white;
-            border-radius: 10px;
-        }
-        input[type="radio"]:checked+label:active, input[type="checkbox"]:checked+label:active {
-            background-color: #007bff;
-            color: white;
-            border-radius: 10px;
-        }
+
+            input[type="radio"]:checked + label, input[type="checkbox"]:checked + label {
+                background-color: #007bff;
+                color: white;
+                border-radius: 10px;
+            }
+
+                input[type="radio"]:checked + label:hover, input[type="checkbox"]:checked + label:hover {
+                    background-color: #007bff;
+                    color: white;
+                    border-radius: 10px;
+                }
+
+                input[type="radio"]:checked + label:active, input[type="checkbox"]:checked + label:active {
+                    background-color: #007bff;
+                    color: white;
+                    border-radius: 10px;
+                }
+
         label {
             align-items: center;
         }
@@ -35,6 +39,7 @@
         .bg-A4A4A4 {
             background-color: #A4A4A4;
         }
+
         .number {
             background-color: #8C8C8C;
             color: white;
@@ -51,14 +56,14 @@
 
 <div class="container">
 
-    @*@Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml", 
-        new ViewTitlePartialViewModel { h1 = @$"任務名稱：{Model.MissionName}"})*@
+    @*@Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel { h1 = @$"任務名稱：{Model.MissionName}"})*@
 
     <div class="card m-3 p-3">
         <h1 class="w-auto m-2 fs-2" id="Title"></h1>
     </div>
 
-    @if(Model.EprocedureId == "6")
+    @if (Model.EprocedureId == "6")
     {
         <div class="card m-3 p-3">
             <div class="row">
@@ -83,239 +88,294 @@
                     <h3 class="text-center">程式碼</h3>
                     <img src="" class="img-thumbnail" id="Coding-img">
                 </div>
-
             </div>
-            
+        </div>
+    }
+
+    @if (Model.EprocedureId == "7")
+    {
+        <div class="card m-3 p-3">
+            <div class="row">
+                <div class="col-2 border-end ms-5">
+                    <button class="btn btn-secondary w-100" id="ClassAgv" onclick="changeGroup(0)">全班平均</button>
+                </div>
+                <div class="col row" id="btn_list"></div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+        <div class="card m-3 p-3">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-4">
+                    <div id="bar" style="height: 400px;"></div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <div id="radar" style="height: 400px;"></div>
+                </div>
+                <div class="col-1"></div>
+
+
+
+                <div class="col-1"></div>
+                <div class="col-10" id="EvaluationText"></div>
+                <div class="col-1"></div>
+            </div>
             
         </div>
     }
+
+
 
     <div class="card m-3 p-3">
         <Questionnaire>
         </Questionnaire>
-    <div class="row justify-content-end">
-        <div class="col"></div>
-        <button class="btn btn-primary col-2" id="Submit">送出</button>
-        <div class="col-1"></div>
+        <div class="row justify-content-end">
+            <div class="col"></div>
+            <button class="btn btn-primary col-2" id="Submit">送出</button>
+            <div class="col-1"></div>
+        </div>
     </div>
-</div>
 
-<template id="SingleChoice_body">
-    <!-- 單選題 -->
-    <form class="row m-2">
-        <div class="col-4 row align-content-center row">
-            <div class="number col-2" id="Q_number"></div>
-            <p class="fs-5 col my-auto" id="Q_name"></p>
+    <template id="SingleChoice_body">
+        <!-- 單選題 -->
+        <form class="row m-2">
+            <div class="col-4 row align-content-center row">
+                <div class="number col-2" id="Q_number"></div>
+                <p class="fs-5 col my-auto" id="Q_name"></p>
+            </div>
+            <div class="col-8 row" id="Optiona"></div>
+        </form>
+    </template>
+
+    <template id="SingleChoice_Option">
+        <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="" value="">
+            <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
+                <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
+            </label>
         </div>
-        <div class="col-8 row" id="Optiona"></div>
-    </form>
-</template>
+    </template>
 
-<template id="SingleChoice_Option">
-    <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;" >
-        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="" value="">
-        <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
-            <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
-        </label>
-    </div>
-</template>
+    <template id="MultipleChoice_body">
+        <!-- 多選題 -->
+        <form class="row m-2">
+            <div class="col-4 row align-content-center row">
+                <div class="number col-2" id="Q_number"></div>
+                <p class="fs-5 col my-auto" id="Q_name"></p>
+            </div>
+            <div class="col-8 row" id="Optiona"></div>
+        </form>
+    </template>
 
-<template id="MultipleChoice_body">
-    <!-- 多選題 -->
-    <form class="row m-2">
-        <div class="col-4 row align-content-center row">
-            <div class="number col-2" id="Q_number"></div>
-            <p class="fs-5 col my-auto" id="Q_name"></p>
+    <template id="MultipleChoice_Option">
+        <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;">
+            <input class="form-check-input" type="checkbox" id="" value="">
+            <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
+                <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
+            </label>
         </div>
-        <div class="col-8 row" id="Optiona"></div>
-    </form>
-</template>
+    </template>
 
-<template id="MultipleChoice_Option">
-    <div class="form-check form-check-inline col bg-8C8C8C btn row" style="min-height: 100px; padding: 0px; margin: 10px;">
-        <input class="form-check-input" type="checkbox" id="" value="">
-        <label class="form-check-label h-100 col-12 row justify-content-center" for="" style="padding: 0px; margin: 0px;">
-            <p class="align-self-center" style="padding: 0px; margin: 0px;">80-90</p>
-        </label>
-    </div>
-</template>
+    <template id="EssayQuestion_body">
+        <form class="row m-2">
+            <div class="col-4 row align-content-center row">
+                <div class="number col-2" id="Q_number"></div>
+                <p class="fs-5 col my-auto" id="Q_name"></p>
+            </div>
+            <div class="col-8 row" id="Optiona">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </form>
+    </template>
 
-<template id="EssayQuestion_body">
-    <form class="row m-2">
-        <div class="col-4 row align-content-center row">
-            <div class="number col-2" id="Q_number"></div>
-            <p class="fs-5 col my-auto" id="Q_name"></p>
-        </div>
-        <div class="col-8 row" id="Optiona">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-    </form>
-</template>
+    <template id="CoachingGroupBTN">
+        <button class="btn btn-secondary w-100"></button>
+    </template>
 
-@section endJS {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @section endJS {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if(Model.EprocedureId == "6")
-    {
-        <script>
-            var EvaluationGroupIdList = @Html.Raw(Json.Serialize(Model.EvaluationGroupIdList));
+        @if (Model.EprocedureId == "6")
+        {
+            <script>
+                var EvaluationGroupIdList = @Html.Raw(Json.Serialize(Model.EvaluationGroupIdList));
 
-            localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
-        </script>
-    }
-    <script>
-        /*
-            單選題    SingleChoice
-            多選題    MultipleChoice
-            問答題    EssayQuestion
-            */
-        var Title;
-        var Question;
-        var questions;
-        var Evaluation;
-        var GroupIndex = 0;
-        localStorage.setItem("GroupIndex", GroupIndex);
-
-        var EprocedureId = "@Model.EprocedureId";
-        localStorage.setItem("EprocedureId", EprocedureId);
-        var Host = "@Url.Action("Index", "Home")"
-        localStorage.setItem("Host", Host);
-
-        var vm;
-        localStorage.setItem("vm", `@Json.Serialize(Model)`)
-
-        window.onload = async function () {
-
-            GroupIndex = localStorage.getItem("GroupIndex");
-            EprocedureId = localStorage.getItem("EprocedureId");
-            Host = localStorage.getItem("Host");
-
-            vm = JSON.parse(localStorage.getItem("vm"));
-
-            // 1. 取得題庫
-            questions = await getQuestions();
-            console.log(Question);
-            // 2. 顯示題庫
-            await displayQuestions();
-
-            if (EprocedureId == "6") {
-                // 3. 繪製圖片
-                await drawImage();
-            }
-        }
-
-        async function getQuestions() {
-
-            console.log("getQuestions");
-
-            var output;
-            var requestOptions = {
-                method: 'GET',
-                redirect: 'follow'
-            };
-
-            var fetchUrl = ""
-
-            if(EprocedureId == "6")
-            {
-                var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
-
-                console.log(EvaluationGroupIdList);
-                GroupIndex = localStorage.getItem("GroupIndex");
-                console.log(GroupIndex);
-
-                fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
-            }
-            else
-            {
-                fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
-            }
-
-            console.log("fetchUrl");
-            console.log(fetchUrl);
-
-            await fetch(fetchUrl, requestOptions)
-                .then(response => response.text())
-                .then((data) => {
-                    // 在这里你可以使用解析后的数据
-                    output = JSON.parse(data);
-                    console.log("topic");
-                    console.log(output.topic);
-                    Evaluation = output.evaluation;
-                    output = output.topic;
-                    Title = output.name;
-                    Question = output.questions;
-                    console.log("Evaluation");
-                    console.log(Evaluation);
-                })
-                .catch(error => console.log('error', error));
-
-            return output;
+                localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+            </script>
         }
         
-        async function displayQuestions() {
-            $("#Title").text(Title);
-            var k = 1;
-            var optId = 1;
-
-            Question.forEach(que => {
-
-                if (que.type == "0") {
-                    var options = que.options;
-                    let template = $("#SingleChoice_body").html();
-                    var formCheck = $(template);
-
-                    formCheck.find("#Q_number").text(k++);
-                    formCheck.find("#Q_name").text(que.content);
-                    options.forEach(opt => {
-                        let template2 = $("#SingleChoice_Option").html();
-                        var formCheck2 = $(template2);
-                        console.log(template2);
-                        formCheck2.find("input").attr("id", opt.optionId);
-                        formCheck2.find("input").attr("value", opt.content);
-                        formCheck2.find("label").attr("for", opt.optionId);
-                        formCheck2.find("label").attr("id", opt.optionId);
-                        formCheck2.find("label").text(opt.content);
-                        formCheck.find("#Optiona").append(formCheck2);
-                    });
-                    formCheck.appendTo("Questionnaire");
-                }
-                else if (que.type == "1") {
-                    var options = que.options;
-                    let template = $("#MultipleChoice_body").html();
-                    var formCheck = $(template);
-
-                    formCheck.find("#Q_number").text(k++);
-                    formCheck.find("#Q_name").text(que.content);
-                    options.forEach(opt => {
-                        let template2 = $("#MultipleChoice_Option").html();
-                        var formCheck2 = $(template2);
-                        console.log(template2);
-                        formCheck2.find("input").attr("id", opt.optionId);
-                        formCheck2.find("input").attr("value", opt.content);
-                        formCheck2.find("label").attr("for", opt.optionId);
-                        formCheck2.find("label").attr("id", opt.optionId);
-                        formCheck2.find("label").text(opt.content);
-                        formCheck.find("#Optiona").append(formCheck2);
-                    });
-                    formCheck.appendTo("Questionnaire");
-                }
-            });
-            Question.forEach(que => {
-                if (que.type == "2") {
-                    let template = $("#EssayQuestion_body").html();
-                    var formCheck = $(template);
-
-                    formCheck.find("textarea").attr("id", que.questionId);
-                    formCheck.find("#Q_number").text(k++);
-                    formCheck.find("#Q_name").text(que.content);
-                    formCheck.appendTo("Questionnaire");
-                }
-            });
+        @if (Model.EprocedureId == "7")
+        {
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
         }
 
-        async function drawOptionValue()
-        {
+        <script>
+            /*
+                單選題    SingleChoice
+                多選題    MultipleChoice
+                問答題    EssayQuestion
+                */
+            // -------------共用----------------
+            var vm;
+            var Title;
+            var Question;
+            var questions;
+            var Evaluation;
+            var Coaching;
+            var GroupIndex = 0;
+            var EprocedureId = "@Model.EprocedureId";
+            var Host = "@Url.Action("Index", "Home")";
+            
+            localStorage.setItem("EprocedureId", EprocedureId);
+            localStorage.setItem("Host", Host);
+            localStorage.setItem("GroupIndex", GroupIndex);
+            localStorage.setItem("vm", `@Json.Serialize(Model)`);
+
+            // -------------回饋----------------
+            var ChartData = {};
+            var GroupName = ["A組", "B組", "C組", "D組", "E組", "F組", "G組", "H組"];
+
+            window.onload = async function () {
+
+                GroupIndex = localStorage.getItem("GroupIndex");
+                EprocedureId = localStorage.getItem("EprocedureId");
+                Host = localStorage.getItem("Host");
+
+                vm = JSON.parse(localStorage.getItem("vm"));
+
+                // 1. 取得題庫
+                questions = await getQuestions();
+                console.log(Question);
+                // 2. 顯示題庫
+                await displayQuestions();
+
+                if (EprocedureId == "6") {
+                    // 3. 繪製圖片
+                    await drawImage();
+                } else if (EprocedureId == "7") {
+                    // 3. 繪製圖片
+                    await drawBTN();
+                    await setChartData();
+                    await drawChart();
+                }
+            }
+
+            async function getQuestions() {
+
+                console.log("getQuestions");
+
+                var output;
+                var requestOptions = {
+                    method: 'GET',
+                    redirect: 'follow'
+                };
+
+                var fetchUrl = ""
+
+                if (EprocedureId == "6") {
+                    var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
+
+                    console.log(EvaluationGroupIdList);
+                    GroupIndex = localStorage.getItem("GroupIndex");
+                    console.log(GroupIndex);
+
+                    fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
+                }
+                else if (EprocedureId == "7") {
+                    fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
+                }
+                else {
+                    fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
+                }
+
+                console.log("fetchUrl");
+                console.log(fetchUrl);
+
+                await fetch(fetchUrl, requestOptions)
+                    .then(response => response.text())
+                    .then((data) => {
+                        // 在这里你可以使用解析后的数据
+                        output = JSON.parse(data);
+                        console.log("topic");
+                        console.log(output.topic);
+                        Evaluation = output.evaluation;
+                        Coaching = output.coaching;
+                        output = output.topic;
+                        Title = output.name;
+                        Question = output.questions;
+                        console.log("Evaluation");
+                        console.log(Evaluation);
+                        console.log("Coaching");
+                        console.log(Coaching);
+                    })
+                    .catch(error => console.log('error', error));
+
+                return output;
+            }
+
+            async function displayQuestions() {
+                $("#Title").text(Title);
+                var k = 1;
+                var optId = 1;
+
+                Question.forEach(que => {
+
+                    if (que.type == "0") {
+                        var options = que.options;
+                        let template = $("#SingleChoice_body").html();
+                        var formCheck = $(template);
+
+                        formCheck.find("#Q_number").text(k++);
+                        formCheck.find("#Q_name").text(que.content);
+                        options.forEach(opt => {
+                            let template2 = $("#SingleChoice_Option").html();
+                            var formCheck2 = $(template2);
+                            console.log(template2);
+                            formCheck2.find("input").attr("id", opt.optionId);
+                            formCheck2.find("input").attr("value", opt.content);
+                            formCheck2.find("label").attr("for", opt.optionId);
+                            formCheck2.find("label").attr("id", opt.optionId);
+                            formCheck2.find("label").text(opt.content);
+                            formCheck.find("#Optiona").append(formCheck2);
+                        });
+                        formCheck.appendTo("Questionnaire");
+                    }
+                    else if (que.type == "1") {
+                        var options = que.options;
+                        let template = $("#MultipleChoice_body").html();
+                        var formCheck = $(template);
+
+                        formCheck.find("#Q_number").text(k++);
+                        formCheck.find("#Q_name").text(que.content);
+                        options.forEach(opt => {
+                            let template2 = $("#MultipleChoice_Option").html();
+                            var formCheck2 = $(template2);
+                            console.log(template2);
+                            formCheck2.find("input").attr("id", opt.optionId);
+                            formCheck2.find("input").attr("value", opt.content);
+                            formCheck2.find("label").attr("for", opt.optionId);
+                            formCheck2.find("label").attr("id", opt.optionId);
+                            formCheck2.find("label").text(opt.content);
+                            formCheck.find("#Optiona").append(formCheck2);
+                        });
+                        formCheck.appendTo("Questionnaire");
+                    }
+                });
+                Question.forEach(que => {
+                    if (que.type == "2") {
+                        let template = $("#EssayQuestion_body").html();
+                        var formCheck = $(template);
+
+                        formCheck.find("textarea").attr("id", que.questionId);
+                        formCheck.find("#Q_number").text(k++);
+                        formCheck.find("#Q_name").text(que.content);
+                        formCheck.appendTo("Questionnaire");
+                    }
+                });
+            }
+
+            async function drawOptionValue() {
                 Question.forEach(que => {
                     var ContentList = [];
                     if (que.type == "0") {
@@ -339,141 +399,278 @@
                     }
                 });
 
-        }
-        async function getAnswers() {
+            }
+            async function getAnswers() {
 
-            var Answers = [];
+                var Answers = [];
 
-            Question.forEach(que => {
-                var ContentList = [];
-                if (que.type == "0") {
-                    var options = que.options;
-                    options.forEach(opt => {
-                        if (document.getElementById(opt.optionId).checked) {
-                            let CList = {
-                                "OptionId": opt.optionId,
-                                "OcontentContent": document.getElementById(opt.optionId).value
-                            };
-                            ContentList.push(CList);
-                        }
-                    });
-                }
-                else if (que.type == "1") {
-                    var options = que.options;
-                    options.forEach(opt => {
-                        if (document.getElementById(opt.optionId).checked) {
-                            let CList = {
-                                "OptionId": opt.optionId,
-                                "OcontentContent": document.getElementById(opt.optionId).value
-                            };
-                            ContentList.push(CList);
-                        }
-                    });
-                }
-                else if (que.type == "2") {
-                    var ContentList = [{
+                Question.forEach(que => {
+                    var ContentList = [];
+                    if (que.type == "0") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                let CList = {
+                                    "OptionId": opt.optionId,
+                                    "OcontentContent": document.getElementById(opt.optionId).value
+                                };
+                                ContentList.push(CList);
+                            }
+                        });
+                    }
+                    else if (que.type == "1") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                let CList = {
+                                    "OptionId": opt.optionId,
+                                    "OcontentContent": document.getElementById(opt.optionId).value
+                                };
+                                ContentList.push(CList);
+                            }
+                        });
+                    }
+                    else if (que.type == "2") {
+                        var ContentList = [{
                             "OcontentContent": document.getElementById(que.questionId).value
-                    }];
-                }
+                        }];
+                    }
 
-                var answer = {
-                    "QuestionId": que.questionId,
-                    "Content": ContentList
-                };
+                    var answer = {
+                        "QuestionId": que.questionId,
+                        "Content": ContentList
+                    };
 
-                Answers.push(answer);
-            });
+                    Answers.push(answer);
+                });
 
-            console.log("Answers");
-            console.log(Answers);
+                console.log("Answers");
+                console.log(Answers);
 
-            return Answers;
-        }
-
-        async function sendAnswers(answers) {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            var send = {
-                "UID" : vm.uid,
-                "MissionId" : vm.missionId,
-                "Answers" : answers
-            };
-
-            if(vm.eprocedureId == "6")
-            {
-                var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
-
-                send.PostUid = EvaluationGroupIdList[GroupIndex],
-                send.EprocedureId = EprocedureId
+                return Answers;
             }
 
-            console.log(send);
+            async function sendAnswers(answers) {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
 
-            var raw = JSON.stringify(send);
+                var send = {
+                    "UID": vm.uid,
+                    "MissionId": vm.missionId,
+                    "Answers": answers
+                };
 
-            console.log(raw);
+                if (vm.eprocedureId == "6") {
+                    var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
 
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+                    send.PostUid = EvaluationGroupIdList[GroupIndex],
+                        send.EprocedureId = EprocedureId
+                }
+
+                console.log(send);
+
+                var raw = JSON.stringify(send);
+
+                console.log(raw);
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
 
                 await fetch(`${Host}api/Questionnaire`, requestOptions)
-                .then(response => response.text())
-                .then(result => console.log(result))
-                .catch(error => console.log('error', error));
-        }
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+            }
 
-        // 確認送出
-        $("#Submit").click(async function () {
-            // 3.1 取得答案
-            var answers = await getAnswers();
-            console.log(answers);
-            // 3.2 送出答案
-            sendAnswers(answers);
+            // 確認送出
+            $("#Submit").click(async function () {
+                // 3.1 取得答案
+                var answers = await getAnswers();
+                console.log(answers);
+                // 3.2 送出答案
+                sendAnswers(answers);
 
-            Swal.fire({
-                title: '送出後無法更改喔，確定要送出嗎?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: '送出',
-                denyButtonText: `再想想`,
-                preConfirm: async () => {
-                    if (GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
+                Swal.fire({
+                    title: '送出後無法更改喔，確定要送出嗎?',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: '送出',
+                    denyButtonText: `再想想`,
+                    preConfirm: async () => {
+                        if (GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
+                        {
+                            GroupIndex++;
+                            await localStorage.setItem("GroupIndex", GroupIndex);
+                            localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+                            questions = await getQuestions();
+                            console.log(Question);
+                            await drawOptionValue();
+                            await drawImage();
+                        }
+                        else {
+                            localStorage.clear();
+                            document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                        }
+                    },
+                }).then((result) => async function () {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+
+                        await Swal.fire('Saved!', '', 'success')
+
+
+                    } else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
+            });
+
+            // 繪製圖片
+            function drawImage() {
+                $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
+                $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
+            }
+
+            // 繪製圖表
+            async function drawChart() {
+                var chartDom = document.getElementById('bar');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                option = {
+                    title: {
+                        text: '長條圖'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['邏輯性', '正確性', '可讀性']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        min: 0,
+                        max: 3,
+                        position: 'left',
+                    },
+                    series: [
+                        {
+                            data: ChartData["bar"],
+                            type: 'bar'
+                        }
+                    ]
+                };
+
+                option && myChart.setOption(option);
+
+
+                var chartDom = document.getElementById('radar');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                option = {
+                  title: {
+                    text: '雷達圖'
+                  },
+                  legend: {
+                    left: 'center',
+                    top: 'bottom',
+                    data: [ChartData["radar01_name"], ChartData["radar02_name"]]
+                  },
+                  radar: {
+                    // shape: 'circle',
+                    indicator: [
+                      { name: '邏輯性', max: 3 },
+                      { name: '正確性', max: 3 },
+                      { name: '可讀性', max: 3 }
+                    ]
+                  },
+                  series: [
                     {
-                        GroupIndex++;
-                        await localStorage.setItem("GroupIndex", GroupIndex);
-                        localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
-                        questions = await getQuestions();
-                        console.log(Question);
-                        await drawOptionValue();
-                        await drawImage();
+                      name: 'Budget vs spending',
+                      type: 'radar',
+                      data: [
+                        {
+                          value: ChartData["radar01"],
+                          name: ChartData["radar01_name"]
+                        },
+                        {
+                          value: ChartData["radar02"],
+                          name: ChartData["radar02_name"]
+                        }
+                      ]
                     }
-                    else {
-                        localStorage.clear();
-                        document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
-                    }
-                },
-            }).then((result) => async function() {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
+                  ]
+                };
 
-                    await Swal.fire('Saved!', '', 'success')
+                option && myChart.setOption(option);
+            }
 
-                    
-                } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
+            async function setChartData() {
+                ChartData = {};
+                let group_index = localStorage.getItem("GroupIndex");
+
+                if (group_index == null) {
+                    group_index = 0;
                 }
-            })
-        });
 
-        // 繪製圖片
-        function drawImage() {
-            $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
-            $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
-        }
-    </script>
-}
+                if (group_index == 0) {
+                    ChartData["bar"] = [Coaching.classAgv.pE01, Coaching.classAgv.pE02, Coaching.classAgv.pE03];
+                    ChartData["radar01"] = [Coaching.classAgv.pE01, Coaching.classAgv.pE02, Coaching.classAgv.pE03];
+                    ChartData["radar01_name"] = "班級平均";
+                    ChartData["radar02"] = await [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
+                    ChartData["radar02_name"] = "小組平均";
+                    await drawChart();
+                }
+                else if (group_index > 0 && group_index <= Coaching.groups.length)
+                {
+                    ChartData["bar"] = [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
+                    ChartData["radar01"] = [Coaching.groups[group_index-1].coachingScore.pE01, Coaching.groups[group_index-1].coachingScore.pE02, Coaching.groups[group_index-1].coachingScore.pE03];
+                    ChartData["radar01_name"] = "小組分數";
+                    ChartData["radar02"] = await [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
+                    ChartData["radar02_name"] = "小組平均";
+
+                    // console.log("小組分數");
+                    // console.log(ChartData["radar01"]);
+                }
+                else {
+                    await drawChart();
+                }
+            }
+
+            // 繪製按鈕
+            async function drawBTN() {
+                $("#btn_list").empty();
+                Coaching.groups.forEach((g, index) => {
+                    var btn = `<button type="button" class="btn btn-secondary w-100 col mx-2" onclick="changeGroup(${index+1})">${GroupName[index]}</button>`;
+                    $("#btn_list").append(btn);
+                });
+            }
+
+            // 切換小組
+            async function changeGroup(index) {
+                GroupIndex = index;
+                await localStorage.setItem("GroupIndex", GroupIndex);
+                questions = await getQuestions();
+                await showEvaluationText(GroupIndex);
+                await setChartData();
+                await drawChart();
+            }
+
+            // 顯示評價文字
+            async function showEvaluationText(group_index) {
+                $("#EvaluationText").empty();
+                if (group_index > 0) { 
+                    var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}給予的評價</h3>`;
+                    $("#EvaluationText").append(p);
+
+                    Coaching.groups[group_index - 1].evaluation.forEach((e, index) => {
+                        var p = `<p class="mt-1 ms-2">${index + 1}. ${e}</p>`;
+                        $("#EvaluationText").append(p);
+                    })
+                }
+            }
+        </script>
+    }

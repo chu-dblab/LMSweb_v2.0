@@ -74,6 +74,41 @@ namespace LMSweb.Services
             return LeaderGroupList;
         }
 
+        public void SaveAnswerByEvaluation(PostViewModel postViewModel)
+        {
+            var uid = _context.Users.Find(postViewModel.UID);
+            if (uid != null && postViewModel.UID != null && postViewModel.PostUid != null)
+            {
+                var _EvaluationCoaching = _context.EvaluationCoachings.Where(x => x.AUID == postViewModel.UID && x.BUID == postViewModel.PostUid && x.MissionId == postViewModel.MissionId).FirstOrDefault();
+                if (_EvaluationCoaching != null)
+                {
+                    var saveString = "";
+
+                    foreach (var answer in postViewModel.Answers)
+                    {
+                        foreach (var option in answer.Content)
+                        {
+                            var question = _context.Questions.Find(answer.QuestionId);
+
+                            if (question.Qtype is "0" or "1")
+                            {
+                                saveString += $@"{answer.QuestionId}:{option.OptionId}";
+                            }
+                            else
+                            {
+                                saveString += $@"{answer.QuestionId}:{option.OcontentContent}";
+                            }
+                            saveString += ",";
+                        }
+                    }
+
+                    _EvaluationCoaching.Evaluation = saveString;
+                }
+
+                _context.SaveChanges();
+            }
+        }
+
         public List<string> GetCoachingLeaderList(string mid, string uid)
         {
             var LeaderGroupList = (from ec in _context.EvaluationCoachings
@@ -153,7 +188,46 @@ namespace LMSweb.Services
             group.CoachingScore.PE02 = scoreDict["PE02"];
             group.CoachingScore.PE03 = scoreDict["PE03"];
 
+            group.GroupLeaderId = auid;
+
             return group;
+        }
+
+        public CoachingScore GetCoachingGroupAgv(string mid, string buid)
+        {
+            var GroupScore = (from ec in _context.EvaluationCoachings
+                              where ec.MissionId == mid && ec.BUID == buid
+                              select ec.Evaluation).ToList();
+
+            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+            scoreDict.Add("PE01", 0);
+            scoreDict.Add("PE02", 0);
+            scoreDict.Add("PE03", 0);
+
+            foreach (var item in GroupScore)
+            {
+                var score = item.Split(',').ToList();
+                var scoreList = new List<int>();
+
+                foreach (var s in score)
+                {
+                    var scoreSplit = s.Split(':').ToList();
+                    if (scoreDict.ContainsKey(scoreSplit[0]))
+                    {
+                        scoreDict[key: scoreSplit[0]] += GetScore(int.Parse(scoreSplit[1]));
+                    }
+                }
+            }
+
+            var GroupAgv = new CoachingScore() 
+            {
+                PE01 = scoreDict["PE01"] / GroupScore.Count,
+                PE02 = scoreDict["PE02"] / GroupScore.Count,
+                PE03 = scoreDict["PE03"] / GroupScore.Count
+            };
+
+            return GroupAgv;
         }
 
         public Coaching GetCoaching(string mid, string uid)
@@ -164,6 +238,7 @@ namespace LMSweb.Services
             var CoachingLeaderList = GetCoachingLeaderList(mid, uid);
 
             output.ClassAgv = GetClassAgv(mid);
+            output.GroupAgv = GetCoachingGroupAgv(mid, uid);
 
             foreach (var leader in CoachingLeaderList)
             {
@@ -187,5 +262,41 @@ namespace LMSweb.Services
 
             return score;
         }
+
+        public void SaveAnswerByCoaching(PostViewModel postViewModel)
+        {
+            var uid = _context.Users.Find(postViewModel.UID);
+            if (uid != null && postViewModel.UID != null && postViewModel.PostUid != null)
+            {
+                var _EvaluationCoaching = _context.EvaluationCoachings.Where(x => x.BUID == postViewModel.UID && x.AUID == postViewModel.PostUid && x.MissionId == postViewModel.MissionId).FirstOrDefault();
+                if (_EvaluationCoaching != null)
+                {
+                    var saveString = "";
+
+                    foreach (var answer in postViewModel.Answers)
+                    {
+                        foreach (var option in answer.Content)
+                        {
+                            var question = _context.Questions.Find(answer.QuestionId);
+
+                            if (question.Qtype is "0" or "1")
+                            {
+                                saveString += $@"{answer.QuestionId}:{option.OptionId}";
+                            }
+                            else
+                            {
+                                saveString += $@"{answer.QuestionId}:{option.OcontentContent}";
+                            }
+                            saveString += ",";
+                        }
+                    }
+
+                    _EvaluationCoaching.Coaching = saveString;
+                }
+
+                _context.SaveChanges();
+            }
+        }
+
     }
 }

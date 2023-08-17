@@ -58,6 +58,7 @@ namespace LMSweb.Controllers.Questionnaire
             }
             ReGetVM.Topic = Topic;
 
+            // 互評
             if(groupLeaderId != null)
             {
                 if (EprocedureId == "6")
@@ -93,6 +94,7 @@ namespace LMSweb.Controllers.Questionnaire
                 }
             }
 
+            // 回饋
             if (EprocedureId == "7")
             {
                 var _Coaching = new LMSweb.ViewModels.Questionnaire.Coaching();
@@ -113,6 +115,8 @@ namespace LMSweb.Controllers.Questionnaire
         public IActionResult Post([FromBody] PostViewModel vm)
         {
             var EprocedureSercices = new EprocedureSercices(_context);
+            var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+
             if (vm == null) { return NotFound(); }
             else
             {
@@ -122,8 +126,13 @@ namespace LMSweb.Controllers.Questionnaire
                 }
                 else if(vm.EprocedureId == "6")
                 {
-                    EprocedureSercices.SaveAnswerByEvaluation(vm);
+                    _EvaluationCoachingServices.SaveAnswerByEvaluation(vm);
                     //Debug.WriteLine(vm);
+                }
+                else if(vm.EprocedureId == "7")
+                {
+                    //_EvaluationCoachingServices.SaveAnswerByCoaching(vm);
+                    Debug.WriteLine(vm);
                 }
                
                 return Ok();

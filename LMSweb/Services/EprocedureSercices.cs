@@ -167,41 +167,6 @@ namespace LMSweb.Services
             }
         }
 
-        public void SaveAnswerByEvaluation(PostViewModel postViewModel)
-        {
-            var uid = _context.Users.Find(postViewModel.UID);
-            if (uid != null && postViewModel.UID != null && postViewModel.PostUid != null)
-            {
-                var _EvaluationCoaching = _context.EvaluationCoachings.Where(x => x.AUID == postViewModel.UID && x.BUID == postViewModel.PostUid && x.MissionId == postViewModel.MissionId).FirstOrDefault();
-                if (_EvaluationCoaching != null)
-                {
-                    var saveString = "";
-
-                    foreach(var answer in postViewModel.Answers)
-                    {
-                        foreach(var option in answer.Content)
-                        {
-                            var question = _context.Questions.Find(answer.QuestionId);
-
-                            if(question.Qtype == "0" || question.Qtype == "1")
-                            {
-                                saveString += $@"{answer.QuestionId}:{option.OptionId}";
-                            }
-                            else
-                            {
-                                saveString += $@"{answer.QuestionId}:{option.OcontentContent}";
-                            }
-                            saveString += ",";
-                        }
-                    }
-
-                    _EvaluationCoaching.Evaluation = saveString;
-                }
-
-                _context.SaveChanges();
-            }
-        }
-
         // 判斷是否已經填寫過問卷
         public bool IsAnswered(string uid, string missionId, string eprocedureId)
         {

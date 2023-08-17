@@ -1,9 +1,7 @@
-﻿using LMSweb.Assets;
-using LMSweb.Data;
+﻿using LMSweb.Data;
 using LMSweb.Services;
 using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Mvc;
-using static LMSweb.Assets.GlobalClass;
 
 namespace LMSweb.Controllers.Questionnaire
 {
