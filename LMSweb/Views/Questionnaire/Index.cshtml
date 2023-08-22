@@ -709,13 +709,18 @@
             async function showEvaluationText(group_index) {
                 $("#EvaluationText").empty();
                 if (group_index > 0) { 
-                    var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}給予的評價</h3>`;
-                    $("#EvaluationText").append(p);
-
-                    Coaching.groups[group_index - 1].evaluation.forEach((e, index) => {
-                        var p = `<p class="mt-1 ms-2">${index + 1}. ${e}</p>`;
+                    if (Coaching.groups[group_index - 1].coachingScore.pE01 == 0) {
+                        var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}尚未給予評價</h3>`;
                         $("#EvaluationText").append(p);
-                    })
+                    } else {
+                        var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}給予的評價</h3>`;
+                        $("#EvaluationText").append(p);
+
+                        Coaching.groups[group_index - 1].evaluation.forEach((e, index) => {
+                            var p = `<p class="mt-1 ms-2">${index + 1}. ${e}</p>`;
+                            $("#EvaluationText").append(p);
+                        })
+                    }
                 }
             }
 

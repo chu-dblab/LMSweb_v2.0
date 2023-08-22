@@ -181,7 +181,7 @@ namespace LMSweb.Services
             if(group_score.Evaluation == null)
             {
                 group.CoachingScore = NoSumitOutput;
-                group.IsSubmit = false;
+                group.IsSubmit = true;
 
                 return group;
             }
@@ -236,6 +236,9 @@ namespace LMSweb.Services
 
             foreach (var item in GroupScore)
             {
+                if (item == null)
+                    return NoSumitOutput;
+
                 var score = item.Split(',').ToList();
                 var scoreList = new List<int>();
 
