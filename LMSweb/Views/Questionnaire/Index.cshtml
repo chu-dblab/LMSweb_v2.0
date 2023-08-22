@@ -510,7 +510,7 @@
                 var answers = await getAnswers();
                 console.log(answers);
                 // 3.2 送出答案
-                sendAnswers(answers);
+                
 
                 Swal.fire({
                     title: '送出後無法更改喔，確定要送出嗎?',
@@ -519,6 +519,9 @@
                     confirmButtonText: '送出',
                     denyButtonText: `再想想`,
                     preConfirm: async () => {
+
+                        await sendAnswers(answers);
+
                         if (GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
                         {
                             GroupIndex++;

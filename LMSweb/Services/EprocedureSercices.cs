@@ -140,25 +140,25 @@ namespace LMSweb.Services
                             _answer.QuestionId = answer.QuestionId;
 
                             _context.Answers.Add(_answer);
-                            _context.SaveChanges();
 
                             aidList.Add(aid_str);
                         }
                     }
                 }
 
+                _context.SaveChanges();
+
                 var provided = new Provided();
                 
                 foreach (var aid in aidList)
                 {
-                    provided.AnswerId = aid;
-                    provided.MissionId = postViewModel.MissionId;
-                    provided.UserId = postViewModel.UID;
-
                     var p = _context.Provideds.Where(x => x.UserId == postViewModel.UID && x.MissionId == postViewModel.MissionId && x.AnswerId == aid).FirstOrDefault();
                     
                     if (p == null)
                     {
+                        provided.AnswerId = aid;
+                        provided.MissionId = postViewModel.MissionId;
+                        provided.UserId = postViewModel.UID;
                         _context.Provideds.Add(provided);
                         _context.SaveChanges();
                     }

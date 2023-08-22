@@ -27,6 +27,7 @@
         GuideString = Model.CurrentStatus;
         TestType = TestType = Model.TestType;
         if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
+        else if (Model.TestType == 1) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
         else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
 
     }
