@@ -287,7 +287,7 @@
         var cid = '@Model.CourseId';
         console.log(gn);
         $.ajax({
-            url: `@Url.Action("Index", "Home")api/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
+            url: `@Url.Action("Index", "api")/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
             method: "post",
             contentType: 'application/json',
             //data: JSON.stringify({ RandomNumber: gn , cid : cid}),

@@ -214,7 +214,7 @@
             var Coaching;
             var GroupIndex = 0;
             var EprocedureId = "@Model.EprocedureId";
-            var Host = "@Url.Action("Index", "Home")";
+            var Host = "@Url.Action("Index", "api")";
             
             localStorage.setItem("EprocedureId", EprocedureId);
             localStorage.setItem("Host", Host);
@@ -271,13 +271,13 @@
                     GroupIndex = localStorage.getItem("GroupIndex");
                     console.log(GroupIndex);
 
-                    fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
+                    fetchUrl = await `${Host}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
                 }
                 else if (EprocedureId == "7") {
-                    fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
+                    fetchUrl = `${Host}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
                 }
                 else {
-                    fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
+                    fetchUrl = `${Host}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
                 }
 
                 console.log("fetchUrl");
@@ -497,7 +497,7 @@
                     redirect: 'follow'
                 };
 
-                await fetch(`${Host}api/Questionnaire`, requestOptions)
+                await fetch(`${Host}/Questionnaire`, requestOptions)
                     .then(response => response.text())
                     .then(result => console.log(result))
                     .catch(error => console.log('error', error));
