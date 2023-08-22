@@ -64,7 +64,7 @@ namespace LMSweb.Services
                         stu_random_index = random.Next(0, student_list.Count());
                     }
 
-                    student_list[stu_index].GroupId = GroupList[GroupList_index++];
+                    student_list[stu_random_index].GroupId = GroupList[GroupList_index++];
 
                     if (GroupList_index == n)
                     {
@@ -90,7 +90,8 @@ namespace LMSweb.Services
 
                 foreach (var g in GroupList)
                 {
-                    student_list.Where(s => s.GroupId == g).First().IsLeader = true;
+                    var temp = student_list.Where(s => s.GroupId == g).ToList();
+                    temp.First().IsLeader = true;
                 }
 
                 if (GoodGroup)
