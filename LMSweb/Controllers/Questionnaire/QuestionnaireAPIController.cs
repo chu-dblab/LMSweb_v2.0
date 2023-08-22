@@ -73,7 +73,7 @@ namespace LMSweb.Controllers.Questionnaire
 
                     var D_url = (from ec in _context.ExecutionContents
                                  from s in _context.Students
-                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "D"
+                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "D" && ec.MissionId == mid
                                  select new
                                  {
                                      DrawingUrl = ec.Path,
@@ -81,7 +81,7 @@ namespace LMSweb.Controllers.Questionnaire
 
                     var C_url = (from ec in _context.ExecutionContents
                                  from s in _context.Students
-                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "C"
+                                 where s.StudentId == groupLeaderId && ec.GroupId == s.GroupId && ec.Type == "C" && ec.MissionId == mid
                                  select new
                                  {
                                      CodingUrl = ec.Path,

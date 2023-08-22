@@ -271,7 +271,7 @@
                     GroupIndex = localStorage.getItem("GroupIndex");
                     console.log(GroupIndex);
 
-                    fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}`
+                    fetchUrl = await `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
                 }
                 else if (EprocedureId == "7") {
                     fetchUrl = `${Host}api/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
@@ -372,7 +372,7 @@
                                                 <div class="col-1"></div>
                                             </div>`)
 
-                if ((EprocedureId == "6") && (Evaluation.drawingUrl == "" || Evaluation.codingUrl == "")) { 
+                if ((EprocedureId == "6") && (Evaluation.drawingUrl == `` || Evaluation.codingUrl == ``)) { 
                     $("#Questionnaire").empty();
                     $("#Questionnaire").hide();
                 }
@@ -525,7 +525,8 @@
                             localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
                             questions = await getQuestions();
                             console.log(Question);
-                            await drawOptionValue();
+                            await setEvaluationTitle();
+                            await displayQuestions();
                             await drawImage();
                         } else if (EprocedureId == "7") {
                             let out = true;
@@ -568,8 +569,15 @@
 
             // 繪製圖片
             function drawImage() {
-                $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
-                $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
+
+                if (Evaluation.drawingUrl == "" || Evaluation.codingUrl == "") {
+                    $("#Drawing-img").attr("src", ``);
+                    $("#Coding-img").attr("src", ``);
+                }
+                else {
+                    $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
+                    $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
+                }
             }
 
             // 繪製圖表

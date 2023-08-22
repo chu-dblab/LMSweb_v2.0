@@ -7,10 +7,18 @@ namespace LMSweb.Services
     public class EvaluationCoachingServices
     {
         private readonly LMSContext _context;
+        private readonly CoachingScore NoSumitOutput;
 
         public EvaluationCoachingServices(LMSContext context)
         {
             _context = context;
+
+            NoSumitOutput = new CoachingScore()
+            {
+                PE01 = 0,
+                PE02 = 0,
+                PE03 = 0,
+            };
         }
 
         public void SetEvaluationCoaching(string mid)
@@ -123,6 +131,8 @@ namespace LMSweb.Services
                               where ec.MissionId == mid
                               select ec.Evaluation).ToList();
 
+            
+
             Dictionary<string, int> scoreDict = new Dictionary<string, int>();
 
             scoreDict.Add("PE01", 0);
@@ -131,6 +141,9 @@ namespace LMSweb.Services
 
             foreach (var item in ClassScore)
             {
+                if(item == null)
+                    return NoSumitOutput;
+
                 var score = item.Split(',').ToList();
                 var scoreList = new List<int>();
 
@@ -164,6 +177,15 @@ namespace LMSweb.Services
                                    ec.Evaluation,
                                    ec.Coaching
                                }).FirstOrDefault();
+
+            if(group_score.Evaluation == null)
+            {
+                group.CoachingScore = NoSumitOutput;
+                group.IsSubmit = false;
+
+                return group;
+            }
+                
 
             if (group_score.Coaching != null)
                 group.IsSubmit = true;
