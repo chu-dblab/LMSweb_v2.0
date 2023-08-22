@@ -214,11 +214,12 @@
             var Coaching;
             var GroupIndex = 0;
             var EprocedureId = "@Model.EprocedureId";
-            var Host = "@Url.Action("Index", "Home")";
-            var apiHost = "@Url.Action("Index", "api")";
+            // var Host = "@Url.Action("Index", "Home")";
+            var mvcHost = `@Url.Action("Details", "Mission")`;
+            var apiHost = `/api${@Url.Action("Index","Questionnaire")}`;
             
             localStorage.setItem("EprocedureId", EprocedureId);
-            localStorage.setItem("Host", Host);
+            localStorage.setItem("Host", mvcHost);
             localStorage.setItem("GroupIndex", GroupIndex);
             localStorage.setItem("vm", `@Json.Serialize(Model)`);
 
@@ -272,13 +273,13 @@
                     GroupIndex = localStorage.getItem("GroupIndex");
                     console.log(GroupIndex);
 
-                    fetchUrl = await `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
+                    fetchUrl = `${apiHost}?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
                 }
                 else if (EprocedureId == "7") {
-                    fetchUrl = `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
+                    fetchUrl = `${apiHost}?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`
                 }
                 else {
-                    fetchUrl = `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
+                    fetchUrl = `${apiHost}?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}`
                 }
 
                 console.log("fetchUrl");
@@ -411,6 +412,7 @@
                 });
 
             }
+            
             async function getAnswers() {
 
                 var Answers = [];
@@ -498,7 +500,7 @@
                     redirect: 'follow'
                 };
 
-                await fetch(`${apiHost}/Questionnaire`, requestOptions)
+                await fetch(`${apiHost}`, requestOptions)
                     .then(response => response.text())
                     .then(result => console.log(result))
                     .catch(error => console.log('error', error));
@@ -541,7 +543,7 @@
                             if(out == true)
                             {
                                 localStorage.clear();
-                                document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                                document.location.href = `${mvcHost}?cid=${vm.courseId}&mid=${vm.missionId}`;
                             }
                             else
                             {
@@ -555,7 +557,7 @@
                         }
                         else {
                             localStorage.clear();
-                            document.location.href = `${Host}Mission/Details?cid=${vm.courseId}&mid=${vm.missionId}`;
+                            document.location.href = `${mvcHost}?cid=${vm.courseId}&mid=${vm.missionId}`;
                         }
                     },
                 }).then((result) => async function () {
