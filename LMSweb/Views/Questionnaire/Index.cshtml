@@ -214,7 +214,7 @@
             var Coaching;
             var GroupIndex = 0;
             var EprocedureId = "@Model.EprocedureId";
-            // var Host = "@Url.Action("Index", "Home")";
+            var Host = "@Url.Action("Index", "Home")";
             var mvcHost = `@Url.Action("Details", "Mission")`;
             var apiHost = `@Url.Action("Index","api")/Questionnaire`;
             
@@ -581,8 +581,10 @@
                     $("#Coding-img").attr("src", ``);
                 }
                 else {
-                    $("#Drawing-img").attr("src", `${Host}${Evaluation.drawingUrl}`);
-                    $("#Coding-img").attr("src", `${Host}${Evaluation.codingUrl}`);
+                    let a = ``;
+                    if(Host != `/`) a = `/`;
+                    $("#Drawing-img").attr("src", `${Host}${a}${Evaluation.drawingUrl}`);
+                    $("#Coding-img").attr("src", `${Host}${a}${Evaluation.codingUrl}`);
                 }
             }
 
