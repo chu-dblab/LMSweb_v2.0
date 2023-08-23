@@ -356,6 +356,23 @@ namespace LMSweb.Controllers
                 _context.Missions.Add(missionData);
                 _context.SaveChanges();
 
+                // 新增任務後，將該任務的資料新增至Executions資料表中
+                var students = _context.Students.Where(x => x.CourseId == currentCID && x.IsLeader == true).ToList();
+                foreach (var student in students)
+                {
+                    var executionData = new Execution
+                    {
+                        MissionId = missionData.Mid,
+                        GroupId = student.GroupId ?? 0,
+                        CurrentStatus = GlobalClass.DefaultCurrentStatus(test_type)
+                    };
+                    _context.Executions.Add(executionData);
+                    _context.SaveChanges();
+                }
+
+                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+                _EvaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
+
                 return RedirectToAction("Index", new { cid = formdata.CourseID });
             }
 
