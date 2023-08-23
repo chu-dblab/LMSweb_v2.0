@@ -216,7 +216,7 @@
             var EprocedureId = "@Model.EprocedureId";
             // var Host = "@Url.Action("Index", "Home")";
             var mvcHost = `@Url.Action("Details", "Mission")`;
-            var apiHost = `/api${@Url.Action("Index","Questionnaire")}`;
+            var apiHost = `@Url.Action("Index","api")/Questionnaire`;
             
             localStorage.setItem("EprocedureId", EprocedureId);
             localStorage.setItem("Host", mvcHost);
