@@ -10,25 +10,28 @@ namespace LMSweb.Controllers.Questionnaire
     public class QuestionnaireController : Controller
     {
         private readonly LMSContext _context;
+        private readonly EprocedureSercices _eprocedureServices;
+        private readonly EvaluationCoachingServices _evaluationCoachingServices;
 
-        public QuestionnaireController(LMSContext context)
+        public QuestionnaireController(LMSContext context, EprocedureSercices eprocedureServices, 
+            EvaluationCoachingServices evaluationCoachingServices)
         {
             _context = context;
+            _eprocedureServices = eprocedureServices;
+            _evaluationCoachingServices = evaluationCoachingServices;
         }
 
         public IActionResult Index(QuestionnaireIndexViewModel vm)
         {
-            var eprocedureServices = new EprocedureSercices(_context);
-
             if(vm.CourseId == null || vm.MissionId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
 
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");
-            var eid = eprocedureServices.GetEprocedureId(Convert.ToInt32(vm.TaskType), Convert.ToInt32(vm.TaskSteps));
+            var eid = _eprocedureServices.GetEprocedureId(Convert.ToInt32(vm.TaskType), Convert.ToInt32(vm.TaskSteps));
             
-            if (eprocedureServices.IsAnswered(UID.Value, vm.MissionId, eid))
+            if (_eprocedureServices.IsAnswered(UID.Value, vm.MissionId, eid))
             {
                 return RedirectToAction("Answer", "Questionnaire", new { cid = vm.CourseId, mid = vm.MissionId, EprocedureId = eid });
             }
@@ -38,8 +41,8 @@ namespace LMSweb.Controllers.Questionnaire
             vm.EvaluationGroupIdList = new List<string>();
             if (eid == "6")
             {
-                var ECservices = new EvaluationCoachingServices(_context);
-                var _EvaluationGroupIdList = ECservices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
+                //var ECservices = new EvaluationCoachingServices(_context);
+                var _EvaluationGroupIdList = _evaluationCoachingServices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
 
                 foreach( var _EvaluationGroupId in _EvaluationGroupIdList )
                 {
@@ -64,9 +67,7 @@ namespace LMSweb.Controllers.Questionnaire
             vm.MissionName = _context.Missions.Find(mid).Mname;
             vm.Title = _context.ExperimentalProcedures.Find(EprocedureId).Name;
 
-            var eprocedureServices = new EprocedureSercices(_context);
-
-            vm.Answers = eprocedureServices.GetAnswer(UID.Value, mid, EprocedureId);
+            vm.Answers = _eprocedureServices.GetAnswer(UID.Value, mid, EprocedureId);
 
             return View(vm);
         }

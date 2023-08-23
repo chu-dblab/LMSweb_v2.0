@@ -39,6 +39,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddTransient<FileUploadService>();
 builder.Services.AddTransient<EprocedureSercices>();
 builder.Services.AddTransient<GroupServices>();
+builder.Services.AddTransient<EvaluationCoachingServices>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
