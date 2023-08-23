@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using LMSweb.ViewModels.Questionnaire;
 using LMSweb.Services;
 using LMSweb.Data;
-using System.Diagnostics;
 
 namespace LMSweb.Controllers.Questionnaire
 {
@@ -12,10 +10,14 @@ namespace LMSweb.Controllers.Questionnaire
     public class QuestionnaireAPIController : ControllerBase
     {
         private readonly LMSContext _context;
+        private readonly EprocedureSercices _eprocedureSercices;
+        private readonly EvaluationCoachingServices _evaluationCoachingServices;
 
-        public QuestionnaireAPIController(LMSContext context)
+        public QuestionnaireAPIController(LMSContext context, EprocedureSercices eprocedureSercices, EvaluationCoachingServices evaluationCoachingServices)
         {
             _context = context;
+            _eprocedureSercices = eprocedureSercices;
+            _evaluationCoachingServices = evaluationCoachingServices;
         }
 
         //[HttpGet]
@@ -43,14 +45,14 @@ namespace LMSweb.Controllers.Questionnaire
         public IActionResult Get(int tasktype, int tasksteps, string? groupLeaderId, string? mid, string? uid)
         {
             var ReGetVM = new ReGetViewModel();
-            var EprocedureSercices = new EprocedureSercices(_context);
-            var EprocedureId = EprocedureSercices.GetEprocedureId(tasktype, tasksteps);
+            //var EprocedureSercices = new EprocedureSercices(_context);
+            var EprocedureId = _eprocedureSercices.GetEprocedureId(tasktype, tasksteps);
 
             if (EprocedureId == "D" || EprocedureId == "C")
             {
                 return NotFound();
             }
-            var Topic = EprocedureSercices.GetEprocedureContent(EprocedureId);
+            var Topic = _eprocedureSercices.GetEprocedureContent(EprocedureId);
 
             if (Topic == null)
             {
@@ -63,7 +65,7 @@ namespace LMSweb.Controllers.Questionnaire
             {
                 if (EprocedureId == "6")
                 {
-                    var _Evaluation = new LMSweb.ViewModels.Questionnaire.Evaluation();
+                    var _Evaluation = new Evaluation();
 
                     var gL = _context.Students.Find(groupLeaderId);
                     var groupId = _context.Students.Find(groupLeaderId).GroupId;
@@ -106,12 +108,10 @@ namespace LMSweb.Controllers.Questionnaire
             // 回饋
             if (EprocedureId == "7")
             {
-                var _Coaching = new LMSweb.ViewModels.Questionnaire.Coaching();
-
-                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+                var _Coaching = new Coaching();
 
                 if (mid != null && uid != null)
-                    _Coaching = _EvaluationCoachingServices.GetCoaching(mid, uid);
+                    _Coaching = _evaluationCoachingServices.GetCoaching(mid, uid);
 
                 ReGetVM.Coaching = _Coaching;
             }
@@ -123,24 +123,24 @@ namespace LMSweb.Controllers.Questionnaire
         [HttpPost]
         public IActionResult Post([FromBody] PostViewModel vm)
         {
-            var EprocedureSercices = new EprocedureSercices(_context);
-            var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+            //var EprocedureSercices = new EprocedureSercices(_context);
+            //var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
 
             if (vm == null) { return NotFound(); }
             else
             {
                 if(vm.EprocedureId == null)
                 {
-                    EprocedureSercices.SaveAnswer(vm);
+                    _eprocedureSercices.SaveAnswer(vm);
                 }
                 else if(vm.EprocedureId == "6")
                 {
-                    _EvaluationCoachingServices.SaveAnswerByEvaluation(vm);
+                    _evaluationCoachingServices.SaveAnswerByEvaluation(vm);
                     //Debug.WriteLine(vm);
                 }
                 else if(vm.EprocedureId == "7")
                 {
-                    _EvaluationCoachingServices.SaveAnswerByCoaching(vm);
+                    _evaluationCoachingServices.SaveAnswerByCoaching(vm);
                     //Debug.WriteLine(vm);
                 }
                

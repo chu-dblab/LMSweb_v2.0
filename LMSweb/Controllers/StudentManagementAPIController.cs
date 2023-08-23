@@ -10,10 +10,12 @@ namespace LMSweb.Controllers
     public class StudentManagementAPIController : ControllerBase
     {
         private readonly LMSContext _context;
+        private readonly GroupServices _groupService;
 
-        public StudentManagementAPIController(LMSContext context)
+        public StudentManagementAPIController(LMSContext context, GroupServices groupService)
         {
             _context = context;
+            _groupService = groupService;
         }
 
         // api/StudentManagementAPI/GroupRandomCreate
@@ -21,10 +23,10 @@ namespace LMSweb.Controllers
         public IActionResult GroupRandomCreate(int RandomNumber, string cid)
         {
             var GroupRandomCreateVM = new GroupRandomCreateViewModel();
-            var GroupSer = new GroupServices(_context);
+            //var GroupSer = new GroupServices(_context);
             //GroupRandomCreateVM = GroupRandomCreateServices.GetGroupRandomCreateVM();
 
-            GroupSer.GetGroupRandomCreateVM(RandomNumber, cid);
+            _groupService.GetGroupRandomCreateVM(RandomNumber, cid);
 
             if (GroupRandomCreateVM == null)
             {
