@@ -9,7 +9,7 @@ namespace LMSweb.Controllers.Questionnaire
     {
         private readonly LMSContext _context;
         private readonly EprocedureSercices _eprocedureServices;
-        private readonly EvaluationCoachingServices _evaluationCoachingServices
+        private readonly EvaluationCoachingServices _evaluationCoachingServices;
 
         public QuestionnaireController(LMSContext context, EprocedureSercices eprocedureServices, 
             EvaluationCoachingServices evaluationCoachingServices)
