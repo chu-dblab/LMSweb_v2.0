@@ -2,10 +2,12 @@
 using LMSweb.Models;
 using LMSweb.Services;
 using LMSweb.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers
 {
+    [Authorize]
     public class SubmissionFileController : Controller
     {
         private readonly ILogger<StudentController> _logger;

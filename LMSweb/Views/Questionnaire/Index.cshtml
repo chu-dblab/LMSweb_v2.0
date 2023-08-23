@@ -272,7 +272,7 @@
                     GroupIndex = localStorage.getItem("GroupIndex");
                     console.log(GroupIndex);
 
-                    fetchUrl = await `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
+                    fetchUrl = `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
                 }
                 else if (EprocedureId == "7") {
                     fetchUrl = `${apiHost}/Questionnaire?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&mid=${vm.missionId}&uid=${vm.uid}`

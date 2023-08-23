@@ -1,10 +1,12 @@
 ﻿using LMSweb.Data;
 using LMSweb.Services;
 using LMSweb.ViewModels.Questionnaire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers.Questionnaire
 {
+    [Authorize]
     public class QuestionnaireController : Controller
     {
         private readonly LMSContext _context;
