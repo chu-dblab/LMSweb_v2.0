@@ -91,6 +91,7 @@ namespace LMSweb.Services
                 foreach (var g in GroupList)
                 {
                     var temp = student_list.Where(s => s.GroupId == g).ToList();
+                    temp.ForEach(s => { s.IsLeader = false; });
                     temp.First().IsLeader = true;
                 }
 
