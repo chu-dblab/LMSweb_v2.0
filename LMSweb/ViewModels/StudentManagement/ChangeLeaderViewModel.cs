@@ -1,4 +1,4 @@
-﻿namespace LMSweb.ViewModels;
+﻿namespace LMSweb.ViewModels.StudentManagement;
 
 public class ChangeLeaderViewModel
 {

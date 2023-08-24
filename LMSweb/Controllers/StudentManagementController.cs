@@ -1,7 +1,6 @@
 ﻿using LMSweb.Data;
 using LMSweb.Models;
 using LMSweb.Services;
-using LMSweb.ViewModels;
 using LMSweb.ViewModels.StudentManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -260,19 +259,19 @@ namespace LMSweb.Controllers
             }
             return View(changeLeaderViewModels);
         }
-        /*
+
         [HttpPost]
         public IActionResult ChangeLeader(string cid, string checkString)
         {
-            var gid = db.Students.Find(chackString).GID;
-            var groupStu = db.Students.Where(s => s.GID == gid).ToList();
+            var gid = _context.Students.Find(checkString).GroupId;
+            var groupStu = _context.Students.Where(s => s.GroupId == gid).ToList();
 
             groupStu.ForEach(s => s.IsLeader = false);
-            db.SaveChanges();
-            groupStu.Find(s => s.SID == checkString).IsLeader = true;
-            db.SaveChanges();
+            _context.SaveChanges();
+            groupStu.Find(s => s.StudentId == checkString).IsLeader = true;
+            _context.SaveChanges();
 
-            return RedirectToAction("StudentGroup", new { cid = cid });
-        }*/
+            return RedirectToAction("Group", "StudentManagement", new { cid = cid });
+        }
     }
 }

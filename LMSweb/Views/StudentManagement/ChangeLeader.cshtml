@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ChangeLeaderViewModel>
+
+@{
+    ViewBag.Title = "ChangeLeader";
+
+    var modelList = Model.ToList();
+    var GroupName = modelList.FirstOrDefault().GroupName;
+    var CourseID = modelList.FirstOrDefault().CourseID;
+}
+<div class="container">
+
+    @* @AllHelper.CouresTitleForTeacherView(GroupName) *@
+
+    <div class="card m-3 p-4">
+        <h2 class="w-auto m-2 fs-4">請選擇組長</h2>
+
+        <form class="row" method="post" action="@Url.Action("ChangeLeader", "StudentManagement", new {cid = CourseID})">
+            @foreach (var item in modelList.OrderBy(x => x.StudentID))
+            {
+                <div class="form-check ms-4 my-2">
+                    <input class="form-check-input" type="radio" name="checkString" id="@item" value="@item.StudentID" @(item.IsLeader ? "checked" : "")>
+                    <label class="form-check-label" for="@item">
+                        @Html.DisplayFor(modelItem => item.StudentName)
+                    </label>
+                </div>
+            }
+            <button type="submit" class="btn btn-primary mx-3 mt-3 col ">確認</button>
+        </form>
+
+    </div>
+</div>
