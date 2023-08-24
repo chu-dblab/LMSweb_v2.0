@@ -58,10 +58,10 @@ namespace LMSweb.Controllers
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                     return RedirectToAction("Home", loginUser.RoleName);
                 }
-                return View(login);
+                ViewBag.isError = true;
+                return View();
             }
             return View(login);
-
         }
 
         public async Task<IActionResult> Logout()
