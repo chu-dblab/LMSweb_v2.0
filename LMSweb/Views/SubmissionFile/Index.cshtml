@@ -1,6 +1,9 @@
 ﻿@model SubmissionFileViewModel
 @{
     ViewBag.Title = "StudentCoding";
+
+    var Host = @Url.Action("Index", "Home");
+    if(Host != "/") Host += "/";
 }
 
 @*@section NavPills {
@@ -27,7 +30,7 @@
                 }
                 else
                 {
-                    <img src="~/UploadCode/@Model.Path" class="img-fluid" />
+                    <img src="@(Host)@Model.Path" class="img-fluid" />
                 }
             }
             else
@@ -50,7 +53,7 @@
                 else
                 {
                     <p>已上傳程式碼圖片</p>
-                    <img class="mb-3 img-fluid" src="@Model.Path" />
+                    <img class="mb-3 img-fluid" src="@(Host)@Model.Path" />
                 }
             }
         </div>
