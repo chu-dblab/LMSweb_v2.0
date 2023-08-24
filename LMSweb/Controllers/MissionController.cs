@@ -170,8 +170,8 @@ namespace LMSweb.Controllers
                                    {
                                        Name = mission.Mname,
                                        Contents = mission.Detail,
-                                       StartDate = mission.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
-                                       EndDate = mission.EndDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                       StartDate = mission.StartDate.ToString("yyyy-MM-ddThh:mm"),
+                                       EndDate = mission.EndDate.ToString("yyyy-MM-ddThh:mm"),
                                    }
                                })
                               .FirstOrDefault();
@@ -327,8 +327,8 @@ namespace LMSweb.Controllers
                                        MID = mission.Mid,
                                        Name = mission.Mname,
                                        Contents = mission.Detail,
-                                       StartDate = mission.StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
-                                       EndDate = mission.EndDate.ToString("yyyy-MM-dd'T'HH:mm:ss.SSSz"),
+                                       StartDate = mission.StartDate.ToString("yyyy-MM-ddThh:mm"),
+                                       EndDate = mission.EndDate.ToString("yyyy-MM-ddThh:mm"),
                                    }
                                }).FirstOrDefault();
             ViewData["CurrentCourseID"] = currentCID;
