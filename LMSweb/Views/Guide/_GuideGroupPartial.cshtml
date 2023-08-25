@@ -4,6 +4,8 @@
     int k = 0;
     var TotalStap = Model.CurrentStatus.Count();
     string sName = "";
+
+    var url = Url.Action("Index", "Questionnaire", Model.questionnaireIndexViewModel);
 }
 
 <h3 class="ms-3 col-12">@Model.GroupName</h3>
@@ -43,6 +45,6 @@
     </div>
 </div>
 
-<a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="#">批改作業</a>
+<a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="@url">批改作業</a>
 
 

@@ -3,6 +3,7 @@ using LMSweb.Services;
 using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMSweb.Controllers.Questionnaire
 {
@@ -36,21 +37,32 @@ namespace LMSweb.Controllers.Questionnaire
                 return RedirectToAction("Answer", "Questionnaire", new { cid = vm.CourseId, mid = vm.MissionId, EprocedureId = eid });
             }
 
-            vm.UID = UID.Value;
-            vm.EprocedureId = eid;
-            vm.EvaluationGroupIdList = new List<string>();
-            if (eid == "6")
+            if(User.IsInRole("Student"))
             {
-                //var ECservices = new EvaluationCoachingServices(_context);
-                var _EvaluationGroupIdList = _evaluationCoachingServices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
-
-                foreach( var _EvaluationGroupId in _EvaluationGroupIdList )
+                vm.UID = UID.Value;
+                vm.EprocedureId = eid;
+                vm.EvaluationGroupIdList = new List<string>();
+                if (eid == "6")
                 {
-                    var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == vm.UID && x.BUID == _EvaluationGroupId && x.MissionId == vm.MissionId).FirstOrDefault().Evaluation;
-                    if(_EvaluationGroup == null)
+                    var _EvaluationGroupIdList = _evaluationCoachingServices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
+
+                    foreach (var _EvaluationGroupId in _EvaluationGroupIdList)
                     {
-                        vm.EvaluationGroupIdList.Add(_EvaluationGroupId);
+                        var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == vm.UID && x.BUID == _EvaluationGroupId && x.MissionId == vm.MissionId).FirstOrDefault().Evaluation;
+                        if (_EvaluationGroup == null)
+                        {
+                            vm.EvaluationGroupIdList.Add(_EvaluationGroupId);
+                        }
                     }
+                }
+            }
+
+            if(User.IsInRole("Teacher"))
+            {
+                if(_evaluationCoachingServices.HasEvaluationAtBUID(vm.UID, vm.EvaluationGroupIdList[0], vm.MissionId))
+                {
+                    Response.WriteAsync(@$"<script charset=""utf-8"">alert('Already corrected');window.location.href='{Url.Action("Management","Guide",new { mid = vm.MissionId})}' </script>");
+                    ////return RedirectToAction("Management", "Guide", new { mid = vm.MissionId });
                 }
             }
 

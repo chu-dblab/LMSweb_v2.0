@@ -1,6 +1,7 @@
 ﻿using LMSweb.Data;
 using LMSweb.Models;
 using LMSweb.ViewModels.Questionnaire;
+using System.Security.Cryptography;
 
 namespace LMSweb.Services
 {
@@ -71,6 +72,23 @@ namespace LMSweb.Services
                 }
             }
 
+            // 初始化老師批改(評價)欄位
+
+            var tid = (from m in _context.Missions
+                       from c in _context.Courses
+                       where m.Mid == mid && m.CourseId == c.Cid
+                       select c.TeacherId).FirstOrDefault();
+
+            foreach (var leader in LeaderList)
+            {
+                var evaluationCoaching = new EvaluationCoaching();
+                evaluationCoaching.MissionId = mid;
+                evaluationCoaching.AUID = tid;
+                evaluationCoaching.BUID = leader.StudentId;
+
+                _context.EvaluationCoachings.Add(evaluationCoaching);
+            }
+
             _context.SaveChanges();
         }
 
@@ -131,7 +149,7 @@ namespace LMSweb.Services
                               where ec.MissionId == mid
                               select ec.Evaluation).ToList();
 
-            
+
 
             Dictionary<string, int> scoreDict = new Dictionary<string, int>();
 
@@ -141,7 +159,7 @@ namespace LMSweb.Services
 
             foreach (var item in ClassScore)
             {
-                if(item == null)
+                if (item == null)
                     return NoSumitOutput;
 
                 var score = item.Split(',').ToList();
@@ -178,14 +196,14 @@ namespace LMSweb.Services
                                    ec.Coaching
                                }).FirstOrDefault();
 
-            if(group_score.Evaluation == null)
+            if (group_score.Evaluation == null)
             {
                 group.CoachingScore = NoSumitOutput;
                 group.IsSubmit = true;
 
                 return group;
             }
-                
+
 
             if (group_score.Coaching != null)
                 group.IsSubmit = true;
@@ -252,7 +270,7 @@ namespace LMSweb.Services
                 }
             }
 
-            var GroupAgv = new CoachingScore() 
+            var GroupAgv = new CoachingScore()
             {
                 PE01 = scoreDict["PE01"] / GroupScore.Count,
                 PE02 = scoreDict["PE02"] / GroupScore.Count,
@@ -284,7 +302,7 @@ namespace LMSweb.Services
         private int GetScore(int optionId)
         {
             var score = 0;
-            
+
             var option = _context.Options.Where(x => x.OptionID == optionId).FirstOrDefault();
 
             if (option != null)
@@ -330,5 +348,17 @@ namespace LMSweb.Services
             }
         }
 
+        public bool HasEvaluationAtBUID(string uid, string buid,  string missionId)
+        {
+            var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
+            
+            var evaluation = _context.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == uid && x.BUID == buid).FirstOrDefault();
+            if (evaluation == null || evaluation.Evaluation == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

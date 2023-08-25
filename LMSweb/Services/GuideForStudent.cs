@@ -455,7 +455,7 @@ namespace LMSweb.Services
         {
             var _EvaluationCoachingServices = new EvaluationCoachingServices(db);
 
-            var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(mid, uid);
+            var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(missionId, uid);
 
             foreach (var buid in buid_list)
             {

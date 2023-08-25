@@ -219,7 +219,9 @@
             var apiHost = `@Url.Action("Index","api")/Questionnaire`;
             
             localStorage.setItem("EprocedureId", EprocedureId);
-            localStorage.setItem("Host", mvcHost);
+            localStorage.setItem("Host", Host);
+            localStorage.setItem("mvcHost", mvcHost);
+            localStorage.setItem("apiHost", apiHost);
             localStorage.setItem("GroupIndex", GroupIndex);
             localStorage.setItem("vm", `@Json.Serialize(Model)`);
 
@@ -233,6 +235,8 @@
                 GroupIndex = localStorage.getItem("GroupIndex");
                 EprocedureId = localStorage.getItem("EprocedureId");
                 Host = localStorage.getItem("Host");
+                mvcHost = localStorage.getItem("mvcHost");
+                apiHost = localStorage.getItem("apiHost");
 
                 vm = JSON.parse(localStorage.getItem("vm"));
 
@@ -267,10 +271,12 @@
                 var fetchUrl = ""
 
                 if (EprocedureId == "6") {
-                    var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
+                    var EvaluationGroupIdList = vm.evaluationGroupIdList;
 
+                    console.log("EvaluationGroupIdList");
                     console.log(EvaluationGroupIdList);
                     GroupIndex = localStorage.getItem("GroupIndex");
+                    console.log("GroupIndex");
                     console.log(GroupIndex);
 
                     fetchUrl = `${apiHost}?tasktype=${vm.taskType}&tasksteps=${vm.taskSteps}&groupLeaderId=${EvaluationGroupIdList[GroupIndex]}&mid=${vm.missionId}`
@@ -474,7 +480,7 @@
                 };
 
                 if (vm.eprocedureId == "6") {
-                    var EvaluationGroupIdList = localStorage.getItem("EvaluationGroupIdList").split(",");
+                    var EvaluationGroupIdList = vm.evaluationGroupIdList;
 
                     send.PostUid = EvaluationGroupIdList[GroupIndex],
                     send.EprocedureId = EprocedureId
@@ -524,7 +530,12 @@
 
                         await sendAnswers(answers);
 
-                        if (GroupIndex < 2 && EprocedureId == "6")       // 互評要完成三組才返回
+                        console.log("GroupIndex");
+                        console.log(GroupIndex);
+                        console.log("EvaluationGroupIdList");
+                        console.log(EvaluationGroupIdList, vm.evaluationGroupIdList.length);
+
+                        if (GroupIndex < vm.evaluationGroupIdList.length - 1 && EprocedureId == "6")       // 互評要完成三組才返回
                         {
                             GroupIndex++;
                             await localStorage.setItem("GroupIndex", GroupIndex);

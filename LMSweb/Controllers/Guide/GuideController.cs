@@ -1,6 +1,7 @@
 ﻿using LMSweb.Assets;
 using LMSweb.Data;
 using LMSweb.ViewModels.Guide;
+using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,13 +58,33 @@ namespace LMSweb.Controllers.Guide
 
             foreach (var group in groups)
             {
-                guideGroups.Add(new GuideGroup
+                var _guideGroups = new GuideGroup
                 {
                     GroupId = group.Gid.ToString(),
                     GroupName = group.Gname,
                     CurrentStatus = group.CurrentStatus,
                     StepsName = _StepsName,
-                });
+                };
+
+                var _EvaluationGroupIdList = new List<string>();
+                var groupLeader = _context.Students.Where(x => x.GroupId == group.Gid && x.IsLeader == true).FirstOrDefault().StudentId;
+                _EvaluationGroupIdList.Add(groupLeader);
+
+                var _questionnaireIndexViewModel = new QuestionnaireIndexViewModel
+                {
+                    UID = uid.Value,
+                    CourseId = cid,
+                    MissionId = mid,
+                    MissionName = _context.Missions.Find(mid).Mname,
+                    TaskType = "5",
+                    TaskSteps = "4",
+                    EprocedureId = "6",
+                    EvaluationGroupIdList = _EvaluationGroupIdList
+                };
+
+                _guideGroups.questionnaireIndexViewModel = _questionnaireIndexViewModel;
+
+                guideGroups.Add(_guideGroups);
             }
 
             vm.Groups = guideGroups;

@@ -1,4 +1,6 @@
-﻿namespace LMSweb.ViewModels.Guide
+﻿using LMSweb.ViewModels.Questionnaire;
+
+namespace LMSweb.ViewModels.Guide
 {
     public class GuideManagementViewModel
     {
@@ -17,6 +19,9 @@
 
         // 後續要用可以用
         public List<GuideUser>? Users { get; set; }
+
+        // 批改作業
+        public QuestionnaireIndexViewModel? questionnaireIndexViewModel { get; set; }
     }
 
     public class GuideUser
