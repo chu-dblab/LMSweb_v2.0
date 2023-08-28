@@ -5,7 +5,6 @@ using LMSweb.ViewModels.StudentManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace LMSweb.Controllers
 {
@@ -147,16 +146,12 @@ namespace LMSweb.Controllers
             var student_data = (from s in _context.Students
                                 join c in _context.Courses on s.CourseId equals c.Cid
                                 where s.StudentId == sid && s.CourseId == cid
-                                select new StudentCreateViewModel
+                                select new StudentEditViewModel
                                 {
                                     CourseId = c.Cid,
                                     CourseName = c.Cname,
-                                    Student = new ViewModels.StudentManagement.Student
-                                    {
-                                        StudentId = s.StudentId,
-                                        StudentName = s.StudentName,
-                                        StudentSex = s.Sex
-                                    }
+                                    StudentName = s.StudentName,
+                                    StudentSex = s.Sex ?? "",
                                 })
                        .SingleOrDefault();
 
@@ -170,19 +165,24 @@ namespace LMSweb.Controllers
             return View(student_data);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EditStudent(Student student)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(student).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index", "StudentManagement", new { cid = student.CID });
-        //    }
-
-        //    return View(student);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditStudent(string sid, string cid, StudentEditViewModel student_data)
+        {
+            if (ModelState.IsValid)
+            {
+                var student = _context.Students.SingleOrDefault(x => x.StudentId == sid && x.CourseId == cid);
+                if (student == null)
+                {
+                    return RedirectToAction("Index", "StudentManagement", new { cid = student_data.CourseId });
+                }
+                student.StudentName = student_data.StudentName;
+                student.Sex = student_data.StudentSex;
+                _context.SaveChanges();
+                return RedirectToAction("Index", "StudentManagement", new { cid = cid });
+            }
+            return View(student_data);
+        }
 
         public IActionResult Group(string cid)
         {
