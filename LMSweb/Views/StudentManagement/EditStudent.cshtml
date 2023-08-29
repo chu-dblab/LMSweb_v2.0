@@ -1,6 +1,6 @@
-﻿@model StudentCreateViewModel
+﻿@model StudentEditViewModel
 @{
-    ViewData["Title"] = "StudentEdit";
+    ViewData["Title"] = "編輯學生資料";
 }
 
 @section NavPills {
@@ -15,22 +15,23 @@
                                     h2 = "" })
 
     <div class="card m-3 p-4">
-        <form asp-action="StudentEdit" asp-controller="StudentManagement">
-           @Html.AntiForgeryToken()
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
             <div class="form-horizontal row">
                 <h4 class="fs-3 text-center my-1">編輯學生資料</h4>
                 <div class="mb-3 my-1">
-                    @Html.LabelFor(model => model.Student.StudentName, new { @class = "form-label ms-2 fs-5 my-1" })
+                    @Html.LabelFor(model => model.StudentName, new { @class = "form-label ms-2 fs-5 my-1" })
                     <div class="row mx-1">
-                        @Html.TextAreaFor(model => model.Student.StudentName, new { @class = "form-control col-12 fs-5", rows = "1" })
-                        @Html.ValidationMessageFor(model => model.Student.StudentName, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(model => model.StudentName, new { @class = "form-control col-12 fs-5", rows = "1" })
+                        @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="mb-3 my-1">
-                    @Html.LabelFor(model => model.Student.StudentSex, new { @class = "form-label ms-2 fs-5 my-1" })
+                    @Html.LabelFor(model => model.StudentSex, new { @class = "form-label ms-2 fs-5 my-1" })
                     <div class="row mx-1">
                         <select class="form-select" id="Sex" name="StudentSex">
-                            @if (Model.Student.StudentSex == "男")
+                            @if (Model.StudentSex == "男")
                             {
                                 <option value="男" selected>男</option>
                                 <option value="女">女</option>
@@ -41,7 +42,7 @@
                                 <option value="女" selected>女</option>
                             }
                         </select>
-                        @Html.ValidationMessageFor(model =>  model.Student.StudentSex, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model =>  model.StudentSex, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="mb-3">
@@ -50,6 +51,7 @@
                         <a class="btn btn-secondary" href="@Url.Action("Index", "StudentManagement" , new { cid = Model.CourseId })">取消</a>
                     </div>
                 </div>
-        </form>
+            </div>
+        }
     </div>
 </div>

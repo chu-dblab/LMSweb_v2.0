@@ -1,23 +1,21 @@
 ﻿<!-- UploadModal -->
 <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
-    <form method="post" action="@Url.Action("Upload","StudentManagement")" enctype="multipart/form-data">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="UploadModalLabel">上傳並匯入資料</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-3">第一步 :</p>
-                    <a class="mb-3 btn btn-outline-primary" href="~/FileDownload/Example.csv" download>下載範例檔<i class="bi bi-download"></i></a>
-                    <br />
-                    <p class="mb-3">第二步 :</p>
-                    <div class="file-loading">
-                        <input id="file" name="file" type="file" accept=".csv" required>
-                    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="UploadModalLabel">上傳並匯入資料</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">第一步 :</p>
+                <a class="mb-3 btn btn-outline-primary" href="~/FileDownload/Example.csv" download>下載範例檔<i class="bi bi-download"></i></a>
+                <br />
+                <p class="mb-3">第二步 :</p>
+                <div class="file-loading">
+                    <input id="file" name="file" type="file" accept=".csv" required>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
