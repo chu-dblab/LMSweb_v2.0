@@ -21,7 +21,10 @@ namespace LMSweb.Services
         private DateTime StartDate;
         private DateTime EndDate;
 
-        public GuideForStudent(string mid, string cid, LMSContext db)
+        private readonly EprocedureSercices _EprocedureSercices;
+        private readonly EvaluationCoachingServices _EvaluationCoachingServices;
+
+        public GuideForStudent(string mid, string cid, LMSContext db, EprocedureSercices eprocedureSercices, EvaluationCoachingServices evaluationCoachingServices)
         {
             this.mid = mid;
             this.cid = cid;
@@ -39,8 +42,11 @@ namespace LMSweb.Services
                        join s in db.Students on e.GroupId equals s.GroupId
                        where e.MissionId == mid && s.IsLeader == true
                        select s).ToList();
+
+            _EprocedureSercices = eprocedureSercices;
+            _EvaluationCoachingServices = evaluationCoachingServices;
         }
-        public GuideForStudent(string mid, string cid, LMSContext db, string sid) : this(mid, cid, db)
+        public GuideForStudent(string mid, string cid, LMSContext db, EprocedureSercices eprocedureSercices, EvaluationCoachingServices evaluationCoachingServices, string sid) : this(mid, cid, db, eprocedureSercices, evaluationCoachingServices)
         {
             this.sid = sid;
         }
@@ -446,15 +452,31 @@ namespace LMSweb.Services
 
         private bool HasQuestion(string uid, string missionId, string eprocedureId)
         {
-            var _EprocedureSercices = new EprocedureSercices(db);
+            // 如果實驗組一要判對每一組員是否填寫問卷
+            if (eprocedureId == "0" || eprocedureId == "1" || eprocedureId == "2")
+            {
+                bool output = true;
 
-            return _EprocedureSercices.IsAnswered(uid, missionId, eprocedureId);
+                var sid_list = db.Students.Where(x => x.GroupId == db.Students.Find(uid).GroupId).Select(x => x.StudentId).ToList();
+
+                foreach (var sid in sid_list)
+                {
+                    if (!_EprocedureSercices.IsAnswered(sid, missionId, eprocedureId))
+                    {
+                        output = false;
+                        break;
+                    }
+                }
+                return output;
+
+            } else
+            {
+                return _EprocedureSercices.IsAnswered(uid, missionId, eprocedureId);
+            }
         }
 
         private bool HasEvaluation(string uid, string missionId)
         {
-            var _EvaluationCoachingServices = new EvaluationCoachingServices(db);
-
             var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(missionId, uid);
 
             foreach (var buid in buid_list)
@@ -471,8 +493,6 @@ namespace LMSweb.Services
 
         private bool HasCoaching(string uid, string missionId)
         {
-            var _EvaluationCoachingServices = new EvaluationCoachingServices(db);
-
             var auid_list = _EvaluationCoachingServices.GetCoachingLeaderList(mid, uid);
 
             foreach (var auid in auid_list)

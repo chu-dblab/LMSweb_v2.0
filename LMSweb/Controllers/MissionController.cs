@@ -15,10 +15,14 @@ namespace LMSweb.Controllers
     {
         private readonly ILogger<MissionController> _logger;
         private readonly LMSContext _context;
-        public MissionController(ILogger<MissionController> logger, LMSContext context)
+        private readonly EprocedureSercices _eprocedureSercices;
+        private readonly EvaluationCoachingServices _evaluationCoachingServices;
+        public MissionController(ILogger<MissionController> logger, LMSContext context, EprocedureSercices eprocedureSercices, EvaluationCoachingServices evaluationCoachingServices)
         {
             _logger = logger;
             _context = context;
+            _eprocedureSercices = eprocedureSercices;
+            _evaluationCoachingServices = evaluationCoachingServices;
         }
 
         public IActionResult Index(string cid)
@@ -145,7 +149,7 @@ namespace LMSweb.Controllers
                 var sid = User.Claims.FirstOrDefault(x => x.Type == "UID");   //抓出當初記載Claims陣列中的SID
                 var student = _context.Students.Find(sid.Value);
 
-                GuideForStudent _Guide = new GuideForStudent(mid, cid, _context, sid.Value);
+                GuideForStudent _Guide = new GuideForStudent(mid, cid, _context, _eprocedureSercices, _evaluationCoachingServices, sid.Value);
                 _Guide.UpdateCurrentStatus();
                 data.CurrentStatus = _context.Executions.Where(x => x.GroupId == student.GroupId && x.MissionId == mid).First().CurrentStatus;
                 data.GroupName = _context.Groups.Where(x => x.Gid == student.GroupId).First().Gname;
