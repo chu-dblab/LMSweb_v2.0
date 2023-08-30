@@ -114,8 +114,7 @@ namespace LMSweb.Controllers
                     _context.SaveChanges();
                 }
 
-                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
-                _EvaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
+                _evaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
 
                 return RedirectToAction("Index", new { cid = cid });
             }
@@ -373,9 +372,7 @@ namespace LMSweb.Controllers
                     _context.Executions.Add(executionData);
                     _context.SaveChanges();
                 }
-
-                var _EvaluationCoachingServices = new EvaluationCoachingServices(_context);
-                _EvaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
+                _evaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
 
                 return RedirectToAction("Index", new { cid = formdata.CourseID });
             }
