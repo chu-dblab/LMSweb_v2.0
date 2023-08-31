@@ -5,8 +5,6 @@
     int k = 0;
     int TestType;
     string GuideString;
-    int UserTypeForGuide;
-    int KForGuideStapUrl;
 
     var EndCurrentStatusString = new List<string> { "22", "222", "2222", "22222", "222222", "2222222" };
 
@@ -16,20 +14,11 @@
         GuideString = "00000000";
         //GuideString = Model.CurrentAction;
         TestType = Model.TestType;
-        UserTypeForGuide = 0;
-        KForGuideStapUrl = 0;
     }
     else
     {
-        // GuideString = "11111111";
-        UserTypeForGuide = 1;
-        KForGuideStapUrl = 1;
         GuideString = Model.CurrentStatus;
         TestType = Model.TestType;
-        if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
-        else if (Model.TestType == 1) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
-        else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
-
     }
 
     var DrawingUrl = Url.Action("Index", "SubmissionFile", new { mid = Model.MissionID, type = "D" });
@@ -213,92 +202,66 @@
                             case 0:
                                 // 控制組
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             case 1:
                                 // 實驗組一：自我調節
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             case 2:
                                 // 實驗組二：同儕互評
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             case 3:
                                 // 實驗組三：社會共享調節
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             case 4:
                                 // 實驗組四：互動式同儕互評
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             case 5:
                                 // 實驗組五：社會共享調節 & 互動式同儕互評
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 <div class="bs-stepper-line"></div>
                                 @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", TaskGuideStapPartialViewModels[TestType][k++])
-                                KForGuideStapUrl += UserTypeForGuide;
                                 break;
                             default:
                                 break;
