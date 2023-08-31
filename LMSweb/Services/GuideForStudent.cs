@@ -182,7 +182,7 @@ namespace LMSweb.Services
                 Student student;
                 Execution execution;
                 SetExecutionByCurrentStatus(out student, out execution);
-                
+
                 // 開啟第一步驟
                 if (execution.CurrentStatus == "0000")
                 {
@@ -469,7 +469,8 @@ namespace LMSweb.Services
                 }
                 return output;
 
-            } else
+            }
+            else
             {
                 return _EprocedureSercices.IsAnswered(uid, missionId, eprocedureId);
             }
@@ -477,34 +478,57 @@ namespace LMSweb.Services
 
         private bool HasEvaluation(string uid, string missionId)
         {
-            var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(missionId, uid);
+            var uid_leader = GetGroupLeaderId(uid);
 
-            foreach (var buid in buid_list)
+            if (uid_leader == null)
             {
-                var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == uid && x.BUID == buid).FirstOrDefault();
-                if (evaluation == null || evaluation.Evaluation == null)
+                return false;
+            } else
+            {
+                var buid_list = _EvaluationCoachingServices.GetEvaluationLeaderList(missionId, uid_leader);
+
+                foreach (var buid in buid_list)
                 {
-                    return false;
+                    var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == uid_leader && x.BUID == buid).FirstOrDefault();
+                    if (evaluation == null || evaluation.Evaluation == null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool HasCoaching(string uid, string missionId)
+        {
+            var uid_leader = GetGroupLeaderId(uid);
+
+            if (uid_leader == null)
+            {
+                return false;
+            }
+            else
+            {
+                var auid_list = _EvaluationCoachingServices.GetCoachingLeaderList(mid, uid);
+
+                foreach (var auid in auid_list)
+                {
+                    var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == auid && x.BUID == uid_leader).FirstOrDefault();
+                    if (evaluation == null || evaluation.Coaching == null)
+                    {
+                        return false;
+                    }
                 }
             }
 
             return true;
         }
 
-        private bool HasCoaching(string uid, string missionId)
+        private string GetGroupLeaderId(string uid)
         {
-            var auid_list = _EvaluationCoachingServices.GetCoachingLeaderList(mid, uid);
-
-            foreach (var auid in auid_list)
-            {
-                var evaluation = db.EvaluationCoachings.Where(x => x.MissionId == missionId && x.AUID == auid && x.BUID == uid).FirstOrDefault();
-                if (evaluation == null || evaluation.Coaching == null)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            var gid = db.Students.Find(uid).GroupId;
+            var leaderId = db.Students.Where(x => x.GroupId == gid && x.IsLeader == true).FirstOrDefault().StudentId;
+            return leaderId;
         }
     }
 }
