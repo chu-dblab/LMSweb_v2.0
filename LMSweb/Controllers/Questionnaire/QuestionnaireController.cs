@@ -54,6 +54,11 @@ namespace LMSweb.Controllers.Questionnaire
                             vm.EvaluationGroupIdList.Add(_EvaluationGroupId);
                         }
                     }
+
+                    if (vm.EvaluationGroupIdList.Count == 0)
+                    {
+                        return RedirectToAction("Details", "Mission", new { cid = vm.CourseId, mid = vm.MissionId });
+                    }
                 }
             }
 

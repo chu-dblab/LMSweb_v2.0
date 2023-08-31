@@ -530,18 +530,16 @@
 
                         await sendAnswers(answers);
 
-                        if (vm.evaluationGroupIdList == undefined || vm.evaluationGroupIdList == []) {
-                            if (GroupIndex < vm.evaluationGroupIdList.length - 1 && EprocedureId == "6")       // 互評要完成三組才返回
-                            {
-                                GroupIndex++;
-                                await localStorage.setItem("GroupIndex", GroupIndex);
-                                localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
-                                questions = await getQuestions();
-                                console.log(Question);
-                                await setEvaluationTitle();
-                                await displayQuestions();
-                                await drawImage();
-                            }
+                        if ((!(vm.evaluationGroupIdList == undefined || vm.evaluationGroupIdList == [])) && (parseInt(GroupIndex) < vm.evaluationGroupIdList.length - 1 && EprocedureId == "6") ) {
+                            GroupIndex++;
+                            await localStorage.setItem("GroupIndex", GroupIndex);
+                            localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+                            questions = await getQuestions();
+                            console.log(Question);
+                            await setEvaluationTitle();
+                            await displayQuestions();
+                            await drawImage();
+
                         } else if (EprocedureId == "7") {
                             let out = true;
                             GroupIsSubmit.forEach((g, index) => {
