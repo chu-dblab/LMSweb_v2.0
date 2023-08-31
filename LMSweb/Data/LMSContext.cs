@@ -36,7 +36,7 @@ public partial class LMSContext : DbContext
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<Provided> Provideds { get; set; }
+    //public virtual DbSet<Provided> Provideds { get; set; }
     public virtual DbSet<ExecutionContent> ExecutionContents { get; set; }
     public virtual DbSet<EvaluationCoaching> EvaluationCoachings { get; set; }
 
@@ -64,11 +64,25 @@ public partial class LMSContext : DbContext
             entity.Property(e => e.QuestionId)
                 .HasMaxLength(128)
                 .HasColumnName("QuestionID");
+            entity.Property(e => e.UserId)
+                .HasMaxLength(128)
+                .HasColumnName("UserID");
+            entity.Property(e => e.MissionId)
+                .HasMaxLength(128)
+                .HasColumnName("MissionID");
 
             entity.HasOne(d => d.Question).WithMany(p => p.Answers)
                 .HasForeignKey(d => d.QuestionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Answers_Questions");
+            entity.HasOne(d => d.Mission).WithMany(p => p.Answers)
+                .HasForeignKey(d => d.MissionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Answers_Missions");
+            entity.HasOne(d => d.User).WithMany(p => p.Answers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Answers_Users");
             
         });
 
@@ -258,16 +272,16 @@ public partial class LMSContext : DbContext
                 .HasColumnName("UPassword");
         });
 
-        modelBuilder.Entity<Provided>(entity =>
-        {
-            entity.HasKey(e => new {e.AnswerId, e.UserId, e.MissionId});
-            entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
-            entity.Property(e => e.MissionId).HasColumnName("MissionID");
+        //modelBuilder.Entity<Provided>(entity =>
+        //{
+        //    entity.HasKey(e => new {e.AnswerId, e.UserId, e.MissionId});
+        //    entity.Property(e => e.AnswerId).HasColumnName("AnswerID");
+        //    entity.Property(e => e.UserId).HasColumnName("UserID");
+        //    entity.Property(e => e.MissionId).HasColumnName("MissionID");
 
-        });
-        modelBuilder.Entity<Provided>().HasIndex(e=>e.MissionId).IsUnique(false);
-        modelBuilder.Entity<Provided>().HasIndex(e=>e.UserId).IsUnique(false);
+        //});
+        //modelBuilder.Entity<Provided>().HasIndex(e=>e.MissionId).IsUnique(false);
+        //modelBuilder.Entity<Provided>().HasIndex(e=>e.UserId).IsUnique(false);
 
         modelBuilder.Entity<ExecutionContent>(entitl =>
         {

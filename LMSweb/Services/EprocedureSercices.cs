@@ -148,7 +148,7 @@ namespace LMSweb.Services
 
                 _context.SaveChanges();
 
-                var provided = new Provided();
+               /* var provided = new Provided();
                 
                 foreach (var aid in aidList)
                 {
@@ -162,7 +162,7 @@ namespace LMSweb.Services
                         _context.Provideds.Add(provided);
                         _context.SaveChanges();
                     }
-                }
+                }*/
                 
             }
         }
@@ -171,30 +171,31 @@ namespace LMSweb.Services
         public bool IsAnswered(string uid, string missionId, string eprocedureId)
         {
             var Questions = _context.Questions.Where(q => q.EprocedureId == eprocedureId).ToList();
-            var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
+            //var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
 
-            if (provided.Count > 0)
-            {
-                foreach(var pro in provided)
-                {
-                    if(Questions.Any(x => pro.AnswerId.Contains(x.QuestionId) ))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
+            //if (provided.Count > 0)
+            //{
+            //    foreach(var pro in provided)
+            //    {
+            //        if(Questions.Any(x => pro.AnswerId.Contains(x.QuestionId) ))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    return false;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            return false;
         }
 
         // 取得某人某一主題答覆
         public List<ViewModels.Questionnaire.Answer> GetAnswer(string uid, string missionId, string eprocedureId)
         {
             var Questions = _context.Questions.Where(q => q.EprocedureId == eprocedureId).ToList();
-            var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
+            //var provided = _context.Provideds.Where(x => x.UserId == uid && x.MissionId == missionId).ToList();
             var output = new List<ViewModels.Questionnaire.Answer>();
 
             foreach (var que in Questions)
@@ -205,18 +206,18 @@ namespace LMSweb.Services
                 answer.Qcontent = que.Qcontent;
                 answer.Content = new List<AnswerContent>();
 
-                foreach (var pro in provided)
-                {
-                    if ( pro.AnswerId.Contains(que.QuestionId) )
-                    {
-                        var ac = new AnswerContent();
+                //foreach (var pro in provided)
+                //{
+                //    if ( pro.AnswerId.Contains(que.QuestionId) )
+                //    {
+                //        var ac = new AnswerContent();
 
-                        var a = _context.Answers.Find(pro.AnswerId);
-                        ac.OcontentContent = a.Acontent.Split(',')[1];
+                //        var a = _context.Answers.Find(pro.AnswerId);
+                //        ac.OcontentContent = a.Acontent.Split(',')[1];
 
-                        answer.Content.Add(ac);
-                    }
-                }
+                //        answer.Content.Add(ac);
+                //    }
+                //}
 
                 output.Add(answer);
             }

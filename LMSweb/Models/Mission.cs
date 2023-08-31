@@ -19,8 +19,9 @@ public partial class Mission
     public virtual Course? Course { get; set; }
 
     public virtual ICollection<Execution> Executions { get; set; } = new List<Execution>();
+    public virtual ICollection<Answer>? Answers { get; set; }
 
-    public virtual Provided? Provided { get; set; }
+    //public virtual Provided? Provided { get; set; }
 
     public virtual ICollection<ExecutionContent> ExecutionContents { get; set; } = new List<ExecutionContent>();
     public virtual ICollection<EvaluationCoaching> EvaluationCoachings { get; set; } = new List<EvaluationCoaching>();

@@ -16,7 +16,8 @@ public partial class User
 
     public virtual Teacher? Teacher { get; set; }
 
-    public virtual Provided? Provided { get; set; }
+    //public virtual Provided? Provided { get; set; }
+    public virtual ICollection<Answer>? Answers { get; set; }
 
     public virtual ICollection<EvaluationCoaching>? EvaluationCoachingAUsers { get; set; }
     public virtual ICollection<EvaluationCoaching>? EvaluationCoachingBUsers { get; set; }
