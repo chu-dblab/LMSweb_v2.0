@@ -15,7 +15,7 @@
     {
         GuideString = "00000000";
         //GuideString = Model.CurrentAction;
-        TestType = TestType = Model.TestType;
+        TestType = Model.TestType;
         UserTypeForGuide = 0;
         KForGuideStapUrl = 0;
     }
@@ -25,7 +25,7 @@
         UserTypeForGuide = 1;
         KForGuideStapUrl = 1;
         GuideString = Model.CurrentStatus;
-        TestType = TestType = Model.TestType;
+        TestType = Model.TestType;
         if (Model.IsLeader) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
         else if (Model.TestType == 1) { UserTypeForGuide = 1; KForGuideStapUrl = 1; }
         else { UserTypeForGuide = 0; KForGuideStapUrl = 0; }
@@ -102,8 +102,8 @@
     // 控制組
     var TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 
@@ -111,11 +111,11 @@
     // 實驗組一 
     TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "自我反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "自我反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 
@@ -123,9 +123,9 @@
     // 實驗組二：同儕互評
     TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 
@@ -133,11 +133,11 @@
     // 實驗組三：社會共享調節
     TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 
@@ -145,10 +145,10 @@
     // 實驗組四：互動式同儕互評
     TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 
@@ -156,13 +156,13 @@
     // 實驗組五：社會共享調節 & 互動式同儕互評
     TGSPvm = new List<TaskGuideStapPartialViewModel>
     {
-        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
-        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++]},
+        new TaskGuideStapPartialViewModel { StapName = "目標設置", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "畫流程圖", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "學習監督", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "寫程式碼", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "同儕互評", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "評價回饋", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
+        new TaskGuideStapPartialViewModel { StapName = "團隊反思", CurrentAction = GuideString, k = b - 1, buttonLink = GuideStapUrlList[a][b++], TestType = Model.TestType, IsLeader = Model.IsLeader},
     };
     TaskGuideStapPartialViewModels.Add(TGSPvm);
 

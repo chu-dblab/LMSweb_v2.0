@@ -13,17 +13,21 @@
         "step align-self-center"
     };
     string disabledString = "";
+
+
+    // -48 是因為 char 轉 int 的關係
     if ((Convert.ToInt32(CurrentAction[k]) - 48) == 0)
     {
         Model.buttonLink = "";
         disabledString = "disabled";
     }
 
-    // -48 是因為 char 轉 int 的關係
+    string a_url = "";
+    if (Model.IsLeader || (!Model.IsLeader && Model.TestType == 1)) { a_url = Model.buttonLink; }
 }
 
 <div class="@str[Convert.ToInt32(CurrentAction[k])-48]" data-target="#test-vl-3">
-    <a class="step-trigger @disabledString" role="tab" id="stepper4trigger3" aria-controls="test-vl-3" href="@Model.buttonLink">
+    <a class="step-trigger @disabledString" role="tab" id="stepper4trigger3" aria-controls="test-vl-3" href="@a_url">
         <span class="bs-stepper-circle">@(k + 1)</span>
         <span class="bs-stepper-label">@StapName</span>
     </a>
