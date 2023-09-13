@@ -19,9 +19,17 @@
 
 <div class="container">
 
-    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml", 
-        new ViewTitlePartialViewModel { h1 = @$"課程名稱：{Model.CourseName}",
-                                        h2 = GlobalClass.GetTypeString(Model.TestType) })
+    @if (User.IsInRole("Teacher"))
+    {
+        @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+            new ViewTitlePartialViewModel { h1 = @$"課程名稱：{Model.CourseName}",
+                                            h2 = GlobalClass.GetTypeString(Model.TestType) })
+    }
+    else
+    {
+        @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+            new ViewTitlePartialViewModel { h1 = @$"課程名稱：{Model.CourseName}"})
+    }
 
     <div class="card m-3 p-4">
         <div class="row mb-3">
