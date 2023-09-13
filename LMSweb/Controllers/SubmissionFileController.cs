@@ -61,6 +61,11 @@ namespace LMSweb.Controllers
             var GroupId = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().GroupId;
             var cid = _context.Students.Where(x => x.StudentId == UID.Value).FirstOrDefault().CourseId;
 
+            if(vm.formFile == null)
+            {
+                return RedirectToAction("Index", "SubmissionFile", new { mid = mid, type = type });
+            }
+
             var input_path = Path.GetExtension(vm.formFile.FileName);
             var fileExt = Path.GetExtension(input_path);
             var fileNewName = $@"{mid}{GroupId}{DateTime.Now.ToString("MMddHHmmss")}";
