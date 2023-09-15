@@ -34,7 +34,7 @@ namespace LMSweb.Services
                                   s.StudentId,
                               }).ToList();
 
-            // 每組隨機分配 3 個互評對象
+            // 每組隨機分配 2 個互評對象
             foreach (var leader in LeaderList)
             {
                 var LeaderId = leader.StudentId;
@@ -45,7 +45,7 @@ namespace LMSweb.Services
 
                 var LeaderGroupListRandom = new List<string>();
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, LeaderGroupCount);
