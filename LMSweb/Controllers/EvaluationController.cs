@@ -60,7 +60,7 @@ namespace LMSweb.Controllers
                     EvaluationGroupId = _EvaluationGroupId
                 };
 
-                int gid = _context.Students.Find(UID.Value).GroupId ?? 0;
+                int gid = _context.Students.Find(_EvaluationGroupId).GroupId ?? 0;
 
                 if (gid == 0)
                 {
