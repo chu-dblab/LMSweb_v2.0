@@ -36,7 +36,7 @@ namespace LMSweb.Controllers
             vm.CourseName = _context.Courses.FirstOrDefault(x => x.Cid == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).Cname;
             vm.MissionId = mid;
             vm.MisstionName = _context.Missions.Find(mid).Mname;
-            vm.EndDate = _context.Missions.FirstOrDefault(x => x.CourseId == _context.Students.Where(x => x.StudentId == UID).FirstOrDefault().CourseId).EndDate;
+            vm.EndDate = _context.Missions.Find(mid).EndDate;
             
             if (UID == null || misstion == null) { return NotFound(); }
 
