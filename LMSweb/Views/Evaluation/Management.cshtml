@@ -1,0 +1,70 @@
+﻿@model EvaluationManagementViewModel
+
+@{
+    var k = 1;
+    ViewData["Title"] = "評價系統";
+}
+
+<div class="container">
+
+    <div class="card m-3 p-4">
+        <div class="row mb-3">
+            <div class="col">
+                <h3>評價列表</h3>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr class="row mx-1">
+                    <th class="col-1">編號</th>
+                    <th class="col-3">
+                        該組是否繳交作業
+                    </th>
+                    <th class="col">
+                        是否完成評價
+                    </th>
+                    <th class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody id="number">
+                @foreach (var item in Model.EvaGroupList)
+                {
+                    <tr class="row bg-white mx-1">
+                        <td class="col-1 align-self-center py-3">
+                            <span class='ms-2'>@(k++)</span>
+                        </td>
+                        <td class="col-3 align-self-center py-3">
+                            @if(item.IsSubmitted)
+                            {
+                                <span class="text-success">已繳交作業</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">未繳交</span>
+                            }
+                        </td>
+                        <td class="col align-self-center py-3">
+                            @if (item.IsAnswered)
+                            {
+                                <span class="text-success">已完成</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">未完成</span>
+                            }
+                        </td>
+                        <td class="d-grid d-flex justify-content-end col-2">
+                            @if (item.IsSubmitted && !item.IsAnswered)
+                            {
+                                <a href="@Url.Action("Index", "Questionnaire" , item.QuestionnaireIndexViewModel)" class="btn btn-primary my-auto">
+                                    進入評價
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {cid = Model.CourseId ,mid = Model.MissionId })">返回任務</a>
+    </div>
+</div>

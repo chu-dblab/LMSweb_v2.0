@@ -40,16 +40,15 @@ namespace LMSweb.Controllers.Questionnaire
             if(User.IsInRole("Student"))
             {
                 vm.UID = UID.Value;
-                vm.EprocedureId = eid;
                 vm.EvaluationGroupIdList = new List<string>();
-                if (eid == "6")
+                if (vm.EprocedureId == "6")
                 {
                     var _EvaluationGroupIdList = _evaluationCoachingServices.GetEvaluationLeaderList(vm.MissionId, vm.UID);
 
                     foreach (var _EvaluationGroupId in _EvaluationGroupIdList)
                     {
                         var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == vm.UID && x.BUID == _EvaluationGroupId && x.MissionId == vm.MissionId).FirstOrDefault().Evaluation;
-                        if (_EvaluationGroup == null)
+                        if (_EvaluationGroup == null && _EvaluationGroupId == vm.EvaluationGroupId)
                         {
                             vm.EvaluationGroupIdList.Add(_EvaluationGroupId);
                         }
