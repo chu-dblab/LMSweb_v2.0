@@ -1,7 +1,6 @@
 ﻿using LMSweb.Data;
 using LMSweb.Models;
 using LMSweb.ViewModels.Questionnaire;
-using System.Security.Cryptography;
 
 namespace LMSweb.Services
 {
@@ -56,21 +55,6 @@ namespace LMSweb.Services
                 if (B_dash >= LeaderGroupCount)
                     B_dash = 0;
 
-                //for (int i = 0; i < 2; i++)
-                //{
-                //    var random = new Random();
-                //    var randomIndex = random.Next(0, LeaderGroupCount);
-                //    var randomStudentId = LeaderGroupList[randomIndex];
-
-                //    while (LeaderId == randomStudentId.StudentId || LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
-                //    {
-                //        randomIndex = random.Next(0, LeaderGroupCount);
-                //        randomStudentId = LeaderGroupList[randomIndex];
-                //    }
-
-                //    LeaderGroupListRandom.Add(randomStudentId.StudentId);
-                //}
-
                 var evaluationCoaching = new EvaluationCoaching();
                 foreach (var studentId in LeaderGroupListRandom)
                 {
@@ -84,7 +68,6 @@ namespace LMSweb.Services
             }
 
             // 初始化老師批改(評價)欄位
-
             var tid = (from m in _context.Missions
                        from c in _context.Courses
                        where m.Mid == mid && m.CourseId == c.Cid
