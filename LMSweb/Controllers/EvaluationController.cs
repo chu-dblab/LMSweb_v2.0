@@ -1,10 +1,8 @@
 ﻿using LMSweb.Data;
-using LMSweb.Models;
 using LMSweb.Services;
 using LMSweb.ViewModels.Evaluation;
 using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
 
 namespace LMSweb.Controllers
 {
@@ -39,17 +37,9 @@ namespace LMSweb.Controllers
                 group.IsSubmitted = false;
                 group.IsAnswered = false;
 
+                // 這邊因為是後來加上去 測試步驟都先強制使用這個值
                 group.QuestionnaireIndexViewModel = new QuestionnaireIndexViewModel()
                 {
-                    /*
-                     *  public string UID { get; set; }
-                        public string CourseId { get; set; }
-                        public string MissionId { get; set; }
-                        public string MissionName { get; set; }
-                        public string TaskType { get; set; }
-                        public string TaskSteps { get; set; }
-                        public string EprocedureId { get; set; }
-                     */
                     UID = UID.Value,
                     CourseId = _context.Missions.Find(mid).CourseId,
                     MissionId = mid,
