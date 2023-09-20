@@ -29,42 +29,53 @@ namespace LMSweb.Services
                               from e in _context.Executions
                               from s in _context.Students
                               where m.Mid == mid && m.Mid == e.MissionId && e.GroupId == s.GroupId && s.IsLeader == true
-                              select new
-                              {
-                                  s.StudentId,
-                              }).ToList();
+                              select s.StudentId).ToList();
 
             // 每組隨機分配 2 個互評對象
+            var random = new Random();
+            int A_dash = random.Next(1, LeaderList.Count);
+            int B_dash = random.Next(1, LeaderList.Count);
+            while(A_dash == B_dash)
+            {
+                B_dash = random.Next(1, LeaderList.Count);
+            }
+
             foreach (var leader in LeaderList)
             {
-                var LeaderId = leader.StudentId;
+                var LeaderGroupCount = LeaderList.Count;
 
-                var LeaderGroupList = LeaderList.ToList();
-
-                var LeaderGroupCount = LeaderGroupList.Count;
-
-                var LeaderGroupListRandom = new List<string>();
-
-                for (int i = 0; i < 2; i++)
+                var LeaderGroupListRandom = new List<string>()
                 {
-                    var random = new Random();
-                    var randomIndex = random.Next(0, LeaderGroupCount);
-                    var randomStudentId = LeaderGroupList[randomIndex];
+                    LeaderList[A_dash++],
+                    LeaderList[B_dash++],
+                };
 
-                    while (LeaderId == randomStudentId.StudentId || LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
-                    {
-                        randomIndex = random.Next(0, LeaderGroupCount);
-                        randomStudentId = LeaderGroupList[randomIndex];
-                    }
+                if (A_dash >= LeaderGroupCount)
+                    A_dash = 0;
 
-                    LeaderGroupListRandom.Add(randomStudentId.StudentId);
-                }
+                if (B_dash >= LeaderGroupCount)
+                    B_dash = 0;
+
+                //for (int i = 0; i < 2; i++)
+                //{
+                //    var random = new Random();
+                //    var randomIndex = random.Next(0, LeaderGroupCount);
+                //    var randomStudentId = LeaderGroupList[randomIndex];
+
+                //    while (LeaderId == randomStudentId.StudentId || LeaderGroupListRandom.Exists(x => x == randomStudentId.StudentId))
+                //    {
+                //        randomIndex = random.Next(0, LeaderGroupCount);
+                //        randomStudentId = LeaderGroupList[randomIndex];
+                //    }
+
+                //    LeaderGroupListRandom.Add(randomStudentId.StudentId);
+                //}
 
                 var evaluationCoaching = new EvaluationCoaching();
                 foreach (var studentId in LeaderGroupListRandom)
                 {
                     evaluationCoaching.MissionId = mid;
-                    evaluationCoaching.AUID = LeaderId;
+                    evaluationCoaching.AUID = leader;
                     evaluationCoaching.BUID = studentId;
 
                     _context.EvaluationCoachings.Add(evaluationCoaching);
@@ -84,7 +95,7 @@ namespace LMSweb.Services
                 var evaluationCoaching = new EvaluationCoaching();
                 evaluationCoaching.MissionId = mid;
                 evaluationCoaching.AUID = tid;
-                evaluationCoaching.BUID = leader.StudentId;
+                evaluationCoaching.BUID = leader;
 
                 _context.EvaluationCoachings.Add(evaluationCoaching);
             }
