@@ -59,6 +59,10 @@ namespace LMSweb.Controllers.Questionnaire
                         return RedirectToAction("Details", "Mission", new { cid = vm.CourseId, mid = vm.MissionId });
                     }
                 }
+                else
+                {
+                    vm.EprocedureId = eid;
+                }
             }
 
             if(User.IsInRole("Teacher"))
