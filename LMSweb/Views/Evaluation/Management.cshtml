@@ -59,6 +59,11 @@
                                 <a href="@Url.Action("Index", "Questionnaire" , item.QuestionnaireIndexViewModel)" class="btn btn-primary my-auto">
                                     進入評價
                                 </a>
+                            } else if (item.IsSubmitted && item.IsAnswered)
+                            {
+                                <a href="@Url.Action("Show", "Evaluation" , new {mid = Model.MissionId, buid = item.GroupLeaderId})" class="btn btn-primary opacity-50 my-auto">
+                                    查看評價
+                                </a>
                             }
                         </td>
                     </tr>

@@ -81,7 +81,54 @@ namespace LMSweb.Controllers
 
         public IActionResult Show(string mid, string buid)
         {
-            return View();
+            var auid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+
+            var vm = new EvaluationShowViewModel();
+            vm.MissionId = mid;
+            vm.CourseId = _context.Missions.Find(mid).CourseId;
+            vm.MissionName = _context.Missions.Find(mid).Mname;
+
+            var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == auid && x.BUID == buid && x.MissionId == mid).FirstOrDefault().Evaluation;
+            if (_EvaluationGroup != null)
+            {
+                var score_list = _EvaluationGroup.Split(',').ToList();
+                var EvaAnswer_list = new List<EvaAnswer>();
+
+                Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+                scoreDict.Add("PE01", 0);
+                scoreDict.Add("PE02", 0);
+                scoreDict.Add("PE03", 0);
+
+                foreach (var item in score_list)
+                {
+                    var score = item.Split(':').ToList();
+                    if (scoreDict.ContainsKey(score[0]))
+                    {
+                        scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                    }
+                    else
+                    {
+                        if (score.Count() > 1 && score[1] != "")
+                        {
+                            var question = _context.Questions.Find(score[0]).Qcontent;
+
+                            EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                        }
+                    }
+                }
+
+                vm.EvaPE = new EvaPE()
+                {
+                    PE01 = scoreDict["PE01"].ToString(),
+                    PE02 = scoreDict["PE02"].ToString(),
+                    PE03 = scoreDict["PE03"].ToString()
+                };
+
+                vm.EvaAnswer = EvaAnswer_list;
+            }
+
+            return View(vm);
         }
 
         private bool HasDraw(int gid, string mid)

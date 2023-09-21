@@ -1,0 +1,90 @@
+﻿@model EvaluationShowViewModel
+@{
+    int k = 1, i = 0;
+    var PE_content = new List<string>()
+    {
+        "邏輯性",
+        "正確性",
+        "可讀性",
+    };
+}
+<div class="container">
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel { h1 = @$"任務名稱：{Model.MissionName}"})
+
+    <div class="card m-3 p-3">
+        <div class="m-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="row">
+                        <th class="col-1">編號</th>
+                        <th class="col-6">題目</th>
+                        <th class="col">答案</th>
+                    </tr>
+                </thead>
+                <tbody id="number">
+                    
+                    <tr class="row">
+                        <td class="col-1">
+                            <span class='ms-2'>@(k++)</span>
+                        </td>
+                        <td class="col-6">
+                            @PE_content[i++]
+                        </td>
+                        <td class="col">
+                            @Model.EvaPE.PE01
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-1">
+                            <span class='ms-2'>@(k++)</span>
+                        </td>
+                        <td class="col-6">
+                            @PE_content[i++]
+                        </td>
+                        <td class="col">
+                            @Model.EvaPE.PE02
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-1">
+                            <span class='ms-2'>@(k++)</span>
+                        </td>
+                        <td class="col-6">
+                            @PE_content[i++]
+                        </td>
+                        <td class="col">
+                            @Model.EvaPE.PE03
+                        </td>
+                    </tr>
+                    
+                    @foreach(var que in Model.EvaAnswer)
+                    {
+                        <tr class="row">
+                            <td class="col-1">
+                                <span class='ms-2'>@(k++)</span>
+                            </td>
+                            <td class="col-6">
+                                @que.Question
+                            </td>
+                            <td class="col">
+                                @que.Answer
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        @if (User.IsInRole("Student"))
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Management", "Evaluation", new { mid = Model.MissionId })">返回列表</a>
+        }
+        else
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Details", "Mission", new {cid = Model.CourseId ,mid = Model.MissionId })">返回任務</a>
+        }
+    </div>
+</div>

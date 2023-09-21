@@ -294,7 +294,7 @@ namespace LMSweb.Services
             return output;
         }
 
-        private int GetScore(int optionId)
+        public int GetScore(int optionId)
         {
             var score = 0;
 
