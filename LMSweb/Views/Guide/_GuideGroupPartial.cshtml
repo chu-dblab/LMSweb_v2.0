@@ -13,20 +13,20 @@
 <div id="stepper1" class="bs-stepper col-10">
     <div class="bs-stepper-header" role="tablist">
 
-        @foreach(var Step in Model.CurrentStatus)
+        @foreach (var Step in Model.CurrentStatus)
         {
             if (k != 0 && Step.ToString() == "1")
             {
                 <div class="bs-stepper-line"></div>
             }
-            
+
             <div class="step" data-target="#@($"{Model.GroupId}{++k}")">
                 <button type="button" class="step-trigger" role="tab" id="@($"{Model.GroupId}{k}")" aria-controls="@($"{Model.GroupId}{k}")">
                     <span class="bs-stepper-circle">@(k)</span>
 
                     @if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
                     {
-                        sName = Model.StepsName.ToArray()[k-1];
+                        sName = Model.StepsName.ToArray()[k - 1];
                     }
                     else
                     {
@@ -47,4 +47,38 @@
 
 <a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="@url">批改作業</a>
 
+<div class="col-12 mt-3 mb-2"><hr /></div>
 
+
+<div class="row">
+
+    @if (Model.EvaluationName != null)
+    {
+        <div class="col-1"></div>
+        <h5 class="col-2">評價組別</h5>
+
+        <div class="col">
+            @foreach (var EvaName in Model.EvaluationName)
+            {
+                <p>@EvaName</p>
+            }
+        </div>
+
+        @if (Model.CoachingName == null)
+        {
+            <div class="col-12 mt-3 mb-2"><hr /></div>
+        }
+        else
+        {
+            <h5 class="col-2">回饋組別</h5>
+
+            <div class="col">
+                @foreach (var EvaName in Model.CoachingName)
+                {
+                    <p>@EvaName</p>
+                }
+            </div>
+            <div class="col-12 mt-3 mb-2"><hr /></div>
+        }
+    }
+</div>

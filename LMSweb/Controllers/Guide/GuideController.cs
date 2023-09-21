@@ -84,6 +84,42 @@ namespace LMSweb.Controllers.Guide
 
                 _guideGroups.questionnaireIndexViewModel = _questionnaireIndexViewModel;
 
+                if (TestType == 2 || TestType == 4 || TestType == 5)
+                {
+                    _guideGroups.EvaluationName = new List<string>();
+                    var EvaluationGroupLeaderList = _context.EvaluationCoachings.Where(x => x.AUID == groupLeader && x.MissionId == mid).Select(x => x.BUID).ToList();
+
+                    foreach (var EvaGroupLeader in EvaluationGroupLeaderList)
+                    {
+                        var b_groupLeader = _context.Students.Where(x => x.StudentId == EvaGroupLeader).FirstOrDefault().GroupId;
+                        var b_groupLeaderName = _context.Groups.Where(x => x.Gid == b_groupLeader).FirstOrDefault().Gname;
+
+                        _guideGroups.EvaluationName.Add(b_groupLeaderName);
+                    }
+
+                    _guideGroups.EvaluationName.Sort();
+                }
+
+                if (TestType == 4 || TestType == 5)
+                {
+                    _guideGroups.CoachingName = new List<string>();
+                    var CoachingGroupLeaderList = _context.EvaluationCoachings.Where(x => x.BUID == groupLeader && x.MissionId == mid).Select(x => x.AUID).ToList();
+
+                    foreach (var CoachGroupLeader in CoachingGroupLeaderList)
+                    {
+                        var User = _context.Users.Where(x => x.Id == CoachGroupLeader).FirstOrDefault();
+
+                        if (User.RoleName == "Student")
+                        {
+                            var a_groupLeader = _context.Students.Where(x => x.StudentId == CoachGroupLeader).FirstOrDefault().GroupId;
+                            var a_groupLeaderName = _context.Groups.Where(x => x.Gid == a_groupLeader).FirstOrDefault().Gname;
+
+                            _guideGroups.CoachingName.Add(a_groupLeaderName);
+                        }
+                    }
+                    _guideGroups.CoachingName.Sort();
+                }
+
                 guideGroups.Add(_guideGroups);
             }
 

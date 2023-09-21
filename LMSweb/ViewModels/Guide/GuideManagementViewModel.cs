@@ -17,6 +17,10 @@ namespace LMSweb.ViewModels.Guide
         public string? CurrentStatus { get; set; }
         public List<string>? StepsName { get; set; }
 
+        // 如果是平價組別需要呈現互評組別資訊
+        public List<string>? EvaluationName { get; set; }
+        public List<string>? CoachingName { get; set; }
+
         // 後續要用可以用
         public List<GuideUser>? Users { get; set; }
 
