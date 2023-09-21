@@ -65,15 +65,6 @@ namespace LMSweb.Controllers.Questionnaire
                 }
             }
 
-            if(User.IsInRole("Teacher"))
-            {
-                if(_evaluationCoachingServices.HasEvaluationAtBUID(vm.UID, vm.EvaluationGroupIdList[0], vm.MissionId))
-                {
-                    Response.WriteAsync(@$"<script charset=""utf-8"">alert('Already corrected');window.location.href='{Url.Action("Management","Guide",new { mid = vm.MissionId})}' </script>");
-                    ////return RedirectToAction("Management", "Guide", new { mid = vm.MissionId });
-                }
-            }
-
             return View(vm);
         }
 

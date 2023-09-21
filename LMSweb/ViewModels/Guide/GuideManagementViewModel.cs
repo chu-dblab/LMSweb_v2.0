@@ -14,8 +14,11 @@ namespace LMSweb.ViewModels.Guide
     {
         public string GroupId { get; set; }
         public string GroupName { get; set; }
+        public string GroupLeaderId { get; set; }
         public string? CurrentStatus { get; set; }
         public List<string>? StepsName { get; set; }
+
+        public bool IsCorrect { get; set; } = false;
 
         // 如果是平價組別需要呈現互評組別資訊
         public List<string>? EvaluationName { get; set; }

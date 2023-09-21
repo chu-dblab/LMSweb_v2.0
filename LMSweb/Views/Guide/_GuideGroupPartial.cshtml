@@ -10,7 +10,7 @@
 
 <h3 class="ms-3 col-12">@Model.GroupName</h3>
 
-<div id="stepper1" class="bs-stepper col-10">
+<div id="stepper1" class="bs-stepper col-12">
     <div class="bs-stepper-header" role="tablist">
 
         @foreach (var Step in Model.CurrentStatus)
@@ -44,8 +44,6 @@
         }
     </div>
 </div>
-
-<a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="@url">批改作業</a>
 
 <div class="col-12 mt-3 mb-2"><hr /></div>
 
@@ -82,3 +80,25 @@
         }
     }
 </div>
+
+@* <a class="btn btn-secondary col-2 h-50 w-auto mx-auto align-self-center" href="@url">批改作業</a> *@
+
+@if(Model.IsCorrect)
+{
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-auto" style="min-height: 60px" href="@Url.Action("Show", "Evaluation" , new {mid = Model.questionnaireIndexViewModel.MissionId, buid = Model.GroupLeaderId})">
+        <span class="mx-auto fs-5">查看批改</span>
+    </a>
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-2 me-5" style="min-height: 60px" href="@url">
+        <span class="mx-auto fs-5">重新批改</span>
+    </a>
+} 
+else
+{
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-auto me-5" style="min-height: 60px" href="@url">
+        <span class="mx-auto fs-5">批改作業</span>
+    </a>
+}
+
+
+
+<div class="col-12 mt-3 mb-2"></div>

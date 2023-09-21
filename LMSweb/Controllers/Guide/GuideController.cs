@@ -68,6 +68,7 @@ namespace LMSweb.Controllers.Guide
 
                 var _EvaluationGroupIdList = new List<string>();
                 var groupLeader = _context.Students.Where(x => x.GroupId == group.Gid && x.IsLeader == true).FirstOrDefault().StudentId;
+                _guideGroups.GroupLeaderId = groupLeader;
                 _EvaluationGroupIdList.Add(groupLeader);
 
                 var _questionnaireIndexViewModel = new QuestionnaireIndexViewModel
@@ -118,6 +119,13 @@ namespace LMSweb.Controllers.Guide
                         }
                     }
                     _guideGroups.CoachingName.Sort();
+                }
+
+                var _TeacherEva = _context.EvaluationCoachings.Where(x => x.AUID == uid.Value && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault().Evaluation;
+
+                if(_TeacherEva != null)
+                {
+                    _guideGroups.IsCorrect = true;
                 }
 
                 guideGroups.Add(_guideGroups);
