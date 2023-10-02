@@ -5,6 +5,8 @@
     var TotalStap = Model.CurrentStatus.Count();
     string sName = "";
 
+    string activeTag = "";
+
     var url = Url.Action("Index", "Questionnaire", Model.questionnaireIndexViewModel);
 }
 
@@ -15,32 +17,38 @@
 
         @foreach (var Step in Model.CurrentStatus)
         {
-            if (k != 0 && Step.ToString() == "1")
+            if (k != 0)
             {
                 <div class="bs-stepper-line"></div>
             }
 
             <div class="step" data-target="#@($"{Model.GroupId}{++k}")">
-                <button type="button" class="step-trigger" role="tab" id="@($"{Model.GroupId}{k}")" aria-controls="@($"{Model.GroupId}{k}")">
-                    <span class="bs-stepper-circle">@(k)</span>
 
-                    @if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
+                @{
+                    sName = Model.StepsName.ToArray()[k - 1];
+                    if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
                     {
-                        sName = Model.StepsName.ToArray()[k - 1];
+                        activeTag = "active";
                     }
                     else
                     {
-                        sName = "";
+                        activeTag = "";
                     }
+                }
+
+                <button type="button" class="step-trigger @activeTag" role="tab" id="@($"{Model.GroupId}{k}")" aria-controls="@($"{Model.GroupId}{k}")">
+                    <span class="bs-stepper-circle">@(k)</span>
+
+                    
 
                     <span class="bs-stepper-label">@sName</span>
                 </button>
             </div>
 
-            @if ((Step.ToString() == "1") || (k == 1 && Step.ToString() == "0"))
+            @* @if ((Step.ToString() == "1"))
             {
                 <div class="bs-stepper-line"></div>
-            }
+            } *@
         }
     </div>
 </div>
