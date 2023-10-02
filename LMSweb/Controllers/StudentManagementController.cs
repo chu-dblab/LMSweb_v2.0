@@ -22,12 +22,7 @@ namespace LMSweb.Controllers
             _fileUploadService = fileUpload;
         }
 
-        public IActionResult Index(string cid)
-        {
-            return Index(cid, false);
-        }
-
-        public IActionResult Index(string cid, bool firstCreate)
+        public IActionResult Index(string cid, bool? firstCreate)
         {
             if (cid == null)
             {
@@ -59,7 +54,7 @@ namespace LMSweb.Controllers
                                         .ToList();
             vm.Students = student_related_data;
 
-            vm.FirstCreate = firstCreate;
+            vm.FirstCreate = firstCreate ?? false;
 
             return View(vm);
         }
