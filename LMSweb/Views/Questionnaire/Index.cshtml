@@ -514,69 +514,81 @@
 
             // 確認送出
             async function Submit() {
-                // 3.1 取得答案
-                var answers = await getAnswers();
-                console.log(answers);
-                // 3.2 送出答案
+
+                if (await checkIsSubmit() == true)
+                {
+                    // 3.1 取得答案
+                    var answers = await getAnswers();
+                    console.log(answers);
+                    // 3.2 送出答案
                 
 
-                Swal.fire({
-                    title: '送出後無法更改喔，確定要送出嗎?',
-                    showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: '送出',
-                    denyButtonText: `再想想`,
-                    preConfirm: async () => {
+                    Swal.fire({
+                        title: '送出後無法更改喔，確定要送出嗎?',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: '送出',
+                        denyButtonText: `再想想`,
+                        preConfirm: async () => {
 
-                        await sendAnswers(answers);
+                            await sendAnswers(answers);
 
-                        if ((!(vm.evaluationGroupIdList == undefined || vm.evaluationGroupIdList == [])) && (parseInt(GroupIndex) < vm.evaluationGroupIdList.length - 1 && EprocedureId == "6") ) {
-                            GroupIndex++;
-                            await localStorage.setItem("GroupIndex", GroupIndex);
-                            localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
-                            questions = await getQuestions();
-                            console.log(Question);
-                            await setEvaluationTitle();
-                            await displayQuestions();
-                            await drawImage();
+                            if ((!(vm.evaluationGroupIdList == undefined || vm.evaluationGroupIdList == [])) && (parseInt(GroupIndex) < vm.evaluationGroupIdList.length - 1 && EprocedureId == "6") ) {
+                                GroupIndex++;
+                                await localStorage.setItem("GroupIndex", GroupIndex);
+                                localStorage.setItem("EvaluationGroupIdList", EvaluationGroupIdList);
+                                questions = await getQuestions();
+                                console.log(Question);
+                                await setEvaluationTitle();
+                                await displayQuestions();
+                                await drawImage();
 
-                        } else if (EprocedureId == "7") {
-                            let out = true;
-                            GroupIsSubmit.forEach((g, index) => {
-                                if (g == false) out = false; 
-                            })
+                            } else if (EprocedureId == "7") {
+                                let out = true;
+                                GroupIsSubmit.forEach((g, index) => {
+                                    if (g == false) out = false; 
+                                })
 
-                            if(out == true)
-                            {
+                                if(out == true)
+                                {
+                                    localStorage.clear();
+                                    document.location.href = `${mvcHost}?cid=${vm.courseId}&mid=${vm.missionId}`;
+                                }
+                                else
+                                {
+                                    await localStorage.setItem("GroupIndex", GroupIndex);
+                                    questions = await getQuestions();
+                                    await displayQuestions();
+                                    await showEvaluationText(GroupIndex);
+                                    await setChartData();
+                                    await drawChart();
+                                }
+                            }
+                            else {
                                 localStorage.clear();
                                 document.location.href = `${mvcHost}?cid=${vm.courseId}&mid=${vm.missionId}`;
                             }
-                            else
-                            {
-                                await localStorage.setItem("GroupIndex", GroupIndex);
-                                questions = await getQuestions();
-                                await displayQuestions();
-                                await showEvaluationText(GroupIndex);
-                                await setChartData();
-                                await drawChart();
-                            }
+                        },
+                    }).then((result) => async function () {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            await Swal.fire('Saved!', '', 'success')
+
+
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info')
                         }
-                        else {
-                            localStorage.clear();
-                            document.location.href = `${mvcHost}?cid=${vm.courseId}&mid=${vm.missionId}`;
-                        }
-                    },
-                }).then((result) => async function () {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-
-                        await Swal.fire('Saved!', '', 'success')
-
-
-                    } else if (result.isDenied) {
-                        Swal.fire('Changes are not saved', '', 'info')
+                    })
                     }
-                })
+                else 
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '請填寫完整喔!',
+                    })
+                }
             }
 
             // 繪製圖片
@@ -759,6 +771,7 @@
                 $("#evaluation_title").empty();
 
                 var str = "";
+                var str = "";
 
                 if (!((EprocedureId == "6") && (Evaluation.drawingUrl == "" || Evaluation.codingUrl == ""))) {
                     str = `請給予該組評價`
@@ -769,6 +782,44 @@
                 var title = `<h3 class="w-auto m-2 fs-3">${str}</h3>`;
                 $("#evaluation_title").append(title);
                 $("#evaluation_title").show();
+            }
+
+            // 檢查是否有未填寫的題目
+            async function checkIsSubmit() {
+                var outIsSubmit = true;
+                Question.forEach(que => {
+                    var isSubmit = true;
+                    if (que.type == "0") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                isSubmit = false;
+                            }
+                        });
+
+                        if (isSubmit == true) {
+                            outIsSubmit = false;
+                        }
+                    }
+                    else if (que.type == "1") {
+                        var options = que.options;
+                        options.forEach(opt => {
+                            if (document.getElementById(opt.optionId).checked) {
+                                isSubmit = false;
+                            }
+                        });
+
+                        if (isSubmit == true) {
+                            outIsSubmit = false;
+                        }
+                    }
+                    else if (que.type == "2") {
+                        if (document.getElementById(que.questionId).value == "") {
+                            outIsSubmit = false;
+                        }
+                    }
+                });
+                return outIsSubmit;
             }
         </script>
     }
