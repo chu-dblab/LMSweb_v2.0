@@ -6,5 +6,7 @@
         public string CourseName { get; set; }
 
         public List<Student> Students { get; set; }
+
+        public bool FirstCreate { get; set; } = false;
     }
 }

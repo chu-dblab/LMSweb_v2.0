@@ -24,6 +24,11 @@ namespace LMSweb.Controllers
 
         public IActionResult Index(string cid)
         {
+            return Index(cid, false);
+        }
+
+        public IActionResult Index(string cid, bool firstCreate)
+        {
             if (cid == null)
             {
                 return NotFound();
@@ -53,6 +58,9 @@ namespace LMSweb.Controllers
                                         })
                                         .ToList();
             vm.Students = student_related_data;
+
+            vm.FirstCreate = firstCreate;
+
             return View(vm);
         }
 

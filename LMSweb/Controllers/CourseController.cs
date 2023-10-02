@@ -53,7 +53,8 @@ namespace LMSweb.Controllers
                 };
                 _context.Courses.Add(course);
                 _context.SaveChanges();
-                return RedirectToAction("Home", "Teacher");
+                //return RedirectToAction("Home", "Teacher");
+                return RedirectToAction("Index", "StudentManagement", new { cid = course.Cid, firstCreate = true });
             }
             return View(courseViewModel);
         }
