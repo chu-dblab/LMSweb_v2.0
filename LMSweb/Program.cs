@@ -31,6 +31,7 @@ builder.Services.AddTransient<FileUploadService>();
 builder.Services.AddTransient<EprocedureSercices>();
 builder.Services.AddTransient<GroupServices>();
 builder.Services.AddTransient<EvaluationCoachingServices>();
+builder.Services.AddTransient<StudentManagementSercices>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
