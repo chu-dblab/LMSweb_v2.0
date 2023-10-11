@@ -16,7 +16,7 @@
         CreateUrl = Url.Action("Index", "StudentManagement", new { cid = Model.CourseID, firstCreate = true }) ?? "";
         CopyUrl = Url.Action("Index", "StudentManagement", new { cid = Model.CourseID, firstCreate = true }) ?? "";
     }
-    else if (!StudentManagementSercices.HasStudentInCourse(Model.CourseID))
+    else if (!StudentManagementSercices.HasGroupInCourse(Model.CourseID))
     {
         CreateUrl = Url.Action("Group", "StudentManagement", new { cid = Model.CourseID }) ?? "";
         CopyUrl = Url.Action("Group", "StudentManagement", new { cid = Model.CourseID }) ?? "";
