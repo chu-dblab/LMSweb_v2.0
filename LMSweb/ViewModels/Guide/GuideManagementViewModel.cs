@@ -12,6 +12,7 @@ namespace LMSweb.ViewModels.Guide
 
     public class GuideGroup
     {
+        public string MissionId { get; set; }
         public string GroupId { get; set; }
         public string GroupName { get; set; }
         public string GroupLeaderId { get; set; }
@@ -21,7 +22,8 @@ namespace LMSweb.ViewModels.Guide
         public bool IsCorrect { get; set; } = false;
 
         // 如果是平價組別需要呈現互評組別資訊
-        public List<string>? EvaluationName { get; set; }
+        public List<EvalustionGroup>? Evaluation { get; set; }
+
         public List<string>? CoachingName { get; set; }
 
         // 後續要用可以用
@@ -36,5 +38,17 @@ namespace LMSweb.ViewModels.Guide
         public string UserId { get; set; }
         public string UserName { get; set; }
         public bool IsLeader { get; set; }
+    }
+
+    public class EvalustionGroup
+    {
+        // 如果是平價組別需要呈現互評組別資訊
+        public string EvaluationName { get; set; }
+
+        /*
+         * 這邊如果 LeaderId 有值代表該小組已經完成評價該組
+         * 如果沒有 = null & EvaluationName 有值就代表該小組未完成評價該組
+         */
+        public string? EvalustionLeaderId { get; set; }
     }
 }

@@ -60,6 +60,7 @@ namespace LMSweb.Controllers.Guide
             {
                 var _guideGroups = new GuideGroup
                 {
+                    MissionId = mid,
                     GroupId = group.Gid.ToString(),
                     GroupName = group.Gname,
                     CurrentStatus = group.CurrentStatus,
@@ -87,18 +88,30 @@ namespace LMSweb.Controllers.Guide
 
                 if (TestType == 2 || TestType == 4 || TestType == 5)
                 {
-                    _guideGroups.EvaluationName = new List<string>();
+                    _guideGroups.Evaluation = new List<EvalustionGroup>();
                     var EvaluationGroupLeaderList = _context.EvaluationCoachings.Where(x => x.AUID == groupLeader && x.MissionId == mid).Select(x => x.BUID).ToList();
 
                     foreach (var EvaGroupLeader in EvaluationGroupLeaderList)
                     {
-                        var b_groupLeader = _context.Students.Where(x => x.StudentId == EvaGroupLeader).FirstOrDefault().GroupId;
-                        var b_groupLeaderName = _context.Groups.Where(x => x.Gid == b_groupLeader).FirstOrDefault().Gname;
+                        var b_groupId = _context.Students.Where(x => x.StudentId == EvaGroupLeader).FirstOrDefault().GroupId;
+                        var b_groupLeaderName = _context.Groups.Where(x => x.Gid == b_groupId).FirstOrDefault().Gname;
 
-                        _guideGroups.EvaluationName.Add(b_groupLeaderName);
+                        var EvalustionGroup = new EvalustionGroup
+                        {
+                            EvaluationName = b_groupLeaderName,
+                            EvalustionLeaderId = null,
+                        };
+                        
+                        var _EvaluationGroup = _context.EvaluationCoachings.Where(x => x.AUID == groupLeader && x.BUID == EvaGroupLeader && x.MissionId == mid).FirstOrDefault().Evaluation;
+
+                        if (_EvaluationGroup != null)
+                        {
+                            EvalustionGroup.EvalustionLeaderId = EvaGroupLeader;
+                        }
+
+                        _guideGroups.Evaluation.Add(EvalustionGroup);
                     }
 
-                    _guideGroups.EvaluationName.Sort();
                 }
 
                 if (TestType == 4 || TestType == 5)

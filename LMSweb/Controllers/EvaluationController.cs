@@ -79,9 +79,12 @@ namespace LMSweb.Controllers
             return View(vm);
         }
 
-        public IActionResult Show(string mid, string buid)
+        public IActionResult Show(string mid, string buid, string? auid)
         {
-            var auid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+            if(auid == null)
+            {
+                auid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+            }
 
             var vm = new EvaluationShowViewModel();
             vm.MissionId = mid;
