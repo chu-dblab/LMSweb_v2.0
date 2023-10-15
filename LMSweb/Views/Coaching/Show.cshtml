@@ -1,0 +1,64 @@
+﻿@model CoachingShowViewModel
+@{
+    int k = 1, i = 0;
+    var PC_content = new List<string>()
+    {
+        "該組評價合理嗎?",
+    };
+}
+<div class="container">
+    @Html.Partial("~/Views/AllPartial/_ViewTitlePartial.cshtml",
+    new ViewTitlePartialViewModel { h1 = @$"任務名稱：{Model.MissionName}"})
+
+    <div class="card m-3 p-3">
+        <div class="m-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="row">
+                        <th class="col-1">編號</th>
+                        <th class="col-6">題目</th>
+                        <th class="col">答案</th>
+                    </tr>
+                </thead>
+                <tbody id="number">
+
+                    <tr class="row">
+                        <td class="col-1">
+                            <span class='ms-2'>@(k++)</span>
+                        </td>
+                        <td class="col-6">
+                            @PC_content[i++]
+                        </td>
+                        <td class="col">
+                            @Model.CoaPC.PC01
+                        </td>
+                    </tr>
+
+                    @foreach (var que in Model.CoaAnswer)
+                    {
+                        <tr class="row">
+                            <td class="col-1">
+                                <span class='ms-2'>@(k++)</span>
+                            </td>
+                            <td class="col-6">
+                                @que.Question
+                            </td>
+                            <td class="col">
+                                @que.Answer
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        @if (User.IsInRole("Student"))
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Management", "Evaluation", new { mid = Model.MissionId })">返回列表</a>
+        }
+        else
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Management", "Guide", new {mid = Model.MissionId })">返回列表</a>
+        }
+    </div>
+</div>

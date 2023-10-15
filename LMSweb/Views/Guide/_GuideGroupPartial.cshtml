@@ -68,11 +68,11 @@
             {
                 @if(Eva.EvalustionLeaderId != null)
                 {
-                    <p class="col-2" style="min-height: 50px">@Eva.EvaluationName</p>
-                    <a class="btn btn-secondary col-2" style="max-height: 40px" href="@Url.Action("Show", "Evaluation", new {mid = Model.MissionId, buid = Eva.EvalustionLeaderId, auid = Model.GroupLeaderId})">
+                    <p class="col-4" style="min-height: 50px">@Eva.EvaluationName</p>
+                    <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Evaluation", new {mid = Model.MissionId, buid = Eva.EvalustionLeaderId, auid = Model.GroupLeaderId})">
                         <span>進入評價</span>
                     </a>
-                    <div class="col-8"></div>
+                    <div class="col-2"></div>
                 }
                 else
                 {
@@ -81,7 +81,7 @@
             }
         </div>
 
-        @if (Model.CoachingName == null)
+        @if (Model.Coaching == null)
         {
             <div class="col-12 mt-3 mb-2"><hr /></div>
         }
@@ -89,10 +89,21 @@
         {
             <h5 class="col-2">回饋組別</h5>
 
-            <div class="col">
-                @foreach (var EvaName in Model.CoachingName)
+            <div class="col row">
+                @foreach (var Coa in Model.Coaching)
                 {
-                    <p>@EvaName</p>
+                    @if(Coa.CoachingLeaderId != null)
+                    {
+                    <p class="col-4" style="min-height: 50px">@Coa.CoachingName</p>
+                    <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Coaching", new {mid = Model.MissionId, buid = Model.GroupLeaderId, auid = Coa.CoachingLeaderId})">
+                        <span>進入評價</span>
+                    </a>
+                    <div class="col-2"></div>
+                    }
+                    else
+                    {
+                        <p class="col-12" style="min-height: 60px">@Coa.CoachingName</p>
+                    }
                 }
             </div>
             <div class="col-12 mt-3 mb-2"><hr /></div>

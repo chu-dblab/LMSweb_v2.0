@@ -116,7 +116,8 @@ namespace LMSweb.Controllers.Guide
 
                 if (TestType == 4 || TestType == 5)
                 {
-                    _guideGroups.CoachingName = new List<string>();
+                    _guideGroups.Coaching = new List<ViewModels.Guide.CoachingGroup>();
+
                     var CoachingGroupLeaderList = _context.EvaluationCoachings.Where(x => x.BUID == groupLeader && x.MissionId == mid).Select(x => x.AUID).ToList();
 
                     foreach (var CoachGroupLeader in CoachingGroupLeaderList)
@@ -125,13 +126,23 @@ namespace LMSweb.Controllers.Guide
 
                         if (User.RoleName == "Student")
                         {
-                            var a_groupLeader = _context.Students.Where(x => x.StudentId == CoachGroupLeader).FirstOrDefault().GroupId;
-                            var a_groupLeaderName = _context.Groups.Where(x => x.Gid == a_groupLeader).FirstOrDefault().Gname;
+                            var a_groupId = _context.Students.Where(x => x.StudentId == CoachGroupLeader).FirstOrDefault().GroupId;
+                            var a_groupLeaderName = _context.Groups.Where(x => x.Gid == a_groupId).FirstOrDefault().Gname;
+                            
+                            var CoachingGroup = new ViewModels.Guide.CoachingGroup
+                            {
+                                CoachingName = a_groupLeaderName,
+                                CoachingLeaderId = null,
+                            };
+                            
+                            if(_context.EvaluationCoachings.Where(x => x.AUID == CoachGroupLeader && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault().Coaching != null)
+                            {
+                                CoachingGroup.CoachingLeaderId = CoachGroupLeader;
+                            }
 
-                            _guideGroups.CoachingName.Add(a_groupLeaderName);
+                            _guideGroups.Coaching.Add(CoachingGroup);
                         }
                     }
-                    _guideGroups.CoachingName.Sort();
                 }
 
                 var _TeacherEva = _context.EvaluationCoachings.Where(x => x.AUID == uid.Value && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault().Evaluation;

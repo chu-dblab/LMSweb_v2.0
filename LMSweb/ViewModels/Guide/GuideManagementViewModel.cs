@@ -24,7 +24,7 @@ namespace LMSweb.ViewModels.Guide
         // 如果是平價組別需要呈現互評組別資訊
         public List<EvalustionGroup>? Evaluation { get; set; }
 
-        public List<string>? CoachingName { get; set; }
+        public List<CoachingGroup>? Coaching { get; set; }
 
         // 後續要用可以用
         public List<GuideUser>? Users { get; set; }
@@ -50,5 +50,11 @@ namespace LMSweb.ViewModels.Guide
          * 如果沒有 = null & EvaluationName 有值就代表該小組未完成評價該組
          */
         public string? EvalustionLeaderId { get; set; }
+    }
+
+    public class CoachingGroup
+    {
+        public string CoachingName { get; set; }
+        public string? CoachingLeaderId { get; set; }
     }
 }
