@@ -63,16 +63,16 @@
         <div class="col-1"></div>
         <h5 class="col-2">評價組別</h5>
 
-        <div class="col row">
+        <div class="col row border-end me-3">
             @foreach (var Eva in Model.Evaluation)
             {
                 @if(Eva.EvalustionLeaderId != null)
                 {
-                    <p class="col-4" style="min-height: 50px">@Eva.EvaluationName</p>
+                    <p class="col-5" style="min-height: 50px">@Eva.EvaluationName</p>
                     <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Evaluation", new {mid = Model.MissionId, buid = Eva.EvalustionLeaderId, auid = Model.GroupLeaderId})">
-                        <span>進入評價</span>
+                        <span>查看作答</span>
                     </a>
-                    <div class="col-2"></div>
+                    <div class="col-1"></div>
                 }
                 else
                 {
@@ -94,11 +94,11 @@
                 {
                     @if(Coa.CoachingLeaderId != null)
                     {
-                    <p class="col-4" style="min-height: 50px">@Coa.CoachingName</p>
+                    <p class="col-5" style="min-height: 50px">@Coa.CoachingName</p>
                     <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Coaching", new {mid = Model.MissionId, buid = Model.GroupLeaderId, auid = Coa.CoachingLeaderId})">
-                        <span>進入評價</span>
+                        <span>查看作答</span>
                     </a>
-                    <div class="col-2"></div>
+                    <div class="col-1"></div>
                     }
                     else
                     {
