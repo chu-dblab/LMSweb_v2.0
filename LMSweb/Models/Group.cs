@@ -4,7 +4,7 @@ public partial class Group
 {
     public int Gid { get; set; }
 
-    public string? CourseId { get; set; }
+    public string CourseId { get; set; }
 
     public string Gname { get; set; } = null!;
 
@@ -14,5 +14,5 @@ public partial class Group
 
     public virtual ICollection<ExecutionContent> ExecutionContents { get; set; } = new List<ExecutionContent>();
 
-    public virtual Course? Course { get; set; }
+    public virtual Course Course { get; set; }
 }

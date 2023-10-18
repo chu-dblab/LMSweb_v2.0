@@ -405,6 +405,13 @@ public partial class LMSContext : DbContext
                 Upassword = HashHelper.SHA256Hash("Kevin1004"),
                 Name = "焰超老師",
                 RoleName = "Teacher"
+            },
+            new User
+            {
+                Id = "T005",
+                Upassword = HashHelper.SHA256Hash("T005"),
+                Name = "俊興老師",
+                RoleName = "Teacher"
             }
         };
         modelBuilder.Entity<User>().HasData(test_users);
@@ -465,6 +472,11 @@ public partial class LMSContext : DbContext
             {
                 TeacherId = "T004",
                 TeacherName = "焰超老師"
+            },
+            new Teacher
+            {
+                TeacherId = "T005",
+                TeacherName = "俊興老師"
             }
         };
         modelBuilder.Entity<Teacher>().HasData(test_teachers);
