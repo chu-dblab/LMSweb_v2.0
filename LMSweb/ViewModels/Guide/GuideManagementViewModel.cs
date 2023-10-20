@@ -50,11 +50,16 @@ namespace LMSweb.ViewModels.Guide
          * 如果沒有 = null & EvaluationName 有值就代表該小組未完成評價該組
          */
         public string? EvalustionLeaderId { get; set; }
+
+        // 紀錄是否為評價小組未繳交作業，還是目前尚未幫該小組評價
+        public bool IsSubmit { get; set; } = false;
     }
 
     public class CoachingGroup
     {
         public string CoachingName { get; set; }
         public string? CoachingLeaderId { get; set; }
+
+        public bool IsSubmit { get; set; } = false;
     }
 }

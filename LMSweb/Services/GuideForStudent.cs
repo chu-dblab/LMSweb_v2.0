@@ -499,7 +499,7 @@ namespace LMSweb.Services
             return true;
         }
 
-        private bool HasCoaching(string uid, string missionId)
+        public bool HasCoaching(string uid, string missionId)
         {
             var uid_leader = GetGroupLeaderId(uid);
 

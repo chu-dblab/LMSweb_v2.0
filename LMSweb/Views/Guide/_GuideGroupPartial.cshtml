@@ -4,8 +4,12 @@
     int k = 0;
     var TotalStap = Model.CurrentStatus.Count();
     string sName = "";
-
     string activeTag = "";
+
+    string[] textColor = new string[2];
+    textColor[0] = "text-danger";
+    textColor[1] = "text-primary";
+
 
     var url = Url.Action("Index", "Questionnaire", Model.questionnaireIndexViewModel);
 }
@@ -78,7 +82,7 @@
                 }
                 else
                 {
-                    <p class="col-12" style="min-height: 60px">@Eva.EvaluationName</p>
+                    <p class="col-12 @textColor[Convert.ToInt32(Eva.IsSubmit)]" style="min-height: 60px">@Eva.EvaluationName</p>
                 }
             }
         </div>
@@ -105,7 +109,7 @@
                     }
                     else
                     {
-                        <p class="col-12" style="min-height: 60px">@Coa.CoachingName</p>
+                        <p class="col-12 @textColor[Convert.ToInt32(Coa.IsSubmit)]" style="min-height: 60px">@Coa.CoachingName</p>
                     }
                 }
             </div>

@@ -1,5 +1,6 @@
 ﻿using LMSweb.Assets;
 using LMSweb.Data;
+using LMSweb.Services;
 using LMSweb.ViewModels.Guide;
 using LMSweb.ViewModels.Questionnaire;
 using Microsoft.AspNetCore.Authorization;
@@ -107,6 +108,15 @@ namespace LMSweb.Controllers.Guide
                         if (_EvaluationGroup != null)
                         {
                             EvalustionGroup.EvalustionLeaderId = EvaGroupLeader;
+                            EvalustionGroup.IsSubmit = true;
+                        } 
+                        else
+                        {
+                            var Draw = _context.ExecutionContents.Where(x => x.GroupId == b_groupId && x.MissionId == mid && x.Type == "D").FirstOrDefault();
+                            if (Draw != null)
+                            {
+                                EvalustionGroup.IsSubmit = true;
+                            }
                         }
 
                         _guideGroups.Evaluation.Add(EvalustionGroup);
@@ -138,6 +148,14 @@ namespace LMSweb.Controllers.Guide
                             if(_context.EvaluationCoachings.Where(x => x.AUID == CoachGroupLeader && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault().Coaching != null)
                             {
                                 CoachingGroup.CoachingLeaderId = CoachGroupLeader;
+                                CoachingGroup.IsSubmit = true;
+                            }
+                            else
+                            {
+                                if (_context.EvaluationCoachings.Where(x => x.AUID == CoachGroupLeader && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault().Evaluation != null)
+                                {
+                                    CoachingGroup.IsSubmit = true;
+                                }
                             }
 
                             _guideGroups.Coaching.Add(CoachingGroup);
