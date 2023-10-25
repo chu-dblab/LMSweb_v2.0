@@ -132,8 +132,8 @@ namespace LMSweb.Services
         public List<string> GetCoachingLeaderList(string mid, string uid)
         {
             var LeaderGroupList = (from ec in _context.EvaluationCoachings
-                                   join user in _context.Users on ec.BUID equals user.Id
-                                   where ec.MissionId == mid && ec.BUID == uid && user.RoleName == "Student"
+                                   join user in _context.Students on ec.AUID equals user.StudentId
+                                   where ec.MissionId == mid && ec.BUID == uid
                                    select ec.AUID).ToList();
             return LeaderGroupList;
         }
