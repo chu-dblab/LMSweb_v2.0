@@ -239,11 +239,12 @@ public partial class LMSContext : DbContext
 
             entity.HasOne(d => d.Group).WithMany(p => p.Students)
                 .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Students_Groups");
 
             entity.HasOne(d => d.User).WithOne(p => p.Student)
                 .HasForeignKey<Student>(d => d.StudentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Students_Users");
         });
 
