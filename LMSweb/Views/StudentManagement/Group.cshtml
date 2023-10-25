@@ -221,119 +221,118 @@
             $(".modal-body #gName").val(gname);
             $(".modal #gId").val(gid);
         });
-    $('#exampleModal').on('show.bs.modal', function (event) {     //將選取的學生顯示在Modal上
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var modal = $(this)
-        var text = ''
-        $("input[name='all_student']").each(function () {
-            if ($(this).prop("checked")) {
-                text += $(this).attr('id') + '<br/>';
-            }
-        });
-        modal.find('#selected_students').html(text)
-    });
 
-    $('.addGbtn').click(function () {   //將已分好組別裡的某位學生加入其他組別
-        var otherGroupStudent = [];
-        var gid = this.id;
-        $("input[name='all_student']").each(function () {
-            if ($(this).prop("checked")) {
-                otherGroupStudent.push($(this).val());
-            }
-        });
-        console.log(otherGroupStudent);
-        console.log(gid);
-        $.ajax({
-            url: "@Url.Action("AddStuToOtherGroup", "Course")",
-            method: "post",
-            contentType: 'application/json',
-            data: JSON.stringify({ gid: gid, StudentList : otherGroupStudent, CID : "@Model.CourseId" }),
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (thrownError) {
-                console.log(thrownError);
-            }
-        });
-    });
-
-    $('#alert').click(function () {    //儲存Modal的資料
-        console.log($('#group_name').val());
-        var students = [];
-        $("input[name='all_student']").each(function () {
-            if ($(this).prop("checked")) {
-                students.push($(this).val());
-            }
-        });
-        console.log(students);
-        $.ajax({
-            url: "@Url.Action("Index", "Home")",
-            method: "post",
-            contentType: 'application/json',
-            data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CourseId" }),
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (thrownError) {
-                console.log(thrownError);
-            }
+        $('#exampleModal').on('show.bs.modal', function (event) {     //將選取的學生顯示在Modal上
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var modal = $(this)
+            var text = ''
+            $("input[name='all_student']").each(function () {
+                if ($(this).prop("checked")) {
+                    text += $(this).attr('id') + '<br/>';
+                }
+            });
+            modal.find('#selected_students').html(text)
         });
 
-    });
-
-    $('#groupclick').click(function () {    //隨機分組
-        var students = [];
-        var gn = $("#groupN").val();
-        var cid = '@Model.CourseId';
-        console.log(gn);
-        $.ajax({
-            url: `@Url.Action("Index", "api")/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
-            method: "post",
-            contentType: 'application/json',
-            //data: JSON.stringify({ RandomNumber: gn , cid : cid}),
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (thrownError) {
-                console.log(thrownError);
-            }
+        $('.addGbtn').click(function () {   //將已選擇的學生加入目標組別
+            var otherGroupStudent = [];
+            var gid = this.id;
+            $("input[name='all_student']").each(function () {
+                if ($(this).prop("checked")) {
+                    otherGroupStudent.push($(this).val());
+                }
+            });
+            console.log(otherGroupStudent);
+            console.log(gid);
+            $.ajax({
+                url: `@Url.Action("Index", "api")/AddStudentToOtherGroup`,
+                method: "post",
+                contentType: 'application/json',
+                data: JSON.stringify({ gid: gid, StudentList : otherGroupStudent, CID : "@Model.CourseId" }),
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
         });
-        console.log(123);
-    })
 
-    $('.groupclose').click(function () {    //刪除已分好的組別
-        var gid = this.id;
-        $.ajax({
-            url: "@Url.Action("GroupDelete", "Course")",
-            method: "post",
-            contentType: 'application/json',
-            data: JSON.stringify({ groupId: gid }),
-            success: function (response) {
-                window.location.reload();
+        $('#alert').click(function () {    //儲存Modal的資料
+            console.log($('#group_name').val());
+            var students = [];
+            $("input[name='all_student']").each(function () {
+                if ($(this).prop("checked")) {
+                    students.push($(this).val());
+                }
+            });
+            console.log(students);
+            $.ajax({
+                url: "@Url.Action("Index", "Home")",
+                method: "post",
+                contentType: 'application/json',
+                data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CourseId" }),
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
 
-            },
-            error: function (thrownError) {
-                console.log(thrownError);
-            }
         });
-        console.log(123);
-    })
 
-    $('.stuclose').click(function () {   //刪除已分好的組別裡面的某位學生
-        var sid = this.id;
-        $.ajax({
-            url: "@Url.Action("GroupStudentDelete", "Course")",
-            method: "post",
-            contentType: 'application/json',
-            data: JSON.stringify({groupStuId: sid}),
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (thrownError) {
-                console.log(thrownError);
-            }
-        });
-    })
+        $('#groupclick').click(function () {    //隨機分組
+            var students = [];
+            var gn = $("#groupN").val();
+            var cid = '@Model.CourseId';
+            console.log(gn);
+            $.ajax({
+                url: `@Url.Action("Index", "api")/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
+                method: "post",
+                contentType: 'application/json',
+                //data: JSON.stringify({ RandomNumber: gn , cid : cid}),
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
+            console.log(123);
+        })
+
+        $('.groupclose').click(function () {    //刪除已分好的組別
+            var gid = this.id;
+            $.ajax({
+                url: `@Url.Action("Index", "api")/GroupDelete?gid=${gid}`,
+                method: "post",
+                contentType: 'application/json',
+                success: function (response) {
+                    window.location.reload();
+
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
+            console.log(123);
+        })
+
+        $('.stuclose').click(function () {   //刪除已分好的組別裡面的某位學生
+            var sid = this.id;
+            $.ajax({
+                url: `@Url.Action("Index", "api")/GroupStudentDelete?sid=${sid}`,
+                method: "post",
+                contentType: 'application/json',
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
+        })
     </script>
 }
 

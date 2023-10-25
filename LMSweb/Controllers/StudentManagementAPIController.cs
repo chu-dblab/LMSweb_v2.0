@@ -18,14 +18,12 @@ namespace LMSweb.Controllers
             _groupService = groupService;
         }
 
-        // api/StudentManagementAPI/GroupRandomCreate
+        // api/GroupRandomCreate
         [HttpPost]
         public IActionResult GroupRandomCreate(int RandomNumber, string cid)
         {
             var GroupRandomCreateVM = new GroupRandomCreateViewModel();
-            //var GroupSer = new GroupServices(_context);
-            //GroupRandomCreateVM = GroupRandomCreateServices.GetGroupRandomCreateVM();
-
+            
             _groupService.GetGroupRandomCreateVM(RandomNumber, cid);
 
             if (GroupRandomCreateVM == null)
@@ -34,7 +32,66 @@ namespace LMSweb.Controllers
             }
 
             return Ok();
-            //return Ok(GroupRandomCreateVM);
+        }
+
+        // api/AddStudentToOtherGroup
+        // 將學生加入其他組別
+        [HttpPost]
+        public IActionResult AddStudentToOtherGroup(AddStudentToOtherGroupViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var sid in vm.StudentList)
+                {
+
+                    var student = _context.Students.Find(sid);
+                    var group = _context.Groups.Find(vm.gid);
+                    
+                    if (student != null && group != null)
+                    {
+                        student.Group = group;
+                    }
+                }
+
+                _context.SaveChanges();
+
+                return Ok();
+            }
+
+            return Ok();
+        }
+
+        // api/GroupDelete
+        // 刪除組別
+        [HttpPost]
+        public IActionResult GroupDelete(int gid)
+        {
+            var group = _context.Groups.Find(gid);
+
+            if (group != null)
+            {
+                _context.Groups.Remove(group);
+                _context.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+        // api/GroupStudentDelete
+        // 刪除組別中的學生
+        [HttpPost]
+        public IActionResult GroupStudentDelete(string sid)
+        {
+            var student = _context.Students.Find(sid);
+
+            if (student != null)
+            {
+                student.Group = null;
+                student.GroupId = null;
+                _context.SaveChanges();
+            }
+
+            return Ok();
         }
     }
 }
