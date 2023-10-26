@@ -43,6 +43,11 @@
                 <input type="text" min="1" max="20" placeholder="需要分成多少組" v-model="groupNum" id="groupN" />
             </label>
             <button class="btn btn-primary" id="groupclick">隨機分組</button>
+            <label class="ms-5">
+                每組人數 :
+                <input type="text" min="1" max="20" placeholder="預設每組人數" v-model="groupSexNum" id="groupSexN" />
+            </label>
+            <button class="btn btn-primary" id="groupSexClick">依性別隨機分組</button>
         </div>
         <div class="row">
             <div class="col-sm-6">
@@ -289,6 +294,26 @@
             console.log(gn);
             $.ajax({
                 url: `@Url.Action("Index", "api")/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}`,
+                method: "post",
+                contentType: 'application/json',
+                //data: JSON.stringify({ RandomNumber: gn , cid : cid}),
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (thrownError) {
+                    console.log(thrownError);
+                }
+            });
+            console.log(123);
+        })
+
+        $('#groupSexClick').click(function () {    //隨機分組
+            var students = [];
+            var gn = $("#groupSexN").val();
+            var cid = '@Model.CourseId';
+            console.log(gn);
+            $.ajax({
+                url: `@Url.Action("Index", "api")/GroupRandomCreate?RandomNumber=${gn}&cid=${cid}&IsSex=true`,
                 method: "post",
                 contentType: 'application/json',
                 //data: JSON.stringify({ RandomNumber: gn , cid : cid}),

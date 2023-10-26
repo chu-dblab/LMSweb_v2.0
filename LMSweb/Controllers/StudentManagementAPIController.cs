@@ -20,18 +20,30 @@ namespace LMSweb.Controllers
 
         // api/GroupRandomCreate
         [HttpPost]
-        public IActionResult GroupRandomCreate(int RandomNumber, string cid)
-        {
-            var GroupRandomCreateVM = new GroupRandomCreateViewModel();
-            
-            _groupService.doGroupRandom(RandomNumber, cid);
-
-            if (GroupRandomCreateVM == null)
+        public IActionResult GroupRandomCreate(int RandomNumber, string cid, bool? IsSex)
+        {            
+            if (IsSex == true)
             {
-                return NotFound();
+                if(_groupService.doGroupRandom(RandomNumber, cid, true))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-
-            return Ok();
+            else
+            {
+                if(_groupService.doGroupRandom(RandomNumber, cid))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
         }
 
         // api/AddStudentToOtherGroup
