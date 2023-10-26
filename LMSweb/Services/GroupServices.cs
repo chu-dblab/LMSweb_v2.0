@@ -13,7 +13,9 @@ namespace LMSweb.Services
             _context = context;
         }
 
-        public bool GetGroupRandomCreateVM(int n, string cid)
+
+        // 正常版隨機分組
+        public bool doGroupRandom(int n, string cid)
         {
             var GroupRandomCreateVM = new GroupRandomCreateViewModel();
 
@@ -106,6 +108,65 @@ namespace LMSweb.Services
             }
 
             return true;
+        }
+
+        // 進階版隨機分組-同性別分組 (這邊輸入的是一組幾個人)
+        //public bool doGroupRandom(int n, string cid, bool IsSameSex)
+        //{
+        //    /* 獲取原本資料 */
+        //    var course = _context.Courses.Find(cid);
+        //    var student_list = _context.Students.Where(x => x.CourseId == cid).ToList();
+
+        //    // 產生隨機碼
+        //    var random = new Random();
+        //    var random_number = random.Next(1000, 10000);
+        //    while (_context.Groups.Any(x => x.Gid == Convert.ToInt32($"{random_number.ToString()}{1:D3}")))
+        //    {
+        //        random_number = random.Next(1000, 10000);
+        //    }
+
+        //    // GroupList 存放 Gid
+        //    var GroupList = new List<int>();
+
+        //    // Gid 編碼規則：隨機數字 + 三位數字
+        //    var group = new Models.Group();
+        //    for (int i = 1; i <= n; i++)
+        //    {
+        //        var gid = Convert.ToInt32($"{random_number.ToString()}{i:D3}");
+        //        GroupList.Add(gid);
+
+        //        group = new Models.Group
+        //        {
+        //            Gid = gid,
+        //            CourseId = cid,
+        //            Gname = $"第{i}組",
+        //        };
+        //        _context.Groups.Add(group);
+        //        _context.SaveChanges();
+        //    }
+
+        //    // 將學生分組
+        //    bool GoodGroup = false;
+        //    while (!GoodGroup)
+        //    {
+        //        GoodGroup = true;
+        //        int GroupList_index = 0;
+        //        bool[] stu_HasGroup = new bool[student_list.Count()];
+        //        for (int stu_index = 0; stu_index < student_list)
+        //    }
+        //}
+
+        // 獲取一個隨機的新 GroupId
+        public int GetNewGroupId()
+        {
+            var random = new Random();
+            var random_number = random.Next(10000, 100000);
+            while (_context.Groups.Any(x => x.Gid == Convert.ToInt32($"{random_number.ToString()}")))
+            {
+                random_number = random.Next(10000, 100000);
+            }
+
+            return random_number;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace LMSweb.Controllers
         {
             var GroupRandomCreateVM = new GroupRandomCreateViewModel();
             
-            _groupService.GetGroupRandomCreateVM(RandomNumber, cid);
+            _groupService.doGroupRandom(RandomNumber, cid);
 
             if (GroupRandomCreateVM == null)
             {
@@ -103,6 +103,7 @@ namespace LMSweb.Controllers
             {
                 var group = new Models.Group
                 {
+                    Gid = _groupService.GetNewGroupId(),
                     Gname = vm.GroupName,
                     CourseId = vm.CourseId,
                 };
