@@ -99,9 +99,16 @@ namespace LMSweb.Controllers.Questionnaire
                     else
                         _Evaluation.CodingUrl = "UploadImgs/" + C_url.CodingUrl;
 
-                    
-
                     ReGetVM.Evaluation = _Evaluation;
+
+                    var sortQuestionsList = Topic.Questions.OrderBy(x => x.QuestionId.Substring(x.QuestionId.Length - 1, 1)).Where(x => x.Type == "2").ToList();
+
+                    int type2Count = Topic.Questions.Where(x => x.Type == "2").Count();
+
+                    for(int i = 0; i < type2Count; i++)
+                    {
+                        Topic.Questions[Topic.Questions.Count - type2Count + i] = sortQuestionsList[i];
+                    }
                 }
             }
 
@@ -114,6 +121,14 @@ namespace LMSweb.Controllers.Questionnaire
                     _Coaching = _evaluationCoachingServices.GetCoaching(mid, uid);
 
                 ReGetVM.Coaching = _Coaching;
+
+                var sortQuestionsList = Topic.Questions.OrderBy(x => x.QuestionId.Substring(x.QuestionId.Length - 1, 1)).Where(x => x.Type == "2").ToList();
+                int type2Count = Topic.Questions.Where(x => x.Type == "2").Count();
+
+                for (int i = 0; i < type2Count; i++)
+                {
+                    Topic.Questions[Topic.Questions.Count - type2Count + i] = sortQuestionsList[i];
+                }
             }
 
             return Ok(ReGetVM);
