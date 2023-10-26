@@ -93,5 +93,39 @@ namespace LMSweb.Controllers
 
             return Ok();
         }
+
+        // api/AddStudentToNewGroup
+        // 創建一個組別並加入學生
+        [HttpPost]
+        public IActionResult AddStudentToNewGroup(AddStudentToNewGroupViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var group = new Models.Group
+                {
+                    Gname = vm.GroupName,
+                    CourseId = vm.CourseId,
+                };
+
+                _context.Groups.Add(group);
+                _context.SaveChanges();
+
+                foreach (var sid in vm.StudentList)
+                {
+                    var student = _context.Students.Find(sid);
+
+                    if (student != null)
+                    {
+                        student.Group = group;
+                    }
+                }
+
+                _context.SaveChanges();
+
+                return Ok();
+            }
+
+            return Ok();
+        }
     }
 }

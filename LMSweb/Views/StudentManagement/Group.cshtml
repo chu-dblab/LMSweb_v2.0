@@ -40,7 +40,7 @@
         <div class="mb-3">
             <label>
                 分組數量 :
-                <input type="text" min="1" max="10" placeholder="需要分成多少組" v-model="groupNum" id="groupN" />
+                <input type="text" min="1" max="20" placeholder="需要分成多少組" v-model="groupNum" id="groupN" />
             </label>
             <button class="btn btn-primary" id="groupclick">隨機分組</button>
         </div>
@@ -267,11 +267,11 @@
                 }
             });
             console.log(students);
-            $.ajax({
-                url: "@Url.Action("Index", "Home")",
+            $.ajax({ 
+                url: `@Url.Action("Index", "api")/AddStudentToNewGroup`,
                 method: "post",
                 contentType: 'application/json',
-                data: JSON.stringify({ GName: $('#group_name').val(), StudentList : students, CID : "@Model.CourseId" }),
+                data: JSON.stringify({ GroupName: $('#group_name').val(), StudentList : students, CourseId : "@Model.CourseId" }),
                 success: function (response) {
                     window.location.reload();
                 },
