@@ -141,6 +141,7 @@ namespace LMSweb.Services
         public CoachingScore GetClassAgv(string mid)
         {
             var ClassScore = (from ec in _context.EvaluationCoachings
+                              join user in _context.Students on ec.AUID equals user.StudentId
                               where ec.MissionId == mid
                               select ec.Evaluation).ToList();
 
@@ -238,6 +239,7 @@ namespace LMSweb.Services
         public CoachingScore GetCoachingGroupAgv(string mid, string buid)
         {
             var GroupScore = (from ec in _context.EvaluationCoachings
+                              join user in _context.Students on ec.AUID equals user.StudentId
                               where ec.MissionId == mid && ec.BUID == buid
                               select ec.Evaluation).ToList();
 

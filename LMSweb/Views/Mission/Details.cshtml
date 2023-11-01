@@ -24,6 +24,7 @@
     var DrawingUrl = Url.Action("Index", "SubmissionFile", new { mid = Model.MissionID, type = "D" });
     var CodingUrl = Url.Action("Index", "SubmissionFile", new { mid = Model.MissionID, type = "C" });
     var GoalSettingUrl = Url.Action("GoalSettingForStudent", "Questions", new { mid = Model.MissionID});
+    var LearningProcessUrl = Url.Action("Index", "LearningProcess", new { mid = Model.MissionID});
 
     string[][] GuideStapUrlList = new string[6][];
 
@@ -32,7 +33,7 @@
     {
         "",
         DrawingUrl,
-        CodingUrl
+        CodingUrl,
     };
 
     GuideStapUrlList[1] = new string[]
@@ -50,7 +51,6 @@
         "",
         DrawingUrl,
         CodingUrl,
-        // Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 2.ToString(), TaskSteps = 2.ToString()}),
         Url.Action("Management", "Evaluation", new { mid = Model.MissionID } ),
     };
 
@@ -69,7 +69,6 @@
         "",
         DrawingUrl,
         CodingUrl,
-        // Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 4.ToString(), TaskSteps = 2.ToString()}),
         Url.Action("Management", "Evaluation", new { mid = Model.MissionID } ),
         Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "評價回饋", TaskType = 4.ToString(), TaskSteps = 3.ToString()}),
     };
@@ -81,12 +80,10 @@
         DrawingUrl,
         Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "學習監督", TaskType = 5.ToString(), TaskSteps = 2.ToString()}),
         CodingUrl,
-        // Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "同儕互評", TaskType = 5.ToString(), TaskSteps = 4.ToString()}),
         Url.Action("Management", "Evaluation", new { mid = Model.MissionID } ),
         Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "評價回饋", TaskType = 5.ToString(), TaskSteps = 5.ToString()}),
         Url.Action("Index", "Questionnaire", new QuestionnaireIndexViewModel{ CourseId = Model.CourseID, MissionId = Model.MissionID, MissionName = "團隊反思", TaskType = 5.ToString(), TaskSteps = 6.ToString()}),
     };
-
 
     List<List<TaskGuideStapPartialViewModel>> TaskGuideStapPartialViewModels = new List<List<TaskGuideStapPartialViewModel>>();
 
@@ -260,7 +257,7 @@
                         }
 
                         <div class="bs-stepper-line"></div>
-                        @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", new TaskGuideStapPartialViewModel {StapName = "任務完成", CurrentAction = GuideString, k = k++, buttonLink = ""})
+                        @Html.Partial("~/Views/MissionPartial/_TaskGuideStapPartial.cshtml", new TaskGuideStapPartialViewModel {StapName = "任務完成", CurrentAction = GuideString, k = k++, buttonLink = LearningProcessUrl, IsLeader = Model.IsLeader})
                     </div>
                 </div>
             </div>

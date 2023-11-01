@@ -8,12 +8,12 @@
 
 
         // 這邊用於判斷要不要顯示切換組別模組
-        public int TestType { get; set; }
+        //public int TestType { get; set; }
 
         public ChartData CourseAgv { get; set; }
         public ChartData GroupAgv { get; set; }
 
-        public DetailData[] Detail { get; set; }
+        public List<DetailData> Detail { get; set; }
     }
 
     public class ChartData
@@ -30,6 +30,6 @@
 
         // -------------------------------------------
         // 回饋
-        public string[]? ReTestFeedback { get; set; }
+        public List<string>? ReTestFeedback { get; set; }
     }
 }

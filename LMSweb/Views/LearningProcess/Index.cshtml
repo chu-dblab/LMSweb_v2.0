@@ -25,10 +25,13 @@
         </div>
     </div>
 
+    @if(Model.Detail.Count() > 0)
+        {
     @*教師分數與回饋*@
     <div class="card m-3 p-3" id="Detail">
         @*設置按鈕切換不同組教師給的分數與回饋*@
 
+        
         @if(Model.Detail.Count() > 1)
         {
             <div class="btn-group m-3" role="group" aria-label="Basic radio toggle button group">
@@ -67,7 +70,7 @@
 
         <h1 class="w-auto mx-auto fs-2" id="EvaluateTitle">教師評價</h1>
 
-        <div class="row ms-3 me-3 mt-2 gap-4">
+        <div class="row ms-3 me-3 mt-2 gap-4" id="EvaluationDetail">
             @for(int i = 1; i <= Model.Detail[0].TestFeedback.Count(); ++i)
             {
                 <div class="col-12 bg-body-tertiary border border-primary border-2 rounded-3" style="min-height: 60px">
@@ -76,18 +79,37 @@
             }
         </div>
     </div>
+     }
 </div>
-<template>
+
+<template id="EvaluationDetailShort">
+    <div class="col-12 bg-body-tertiary border border-primary border-2 rounded-3" style="min-height: 60px">
+        <p class="fs-4 mt-2" id="P_text"></p>
+    </div>
+</template>
+
+<template id="coaching-data-main">
     @*如果有回饋才顯示*@
     <hr class="coaching-data"/>
     <h1 class="w-auto mx-auto fs-2 coaching-data">該組回饋</h1>
+</template>
+
+<template id="coaching-data-detail">
     @*顯示題目 評價合理嗎 的答案*@
-    <div class="row ms-3 me-3 mt-2 gap-4 coaching-data coaching-data-main" id="coaching-data-main">
+    <div class="row ms-3 me-3 mt-2 gap-4 coaching-data">
         <div class="col-9 bg-body-tertiary border border-secondary border-2 rounded-3" style="min-height: 60px">
             <p class="fs-4 mt-2">該組覺得評價合理嗎?</p>
         </div>
         <div class="col bg-body-tertiary border border-secondary border-2 rounded-3" style="min-height: 60px">
             <p class="fs-4 mt-2 text-center" id="PC01">非常合理</p>
+        </div>
+    </div>
+</template>
+
+<template id="coaching-data-short">
+    <div class="row ms-3 me-3 mt-2 gap-4 coaching-data">
+        <div class="col-12 bg-body-tertiary border border-secondary border-2 rounded-3" style="min-height: 60px">
+            <p class="fs-4 mt-2" id="short"></p>
         </div>
     </div>
 </template>
@@ -119,11 +141,25 @@
             $(document).ready(function () {
                 $("#btnradio1").click(function () {
                     $(".coaching-data").remove();
+                    $("#EvaluationDetail").remove();
+                    $("#Detail").append('<div class="row ms-3 me-3 mt-2 gap-4" id="EvaluationDetail"></div>');
                     $("#ScoreTitle").text("教師分數");
                     $("#EvaluateTitle").text("教師評價");
                     $("#PE01").text(DetailData[0].score[0]);
                     $("#PE02").text(DetailData[0].score[1]);
                     $("#PE03").text(DetailData[0].score[2]);
+                    
+                    for(var j = 0; j < DetailData[0].testFeedback.length; ++j)
+                    {
+                        
+                        let template = $("#EvaluationDetailShort").html();
+                        var EvaluationDetailShort = $(template);
+                        EvaluationDetailShort.find("#P_text").text(`${j+1}. ${DetailData[0].testFeedback[j]}`);
+                        $("#EvaluationDetail").append(EvaluationDetailShort);
+                        console.log(EvaluationDetailShort);
+                        
+                    }
+                    
                 });
                 // 這邊要改成迴圈
                 @for(int i = 1; i < Model.Detail.Count(); ++i)
@@ -131,30 +167,48 @@
                     <text>
                     $("#btnradio@(i+1)").click(function () {
                         $(".coaching-data").remove();
+                        $("#EvaluationDetail").remove();
+                        $("#Detail").append('<div class="row ms-3 me-3 mt-2 gap-4" id="EvaluationDetail"></div>');
                         $("#ScoreTitle").text("@(group_name[i-1]) 組別分數");
                         $("#EvaluateTitle").text("@(group_name[i-1]) 組別評價");
                         $("#PE01").text(DetailData[@i].score[0]);
                         $("#PE02").text(DetailData[@i].score[1]);
                         $("#PE03").text(DetailData[@i].score[2]);
+                        @if(Model.Detail[i].TestFeedback != null)
+                        {
+                            @for(int j = 1; j <= Model.Detail[i].TestFeedback.Count() - 1; ++j)
+                            {
+                                <text>
+                                let template@(i)@(j) = $("#EvaluationDetailShort").html();
+                                var EvaluationDetailShort = $(template@(i)@(j));
+                                EvaluationDetailShort.find("#P_text").text(`@(j). @Model.Detail[i].TestFeedback[j]`);
+                                $("#EvaluationDetail").append(EvaluationDetailShort);
+                                console.log(EvaluationDetailShort);
+                                </text>
+                            }
+                        }
                         @if(Model.Detail[i].ReTestFeedback != null)
                         {
                             <text>
-                            let template = $("template").html();
-                            var formCheck = $(template);
-                            formCheck.find("#PC01").text(DetailData[@i].reTestFeedback[0]);
-                            formCheck.find("#coaching-data-main").remove();
+                            let template = $("#coaching-data-main").html();
+                            var CoachingMain = $(template);
+                            $("#Detail").append(CoachingMain);
+                            let formCheck = $("#coaching-data-detail").html();
+                            var CoachingDetail = $(formCheck);
+                            CoachingDetail.find("#PC01").text(DetailData[@i].reTestFeedback[0]);
+                            $("#Detail").append(CoachingDetail);
                             @for(int j = 1; j <= Model.Detail[i].ReTestFeedback.Count() - 1; ++j)
                             {
                                 <text>
-                                formCheck.find("#coaching-data-main").append(`<div class="col-12 bg-body-tertiary border border-secondary border-2 rounded-3" 
-                                                                                style="min-height: 60px"><p class="fs-4 mt-2">
-                                                                                @(j). @Model.Detail[i].ReTestFeedback[j]</p></div>`);
+                                var formCheck@(j+2) = $("#coaching-data-short").html();
+                                var CoachingShort = $(formCheck@(j+2));
+                                CoachingShort.find("#short").text(`@(j). ${DetailData[@i].reTestFeedback[@j]}`);
+                                $("#Detail").append(CoachingShort);
                                 </text>
                             }
-                            $("#Detail").append(formCheck);
                             </text>
                         }
-                    });
+                        });
                     </text>
                 }
             });
