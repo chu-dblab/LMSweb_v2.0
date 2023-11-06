@@ -2,10 +2,12 @@
 using LMSweb.Services;
 using LMSweb.ViewModels.Evaluation;
 using LMSweb.ViewModels.Questionnaire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers
 {
+    [Authorize]
     public class EvaluationController : Controller
     {
         private readonly LMSContext _context;

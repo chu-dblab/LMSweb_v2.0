@@ -3,14 +3,13 @@ using LMSweb.Services;
 using LMSweb.ViewModels;
 using LMSweb.ViewModels.Coaching;
 using LMSweb.ViewModels.Evaluation;
-using LMSweb.ViewModels.Guide;
 using LMSweb.ViewModels.Questionnaire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using NuGet.Packaging;
 
 namespace LMSweb.Controllers
 {
+    [Authorize]
     public class LearningProcessController : Controller
     {
         private readonly LMSContext _context;
@@ -22,9 +21,11 @@ namespace LMSweb.Controllers
             _evaluationCoachingServices = evaluationCoachingServices;
         }
 
-        public IActionResult Index(string mid)
+        public IActionResult Index(string mid, string? leader)
         {
             var uid = User.Claims.FirstOrDefault(x => x.Type == "UID").Value;
+            if (leader != null)
+                uid = leader;
 
             var viewModel = new LearningProcessViewModel
             {

@@ -12,6 +12,7 @@
 
 
     var url = Url.Action("Index", "Questionnaire", Model.questionnaireIndexViewModel);
+    var LeamingProcessUrl = Url.Action("Index", "LearningProcess", new { mid = Model.MissionId , leader = Model.GroupLeaderId } );
 }
 
 <h3 class="ms-3 col-12">@Model.GroupName</h3>
@@ -75,7 +76,7 @@
                 @if(Eva.EvalustionLeaderId != null)
                 {
                     <p class="col-5" style="min-height: 50px">@Eva.EvaluationName</p>
-                    <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Evaluation", new {mid = Model.MissionId, buid = Eva.EvalustionLeaderId, auid = Model.GroupLeaderId})">
+                    <a class="btn btn-success col-6" style="max-height: 40px" href="@Url.Action("Show", "Evaluation", new {mid = Model.MissionId, buid = Eva.EvalustionLeaderId, auid = Model.GroupLeaderId})">
                         <span>查看作答</span>
                     </a>
                     <div class="col-1"></div>
@@ -102,7 +103,7 @@
                     @if(Coa.CoachingLeaderId != null)
                     {
                     <p class="col-5" style="min-height: 50px">@Coa.CoachingName</p>
-                    <a class="btn btn-secondary col-6" style="max-height: 40px" href="@Url.Action("Show", "Coaching", new {mid = Model.MissionId, buid = Model.GroupLeaderId, auid = Coa.CoachingLeaderId})">
+                    <a class="btn btn-success col-6" style="max-height: 40px" href="@Url.Action("Show", "Coaching", new {mid = Model.MissionId, buid = Model.GroupLeaderId, auid = Coa.CoachingLeaderId})">
                         <span>查看作答</span>
                     </a>
                     <div class="col-1"></div>
@@ -126,11 +127,14 @@
 
 @if(Model.IsCorrect)
 {
-    <a class="btn btn-secondary col-2 d-flex align-items-center ms-auto" style="min-height: 60px" href="@Url.Action("Show", "Evaluation" , new {mid = Model.questionnaireIndexViewModel.MissionId, buid = Model.GroupLeaderId})">
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-auto" style="min-height: 60px" href="@url">
+        <span class="mx-auto fs-5">重新批改</span>
+    </a>
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-2" style="min-height: 60px" href="@Url.Action("Show", "Evaluation" , new {mid = Model.questionnaireIndexViewModel.MissionId, buid = Model.GroupLeaderId})">
         <span class="mx-auto fs-5">查看批改</span>
     </a>
-    <a class="btn btn-secondary col-2 d-flex align-items-center ms-2 me-5" style="min-height: 60px" href="@url">
-        <span class="mx-auto fs-5">重新批改</span>
+    <a class="btn btn-secondary col-2 d-flex align-items-center ms-2 me-5" style="min-height: 60px" href="@LeamingProcessUrl">
+        <span class="mx-auto fs-5">學習歷程</span>
     </a>
 } 
 else

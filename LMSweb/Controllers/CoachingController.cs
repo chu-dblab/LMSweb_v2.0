@@ -1,10 +1,12 @@
 ﻿using LMSweb.Data;
 using LMSweb.Services;
 using LMSweb.ViewModels.Coaching;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSweb.Controllers
 {
+    [Authorize]
     public class CoachingController : Controller
     {
         private readonly LMSContext _context;
