@@ -81,7 +81,7 @@
                             <a class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("EditStudent", "StudentManagement", new { sid = item.StudentId, cid = Model.CourseId})">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
-                            <a class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("DeleteStudent", "StudentManagement",new { sid = item.StudentId, cid = Model.CourseId})">
+                            <a class="btn btn-link" style="padding: 5px 5px 5px 5px" onclick="DeleteStudent('@item.StudentId', '@Model.CourseId')">
                                 <i class="bi bi-trash-fill"></i>
                             </a>
                         </td>
@@ -100,6 +100,7 @@
     <script src="~/lib/bootstrap-fileinput/js/fileinput.js"></script>
     <script src="~/lib/bootstrap-fileinput/js/locales/zh-TW.js"></script>
     <script src="~/lib/bootstrap-fileinput/themes/fa4/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.onload = function () {
             var tableLine = document.getElementById("number");
@@ -154,6 +155,25 @@
                  }),
             });
         });
+
+        // 新增確認使否要刪除該學生，採用sweetalert2套件
+        function DeleteStudent(sid, cid) {
+            Swal.fire({
+                title: '確定要刪除嗎?',
+                text: "刪除後將無法復原!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("DeleteStudent", "StudentManagement")' + '?sid=' + sid + '&cid=' + cid;
+                }
+            })
+        }
+        
     </script>
 }
 
