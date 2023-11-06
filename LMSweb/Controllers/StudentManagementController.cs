@@ -276,5 +276,17 @@ namespace LMSweb.Controllers
 
             return RedirectToAction("Group", "StudentManagement", new { cid = cid });
         }
+
+        // 刪除學生頁面 DeleteStudent
+        public IActionResult DeleteStudent(string sid, string cid)
+        {
+            var student = _context.Students.Find(sid);
+            if (student != null)
+            {
+                _context.Students.Remove(student);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "StudentManagement", new { cid = cid });
+        }
     }
 }
