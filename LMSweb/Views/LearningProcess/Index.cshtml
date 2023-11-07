@@ -176,12 +176,12 @@
                         $("#PE03").text(DetailData[@i].score[2]);
                         @if(Model.Detail[i].TestFeedback != null)
                         {
-                            @for(int j = 1; j <= Model.Detail[i].TestFeedback.Count() - 1; ++j)
+                            @for(int j = 0; j <= Model.Detail[i].TestFeedback.Count() - 1; ++j)
                             {
                                 <text>
                                 let template@(i)@(j) = $("#EvaluationDetailShort").html();
                                 var EvaluationDetailShort = $(template@(i)@(j));
-                                EvaluationDetailShort.find("#P_text").text(`@(j). @Model.Detail[i].TestFeedback[j]`);
+                                EvaluationDetailShort.find("#P_text").text(`@(j+1). @Model.Detail[i].TestFeedback[j]`);
                                 $("#EvaluationDetail").append(EvaluationDetailShort);
                                 console.log(EvaluationDetailShort);
                                 </text>
