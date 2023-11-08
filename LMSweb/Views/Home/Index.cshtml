@@ -8,18 +8,28 @@
             align-items: center;
             background-image: url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
             background-size: cover;
-            background-color: #898888;
-            height: 400px;
+            background-color: rgba(0, 0, 0, .3);
+            background-blend-mode: multiply;
+            height: 100vh;
             color: white;
-            opacity: 0.8;
         }
     </style>
 }
 
-<div class="carl row">
-
-        @*<img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Alternate Text" />*@
-        <p class="font-weight-bold text-center display-4 " style="padding:100px 30px 150px 30px">
+<div class="carl row align-content-center">
+    <div class="row">
+        <p class="font-weight-bold text-center display-4">
             Welcome!
         </p>
+        <p class="font-weight-bold text-center display-4 text-white">
+            結合社會共享調節與互動式同儕互評的程式設計合作學習環境
+        </p>
+        @* 登入按鈕與箭頭 *@
+        <div class="col-12 text-center">
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Login", "Home")">
+                登入進入系統
+                <i class="bi bi-arrow-right-circle-fill"></i>
+            </a>
+        </div>
+    </div>
 </div>
