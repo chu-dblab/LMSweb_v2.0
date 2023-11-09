@@ -1,37 +1,62 @@
 ﻿@model LearningProcessViewModel
 @{
-    ViewBag.Title = "學習歷程";
+    ViewBag.Title = "學習表現";
 
     string[] group_name = { "A", "B", "C", "D", "E", "F"};
+    string[] group_button_name = { "A組的評價", "B組的評價", "C組的回饋", "D組的回饋"};
 }
 
 <div class="container">
     @*標題*@
     <div class="card m-3 p-3">
-        <h1 class="w-auto mx-auto fs-2" id="Title">我們小組學習狀況</h1>
+        <h1 class="w-auto mx-auto fs-2" id="Title">我們小組學習表現</h1>
     </div>
 
-    @*圖表 左邊長條圖 右邊雷達圖*@
     <div class="row">
+        <div class="col-12">
+            <div class="card m-3 p-3">
+                <h1 class="w-auto mx-auto fs-3">教師評分</h1>
+            </div>
+        </div>
         <div class="col-6">
             <div class="card ms-3 mt-2 me-1 mb-3 p-3">
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="myChart3" width="400" height="400"></canvas>
             </div>
         </div>
         <div class="col-6">
             <div class="card me-3 mt-2 me-1 mb-3 p-3">
-                <canvas id="myChart2" width="400" height="400"></canvas>
+                <canvas id="myChart4" width="400" height="400"></canvas>
             </div>
         </div>
     </div>
 
+    @*圖表 左邊長條圖 右邊雷達圖*@
+    @if(Model.TestType == 2 || Model.TestType == 4 || Model.TestType == 5)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card m-3 p-3">
+                    <h1 class="w-auto mx-auto fs-3">小組評分</h1>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card ms-3 mt-2 me-1 mb-3 p-3">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card me-3 mt-2 me-1 mb-3 p-3">
+                    <canvas id="myChart2" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    }
+
     @if(Model.Detail.Count() > 0)
-        {
+    {
     @*教師分數與回饋*@
     <div class="card m-3 p-3" id="Detail">
         @*設置按鈕切換不同組教師給的分數與回饋*@
-
-        
         @if(Model.Detail.Count() > 1)
         {
             <div class="btn-group m-3" role="group" aria-label="Basic radio toggle button group">
@@ -41,7 +66,7 @@
                 @for(int i = 1; i < Model.Detail.Count(); ++i)
                 {
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio@(i+1)" autocomplete="off" />
-                    <label class="btn btn-outline-primary" for="btnradio@(i+1)">@(group_name[i-1]) 組別</label>
+                    <label class="btn btn-outline-primary" for="btnradio@(i+1)">@(group_button_name[i-1])</label>
                 }
             </div>
             <hr />
@@ -101,7 +126,7 @@
             <p class="fs-4 mt-2">該組覺得評價合理嗎?</p>
         </div>
         <div class="col bg-body-tertiary border border-secondary border-2 rounded-3" style="min-height: 60px">
-            <p class="fs-4 mt-2 text-center" id="PC01">非常合理</p>
+            <p class="fs-4 mt-2 text-center" id="PC01"></p>
         </div>
     </div>
 </template>
@@ -121,9 +146,15 @@
         // 這邊存放要切換顯示的資料
 
         // 圖表分數陣列
+        // 0: 全班平均
+        // 1: 小組平均
+        // 2: 我們組教師分數
+        // 3: 教師平均
         var ChartScore = [
             [@Model.CourseAgv.Data[0], @Model.CourseAgv.Data[1], @Model.CourseAgv.Data[2]],
-            [@Model.GroupAgv.Data[0], @Model.GroupAgv.Data[1], @Model.GroupAgv.Data[2]]
+            [@Model.GroupAgv.Data[0], @Model.GroupAgv.Data[1], @Model.GroupAgv.Data[2]],
+            [@Model.Detail[0].Score[0], @Model.Detail[0].Score[1], @Model.Detail[0].Score[2]],
+            [@Model.TeacherAgv.Data[0], @Model.TeacherAgv.Data[1], @Model.TeacherAgv.Data[2]]
         ];
 
         // 各組分數資料
@@ -213,23 +244,25 @@
                 }
             });
         }
+    </script>
 
-        var ctx = document.getElementById('myChart').getContext('2d');
+    <script>
+        var color_list = ['#3398DB80', '#ffcb5180'];
+
+        var ctx = document.getElementById('myChart3').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['邏輯性', '正確性', '可讀性'],
                 datasets: [{
-                    label: '全班平均',
-                    data: ChartScore[0],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    label: '教師評分',
+                    data: ChartScore[2],
+                    backgroundColor: color_list[0],
                     borderWidth: 1
                 }, {
-                    label: '小組平均',
-                    data: ChartScore[1],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    label: '全班平均',
+                    data: ChartScore[3],
+                    backgroundColor: color_list[1],
                     borderWidth: 1
                 }]
             },
@@ -242,22 +275,20 @@
             }
         });
 
-        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var ctx2 = document.getElementById('myChart4').getContext('2d');
         var myChart2 = new Chart(ctx2, {
             type: 'radar',
             data: {
                 labels: ['邏輯性', '正確性', '可讀性'],
                 datasets: [{
-                    label: '全班平均',
-                    data: ChartScore[0],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    label: '教師評分',
+                    data: ChartScore[2],
+                    backgroundColor: color_list[0],
                     borderWidth: 1
                 }, {
-                    label: '小組平均',
-                    data: ChartScore[1],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    label: '全班平均',
+                    data: ChartScore[3],
+                    backgroundColor: color_list[1],
                     borderWidth: 1
                 }]
             },
@@ -273,9 +304,91 @@
                     max: 3,
                     min: 0,
                     stepSize: 0.3
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 3
+                    }
                 }
             }
         });
     </script>
+
+    @if(Model.TestType == 2 || Model.TestType == 4 || Model.TestType == 5)
+    {
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['邏輯性', '正確性', '可讀性'],
+                    datasets: [{
+                        label: '全班平均',
+                        data: ChartScore[0],
+                        backgroundColor: color_list[0],
+                        borderWidth: 1
+                    }, {
+                        label: '小組平均',
+                        data: ChartScore[1],
+                        backgroundColor: color_list[1],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            var ctx2 = document.getElementById('myChart2').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'radar',
+                data: {
+                    labels: ['邏輯性', '正確性', '可讀性'],
+                    datasets: [{
+                        label: '全班平均',
+                        data: ChartScore[0],
+                        backgroundColor: color_list[0],
+                        borderWidth: 1
+                    }, {
+                        label: '小組平均',
+                        data: ChartScore[1],
+                        backgroundColor: color_list[1],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '我們組與全班平均'
+                        }
+                    },
+                    ticks: {
+                        max: 3,
+                        min: 0,
+                        stepSize: 0.3
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 3
+                        }
+                    }
+                }
+            });
+        </script>
+    }
 }
 

@@ -33,38 +33,17 @@ namespace LMSweb.Controllers
                 MissionId = mid,
                 CourseAgv = new ChartData
                 {
-                    Data = new double[] { 1, 2, 3 }
+                    Data = new double[] { 0, 0, 0 }
                 },
                 GroupAgv = new ChartData
                 {
-                    Data = new double[] { 2, 1, 2 }
+                    Data = new double[] { 0, 0, 0 }
+                },
+                TeacherAgv = new ChartData
+                {
+                    Data = new double[] {0, 0, 0 }
                 },
                 Detail = new List<DetailData>()
-                // 下面是測試資料
-                //{
-                //    new DetailData
-                //    {
-                //        Score = new int[] { 1, 2, 3 },
-                //        TestFeedback = new string[] { "你們小組程式碼寫得很好", "你們小組流程圖畫得不錯", "加油" },
-                //    },
-                //    new DetailData
-                //    {
-                //        Score = new int[] { 2, 2, 3 },
-                //        TestFeedback = new string[] { "1", "2", "3" },
-                //        ReTestFeedback = new string[] { "非常合理", "你們小組流程圖畫得不錯" }
-                //    },
-                //    new DetailData
-                //    {
-                //        Score = new int[] { 3, 2, 3 },
-                //        TestFeedback = new string[] { "1", "2", "3" },
-                //    },
-                //    new DetailData
-                //    {
-                //        Score = new int[] { 1, 1, 3 },
-                //        TestFeedback = new string[] { "1", "2", "3" },
-                //        ReTestFeedback = new string[] { "1", "2", "3" }
-                //    }
-                //}
             };
 
             var _Coaching = new Coaching();
@@ -86,21 +65,24 @@ namespace LMSweb.Controllers
             }
 
             var testType = _context.Courses.Find(viewModel.CourseId).TestType;
+            viewModel.TestType = testType;
 
-
-            // 找到評價&回饋
-            var EvaluationList = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.BUID == uid).ToList();
-            var CoachingList = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.AUID == uid).ToList();
-
-            // 顯示評價
-            if(EvaluationList.Count > 0)
+            // 找到該課程老師
+            var teacher = _context.Courses.Where(x => x.Cid == viewModel.CourseId).FirstOrDefault().TeacherId;
+            // 找到老師評價
+            var TeacherEvaluation = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.AUID == teacher).ToList();
+            // 計算老師評價平均分數
+            if (TeacherEvaluation.Count > 0)
             {
-                foreach (var eva in EvaluationList)
+                var TeacherAgv = new double[] { 0, 0, 0 };
+                foreach (var eva in TeacherEvaluation)
                 {
-                    var Teacher = _context.Teachers.Where(x => x.TeacherId == eva.AUID).FirstOrDefault();
-                    if(Teacher != null && eva.Evaluation != null)
+                    if(eva.Evaluation == null)
                     {
-                        var vmDetailData = new DetailData();
+                        TeacherAgv = new double[] { 0, 0, 0 };
+                        break;
+                    } else
+                    {
                         var score_list = eva.Evaluation.Split(',').ToList();
                         var EvaAnswer_list = new List<EvaAnswer>();
 
@@ -128,16 +110,126 @@ namespace LMSweb.Controllers
                             }
                         }
 
-                        vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
-                        vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
-
-                        viewModel.Detail.Add(vmDetailData);
+                        TeacherAgv[0] += scoreDict["PE01"];
+                        TeacherAgv[1] += scoreDict["PE02"];
+                        TeacherAgv[2] += scoreDict["PE03"];
                     }
-
-                    
                 }
 
-                if (viewModel.Detail.Count == 0)
+                TeacherAgv[0] /= TeacherEvaluation.Count;
+                TeacherAgv[1] /= TeacherEvaluation.Count;
+                TeacherAgv[2] /= TeacherEvaluation.Count;
+
+                viewModel.TeacherAgv = new ChartData
+                {
+                    Data = TeacherAgv
+                };
+            }
+
+
+            // 找到評價&回饋
+            var EvaluationList = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.BUID == uid).ToList();
+            var CoachingList = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.AUID == uid).ToList();
+
+            // 顯示評價
+            if (testType == 2 || testType == 4 || testType == 5)
+            {
+                if (EvaluationList.Count > 0)
+                {
+                    foreach (var eva in EvaluationList)
+                    {
+                        var Teacher = _context.Teachers.Where(x => x.TeacherId == eva.AUID).FirstOrDefault();
+                        if (Teacher != null && eva.Evaluation != null)
+                        {
+                            var vmDetailData = new DetailData();
+                            var score_list = eva.Evaluation.Split(',').ToList();
+                            var EvaAnswer_list = new List<EvaAnswer>();
+
+                            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+                            scoreDict.Add("PE01", 0);
+                            scoreDict.Add("PE02", 0);
+                            scoreDict.Add("PE03", 0);
+
+                            foreach (var item in score_list)
+                            {
+                                var score = item.Split(':').ToList();
+                                if (scoreDict.ContainsKey(score[0]))
+                                {
+                                    scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                                }
+                                else
+                                {
+                                    if (score.Count() > 1 && score[1] != "")
+                                    {
+                                        var question = _context.Questions.Find(score[0]).Qcontent;
+
+                                        EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                                    }
+                                }
+                            }
+
+                            vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
+                            vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
+
+                            viewModel.Detail.Add(vmDetailData);
+                        }
+                    }
+
+                    if (viewModel.Detail.Count == 0)
+                    {
+                        var nullData = new DetailData
+                        {
+                            Score = new int[] { 0, 0, 0 },
+                            TestFeedback = new string[] { }
+                        };
+                        viewModel.Detail.Add(nullData);
+                    }
+
+                    foreach (var eva in EvaluationList)
+                    {
+                        var Teacher = _context.Teachers.Find(eva.AUID);
+                        if (Teacher == null && eva.Evaluation != null)
+                        {
+                            var vmDetailData = new DetailData();
+                            var score_list = eva.Evaluation.Split(',').ToList();
+                            var EvaAnswer_list = new List<EvaAnswer>();
+
+                            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+                            scoreDict.Add("PE01", 0);
+                            scoreDict.Add("PE02", 0);
+                            scoreDict.Add("PE03", 0);
+
+                            foreach (var item in score_list)
+                            {
+                                var score = item.Split(':').ToList();
+                                if (scoreDict.ContainsKey(score[0]))
+                                {
+                                    scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                                }
+                                else
+                                {
+                                    if (score.Count() > 1 && score[1] != "")
+                                    {
+                                        var question = _context.Questions.Find(score[0]).Qcontent;
+
+                                        EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                                    }
+                                }
+                            }
+
+                            vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
+                            vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
+
+                            viewModel.Detail.Add(vmDetailData);
+                        }
+                    }
+                }
+
+                
+                // 如果評價是 EvaluationList.Count == 0 放兩個空資料
+                for(int i = 0; i < 3 - viewModel.Detail.Count; i++)
                 {
                     var nullData = new DetailData
                     {
@@ -146,120 +238,142 @@ namespace LMSweb.Controllers
                     };
                     viewModel.Detail.Add(nullData);
                 }
-
-                foreach (var eva in EvaluationList)
-                {
-                    var Teacher = _context.Teachers.Find(eva.AUID);
-                    if (Teacher == null && eva.Evaluation != null)
-                    {
-                        var vmDetailData = new DetailData();
-                        var score_list = eva.Evaluation.Split(',').ToList();
-                        var EvaAnswer_list = new List<EvaAnswer>();
-
-                        Dictionary<string, int> scoreDict = new Dictionary<string, int>();
-
-                        scoreDict.Add("PE01", 0);
-                        scoreDict.Add("PE02", 0);
-                        scoreDict.Add("PE03", 0);
-
-                        foreach (var item in score_list)
-                        {
-                            var score = item.Split(':').ToList();
-                            if (scoreDict.ContainsKey(score[0]))
-                            {
-                                scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
-                            }
-                            else
-                            {
-                                if (score.Count() > 1 && score[1] != "")
-                                {
-                                    var question = _context.Questions.Find(score[0]).Qcontent;
-
-                                    EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
-                                }
-                            }
-                        }
-
-                        vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
-                        vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
-
-                        viewModel.Detail.Add(vmDetailData);
-                    }
-                }
             }
 
-            // 顯示回饋
-            if (CoachingList.Count > 0)
+            if (testType == 4 || testType == 5)
             {
-                foreach (var coa in CoachingList)
+                // 顯示回饋
+                if (CoachingList.Count > 0)
                 {
-                    var Teacher = _context.Teachers.Find(coa.AUID);
-                    if (Teacher == null && coa.Evaluation != null && coa.Coaching != null)
+                    foreach (var coa in CoachingList)
                     {
-                        var vmDetailData = new DetailData();
-                        var score_list = coa.Evaluation.Split(',').ToList();
-                        var EvaAnswer_list = new List<EvaAnswer>();
-
-                        Dictionary<string, int> scoreDict = new Dictionary<string, int>();
-
-                        scoreDict.Add("PE01", 0);
-                        scoreDict.Add("PE02", 0);
-                        scoreDict.Add("PE03", 0);
-
-                        foreach (var item in score_list)
+                        var Teacher = _context.Teachers.Find(coa.AUID);
+                        if (Teacher == null && coa.Evaluation != null && coa.Coaching != null)
                         {
-                            var score = item.Split(':').ToList();
-                            if (scoreDict.ContainsKey(score[0]))
-                            {
-                                scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
-                            }
-                            else
-                            {
-                                if (score.Count() > 1 && score[1] != "")
-                                {
-                                    var question = _context.Questions.Find(score[0]).Qcontent;
+                            var vmDetailData = new DetailData();
+                            var score_list = coa.Evaluation.Split(',').ToList();
+                            var EvaAnswer_list = new List<EvaAnswer>();
 
-                                    EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+                            scoreDict.Add("PE01", 0);
+                            scoreDict.Add("PE02", 0);
+                            scoreDict.Add("PE03", 0);
+
+                            foreach (var item in score_list)
+                            {
+                                var score = item.Split(':').ToList();
+                                if (scoreDict.ContainsKey(score[0]))
+                                {
+                                    scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                                }
+                                else
+                                {
+                                    if (score.Count() > 1 && score[1] != "")
+                                    {
+                                        var question = _context.Questions.Find(score[0]).Qcontent;
+
+                                        EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                                    }
                                 }
                             }
-                        }
 
-                        vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
-                        vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
-                        
-                        var score_coa_list = coa.Coaching.Split(',').ToList();
-                        var CoaAnswer_list = new List<CoaAnswer>();
+                            vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
+                            vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
 
-                        Dictionary<string, string> scoreDict2 = new Dictionary<string, string>();
+                            var score_coa_list = coa.Coaching.Split(',').ToList();
+                            var CoaAnswer_list = new List<CoaAnswer>();
 
-                        scoreDict2.Add("PC01", "");
+                            Dictionary<string, string> scoreDict2 = new Dictionary<string, string>();
 
-                        foreach (var score in score_coa_list)
-                        {
-                            var score_split = score.Split(':').ToList();
+                            scoreDict2.Add("PC01", "");
 
-                            if (scoreDict2.ContainsKey(score_split[0]))
+                            foreach (var score in score_coa_list)
                             {
-                                scoreDict2[key: score_split[0]] = _context.Options.Where(x => x.OptionID == int.Parse(score_split[1])).FirstOrDefault().Ocontent;
-                            }
-                            else
-                            {
-                                if (score_split.Count() > 1 && score_split[1] != "")
+                                var score_split = score.Split(':').ToList();
+
+                                if (scoreDict2.ContainsKey(score_split[0]))
                                 {
-                                    var question = _context.Questions.Find(score_split[0]).Qcontent;
+                                    scoreDict2[key: score_split[0]] = _context.Options.Where(x => x.OptionID == int.Parse(score_split[1])).FirstOrDefault().Ocontent;
+                                }
+                                else
+                                {
+                                    if (score_split.Count() > 1 && score_split[1] != "")
+                                    {
+                                        var question = _context.Questions.Find(score_split[0]).Qcontent;
 
-                                    CoaAnswer_list.Add(new CoaAnswer() { Question = question, Answer = score_split[1] });
+                                        CoaAnswer_list.Add(new CoaAnswer() { Question = question, Answer = score_split[1] });
+                                    }
                                 }
                             }
+
+                            vmDetailData.ReTestFeedback = new List<string> { scoreDict2["PC01"] };
+                            vmDetailData.ReTestFeedback.AddRange(CoaAnswer_list.Select(x => x.Answer).ToArray());
+
+                            viewModel.Detail.Add(vmDetailData);
                         }
+                        else if(Teacher == null && coa.Evaluation != null && coa.Coaching == null)
+                        {
+                            var vmDetailData = new DetailData();
+                            var score_list = coa.Evaluation.Split(',').ToList();
+                            var EvaAnswer_list = new List<EvaAnswer>();
 
-                        vmDetailData.ReTestFeedback = new List<string> { scoreDict2["PC01"] };
-                        vmDetailData.ReTestFeedback.AddRange(CoaAnswer_list.Select(x => x.Answer).ToArray());
+                            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
 
-                        viewModel.Detail.Add(vmDetailData);
+                            scoreDict.Add("PE01", 0);
+                            scoreDict.Add("PE02", 0);
+                            scoreDict.Add("PE03", 0);
+
+                            foreach (var item in score_list)
+                            {
+                                var score = item.Split(':').ToList();
+                                if (scoreDict.ContainsKey(score[0]))
+                                {
+                                    scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                                }
+                                else
+                                {
+                                    if (score.Count() > 1 && score[1] != "")
+                                    {
+                                        var question = _context.Questions.Find(score[0]).Qcontent;
+
+                                        EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
+                                    }
+                                }
+                            }
+
+                            vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
+                            vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
+
+                            viewModel.Detail.Add(vmDetailData);
+                        }
+                        else if(Teacher == null)
+                        {
+                            // 都沒有資料放nullData
+                            var nullData = new DetailData
+                            {
+                                Score = new int[] { 0, 0, 0 },
+                                TestFeedback = new string[] { },
+                                ReTestFeedback = new List<string> { }
+                            };
+                            viewModel.Detail.Add(nullData);
+                        }
                     }
                 }
+
+                // 如果回饋是 CoachingList.Count == 0 放兩個空資料
+                for (int i = 0; i < 5 - viewModel.Detail.Count; i++)
+                {
+                    var nullData = new DetailData
+                    {
+                        Score = new int[] { 0, 0, 0 },
+                        TestFeedback = new string[] { },
+                        ReTestFeedback = new List<string> { }
+                    };
+                    viewModel.Detail.Add(nullData);
+                }
             }
+                
 
             return View(viewModel);
         }

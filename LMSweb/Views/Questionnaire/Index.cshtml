@@ -626,12 +626,14 @@
             }
 
             // 繪製圖表
-            async function drawChart() {
+            async function drawChart(index) {
+                if(index == undefined) index = 0;
                 var chartDom = document.getElementById('bar');
                 var myChart = echarts.init(chartDom);
                 var option;
 
                 option = {
+                    color: ['#3398DB80'],
                     title: {
                         text: '長條圖'
                     },
@@ -647,10 +649,15 @@
                     },
                     series: [
                         {
+                            name: ChartData["radar01_name"],
                             data: ChartData["bar"],
                             type: 'bar'
                         }
-                    ]
+                    ],
+                    legend:{
+                        name: ChartData["radar01_name"],
+                        bottom: 0
+                    }
                 };
 
                 option && myChart.setOption(option);
@@ -661,6 +668,7 @@
                 var option;
 
                 option = {
+                  color: ['#3398DB80', '#ffcb5180'],
                   title: {
                     text: '雷達圖'
                   },
@@ -709,33 +717,46 @@
                 if (group_index == 0) {
                     ChartData["bar"] = [Coaching.classAgv.pE01, Coaching.classAgv.pE02, Coaching.classAgv.pE03];
                     ChartData["radar01"] = [Coaching.classAgv.pE01, Coaching.classAgv.pE02, Coaching.classAgv.pE03];
-                    ChartData["radar01_name"] = "班級平均";
+                    ChartData["radar01_name"] = "班級平均"
                     ChartData["radar02"] = await [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
                     ChartData["radar02_name"] = "小組平均";
-                    await drawChart();
+                    await drawChart(0);
                 }
                 else if (group_index > 0 && group_index <= Coaching.groups.length)
                 {
-                    ChartData["bar"] = [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
+                    var g_name = ["小組分數", "A組給分", "B組給分", "C組給分", "D組給分"];
+                    ChartData["bar"] = [Coaching.classAgv.pE01, Coaching.classAgv.pE02, Coaching.classAgv.pE03];
                     ChartData["radar01"] = [Coaching.groups[group_index-1].coachingScore.pE01, Coaching.groups[group_index-1].coachingScore.pE02, Coaching.groups[group_index-1].coachingScore.pE03];
-                    ChartData["radar01_name"] = "小組分數";
+                    ChartData["radar01_name"] = g_name[group_index];
                     ChartData["radar02"] = await [Coaching.groupAgv.pE01, Coaching.groupAgv.pE02, Coaching.groupAgv.pE03];
-                    ChartData["radar02_name"] = "小組平均";
+                    ChartData["radar02_name"] = "平均分數";
 
                     // console.log("小組分數");
                     // console.log(ChartData["radar01"]);
                 }
                 else {
-                    await drawChart();
+                    await drawChart(0);
                 }
             }
 
             // 繪製按鈕
-            async function drawBTN() {
+            async function drawBTN(n) {
+                if(n == undefined) n = 0;
                 $("#btn_list").empty();
                 Coaching.groups.forEach((g, index) => {
-                    var btn = `<button type="button" class="btn btn-secondary w-100 col mx-2" onclick="changeGroup(${index+1})">${GroupName[index]}</button>`;
-                    $("#btn_list").append(btn);
+                    // 如果是目前選擇的小組 則顯示為藍色
+                    if (index + 1 == n) {
+                        var btn = `<button type="button" class="btn btn-primary w-100 col mx-2" onclick="changeGroup(${index+1})">${GroupName[index]}</button>`;
+                        $("#btn_list").append(btn);
+                    }
+                    else if (GroupIsSubmit[index] == true) {
+                        var btn = `<button type="button" class="btn btn-success w-100 col mx-2" onclick="changeGroup(${index+1})">${GroupName[index]}</button>`;
+                        $("#btn_list").append(btn);
+                    }
+                    else {
+                        var btn = `<button type="button" class="btn btn-secondary w-100 col mx-2" onclick="changeGroup(${index+1})">${GroupName[index]}</button>`;
+                        $("#btn_list").append(btn);
+                    }
                 });
             }
 
@@ -746,8 +767,9 @@
                 questions = await getQuestions();
                 await displayQuestions();
                 await showEvaluationText(GroupIndex);
-                await setChartData();
-                await drawChart();
+                await setChartData(index);
+                await drawChart(index);
+                await drawBTN(index);
             }
 
             // 顯示評價文字
