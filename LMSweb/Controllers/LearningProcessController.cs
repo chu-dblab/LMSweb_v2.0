@@ -41,7 +41,7 @@ namespace LMSweb.Controllers
                 },
                 TeacherAgv = new ChartData
                 {
-                    Data = new double[] {0, 0, 0 }
+                    Data = new double[] { 0, 0, 0 }
                 },
                 Detail = new List<DetailData>()
             };
@@ -77,11 +77,12 @@ namespace LMSweb.Controllers
                 var TeacherAgv = new double[] { 0, 0, 0 };
                 foreach (var eva in TeacherEvaluation)
                 {
-                    if(eva.Evaluation == null)
+                    if (eva.Evaluation == null)
                     {
                         TeacherAgv = new double[] { 0, 0, 0 };
                         break;
-                    } else
+                    }
+                    else
                     {
                         var score_list = eva.Evaluation.Split(',').ToList();
                         var EvaAnswer_list = new List<EvaAnswer>();
@@ -132,59 +133,61 @@ namespace LMSweb.Controllers
             var CoachingList = _context.EvaluationCoachings.Where(x => x.MissionId == mid && x.AUID == uid).ToList();
 
             // 顯示評價
-            if (testType == 2 || testType == 4 || testType == 5)
+
+            if (EvaluationList.Count > 0)
             {
-                if (EvaluationList.Count > 0)
+                foreach (var eva in EvaluationList)
                 {
-                    foreach (var eva in EvaluationList)
+                    var Teacher = _context.Teachers.Where(x => x.TeacherId == eva.AUID).FirstOrDefault();
+                    if (Teacher != null && eva.Evaluation != null)
                     {
-                        var Teacher = _context.Teachers.Where(x => x.TeacherId == eva.AUID).FirstOrDefault();
-                        if (Teacher != null && eva.Evaluation != null)
+                        var vmDetailData = new DetailData();
+                        var score_list = eva.Evaluation.Split(',').ToList();
+                        var EvaAnswer_list = new List<EvaAnswer>();
+
+                        Dictionary<string, int> scoreDict = new Dictionary<string, int>();
+
+                        scoreDict.Add("PE01", 0);
+                        scoreDict.Add("PE02", 0);
+                        scoreDict.Add("PE03", 0);
+
+                        foreach (var item in score_list)
                         {
-                            var vmDetailData = new DetailData();
-                            var score_list = eva.Evaluation.Split(',').ToList();
-                            var EvaAnswer_list = new List<EvaAnswer>();
-
-                            Dictionary<string, int> scoreDict = new Dictionary<string, int>();
-
-                            scoreDict.Add("PE01", 0);
-                            scoreDict.Add("PE02", 0);
-                            scoreDict.Add("PE03", 0);
-
-                            foreach (var item in score_list)
+                            var score = item.Split(':').ToList();
+                            if (scoreDict.ContainsKey(score[0]))
                             {
-                                var score = item.Split(':').ToList();
-                                if (scoreDict.ContainsKey(score[0]))
+                                scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
+                            }
+                            else
+                            {
+                                if (score.Count() > 1 && score[1] != "")
                                 {
-                                    scoreDict[key: score[0]] = _evaluationCoachingServices.GetScore(int.Parse(score[1]));
-                                }
-                                else
-                                {
-                                    if (score.Count() > 1 && score[1] != "")
-                                    {
-                                        var question = _context.Questions.Find(score[0]).Qcontent;
+                                    var question = _context.Questions.Find(score[0]).Qcontent;
 
-                                        EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
-                                    }
+                                    EvaAnswer_list.Add(new EvaAnswer() { Question = question, Answer = score[1] });
                                 }
                             }
-
-                            vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
-                            vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
-
-                            viewModel.Detail.Add(vmDetailData);
                         }
-                    }
 
-                    if (viewModel.Detail.Count == 0)
-                    {
-                        var nullData = new DetailData
-                        {
-                            Score = new int[] { 0, 0, 0 },
-                            TestFeedback = new string[] { }
-                        };
-                        viewModel.Detail.Add(nullData);
+                        vmDetailData.Score = new int[] { scoreDict["PE01"], scoreDict["PE02"], scoreDict["PE03"] };
+                        vmDetailData.TestFeedback = EvaAnswer_list.Select(x => x.Answer).ToArray();
+
+                        viewModel.Detail.Add(vmDetailData);
                     }
+                }
+
+                if (viewModel.Detail.Count == 0)
+                {
+                    var nullData = new DetailData
+                    {
+                        Score = new int[] { 0, 0, 0 },
+                        TestFeedback = new string[] { }
+                    };
+                    viewModel.Detail.Add(nullData);
+                }
+
+                if (testType == 2 || testType == 4 || testType == 5)
+                {
 
                     foreach (var eva in EvaluationList)
                     {
@@ -225,18 +228,16 @@ namespace LMSweb.Controllers
                             viewModel.Detail.Add(vmDetailData);
                         }
                     }
-                }
-
-                
-                // 如果評價是 EvaluationList.Count == 0 放兩個空資料
-                for(int i = 0; i < 3 - viewModel.Detail.Count; i++)
-                {
-                    var nullData = new DetailData
+                    // 如果評價是 EvaluationList.Count == 0 放兩個空資料
+                    for (int i = 0; i < 3 - viewModel.Detail.Count; i++)
                     {
-                        Score = new int[] { 0, 0, 0 },
-                        TestFeedback = new string[] { }
-                    };
-                    viewModel.Detail.Add(nullData);
+                        var nullData = new DetailData
+                        {
+                            Score = new int[] { 0, 0, 0 },
+                            TestFeedback = new string[] { }
+                        };
+                        viewModel.Detail.Add(nullData);
+                    }
                 }
             }
 
@@ -312,7 +313,7 @@ namespace LMSweb.Controllers
 
                             viewModel.Detail.Add(vmDetailData);
                         }
-                        else if(Teacher == null && coa.Evaluation != null && coa.Coaching == null)
+                        else if (Teacher == null && coa.Evaluation != null && coa.Coaching == null)
                         {
                             var vmDetailData = new DetailData();
                             var score_list = coa.Evaluation.Split(',').ToList();
@@ -347,7 +348,7 @@ namespace LMSweb.Controllers
 
                             viewModel.Detail.Add(vmDetailData);
                         }
-                        else if(Teacher == null)
+                        else if (Teacher == null)
                         {
                             // 都沒有資料放nullData
                             var nullData = new DetailData
@@ -373,7 +374,7 @@ namespace LMSweb.Controllers
                     viewModel.Detail.Add(nullData);
                 }
             }
-                
+
 
             return View(viewModel);
         }
