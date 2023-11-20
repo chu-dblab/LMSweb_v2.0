@@ -148,9 +148,9 @@ namespace LMSweb.Controllers
                     foreach (var execution in executions)
                     {
                         _context.Executions.Remove(execution);
-                        _context.SaveChanges();
                     }
                 }
+                _context.SaveChanges();
 
                 // 依據 Course 刪除 mission 表中的資料
                 var missions = _context.Missions.Where(x => x.CourseId == cid);
