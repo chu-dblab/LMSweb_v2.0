@@ -38,7 +38,9 @@ namespace LMSweb.Services
 
         public async Task<string> SaveFile(IFormFile uploaded_file, string directory)
         {
-            return await SaveFile(uploaded_file, directory, uploaded_file.FileName);
+            // File name = uploaded_file.FileName + DateTime.Now.ToString("yyyyMMddHHmmss")
+            var fileName = uploaded_file.FileName.Substring(0, uploaded_file.FileName.LastIndexOf('.')) + DateTime.Now.ToString("yyyyMMddHHmmss") + uploaded_file.FileName.Substring(uploaded_file.FileName.LastIndexOf('.'));
+            return await SaveFile(uploaded_file, directory, fileName);
         }
 
         public async Task<string> SaveFile(IFormFile uploaded_file, string directory, string FileName)
