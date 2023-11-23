@@ -410,7 +410,7 @@ public partial class LMSContext : DbContext
             new User
             {
                 Id = "T005",
-                Upassword = HashHelper.SHA256Hash("T005"),
+                Upassword = HashHelper.SHA256Hash("mfps5221"),
                 Name = "俊興老師",
                 RoleName = "Teacher"
             }
