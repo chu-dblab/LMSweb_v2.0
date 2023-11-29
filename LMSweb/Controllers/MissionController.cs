@@ -271,6 +271,7 @@ namespace LMSweb.Controllers
                 return NotFound();
             } else
             {
+                _context.Executions.RemoveRange(_context.Executions.Where(x => x.MissionId == mid));
                 _context.Missions.Remove(mission);
                 _context.SaveChanges();
                 return RedirectToAction("Index", new { cid = cid });
