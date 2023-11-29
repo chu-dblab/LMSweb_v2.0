@@ -111,8 +111,8 @@ namespace LMSweb.Controllers
                         CurrentStatus = GlobalClass.DefaultCurrentStatus(test_type)
                     };
                     _context.Executions.Add(executionData);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
                 _evaluationCoachingServices.SetEvaluationCoaching(missionData.Mid);
 

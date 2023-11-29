@@ -165,9 +165,12 @@ namespace LMSweb.Controllers.Guide
                 // 這邊會有問題
                 var _TeacherEva = _context.EvaluationCoachings.Where(x => x.AUID == uid.Value && x.BUID == groupLeader && x.MissionId == mid).FirstOrDefault();
 
-                if(_TeacherEva.Evaluation != null)
+                if (_TeacherEva != null)
                 {
-                    _guideGroups.IsCorrect = true;
+                    if (_TeacherEva.Evaluation != null)
+                    {
+                        _guideGroups.IsCorrect = true;
+                    }
                 }
 
                 guideGroups.Add(_guideGroups);
