@@ -67,6 +67,36 @@ namespace LMSweb.Controllers
             {
                 return BadRequest();
             }
+
+            // 檢查學生資料是否有重複
+            var studentIds = students.Select(x => x.StudentId).ToList();
+            foreach (var item in studentIds)
+            {
+                if (studentIds.Where(x => x == item).Count() > 1)
+                {
+                    return BadRequest("學生資料有重複");
+                }
+            }
+
+            // 檢查學號是否已經存在SQL
+            var studentIdsInSQL = _context.Students.Select(x => x.StudentId).ToList();
+            foreach (var item in studentIds)
+            {
+                if (studentIdsInSQL.Contains(item))
+                {
+                    return BadRequest("學號已經存在");
+                }
+            }
+
+            // 檢查學生性別是否為男或女
+            foreach (var item in students)
+            {
+                if (item.StudentSex != "男" && item.StudentSex != "女")
+                {
+                    return BadRequest("學生性別必須為男或女");
+                }
+            }
+
             foreach (var item in students)
             {
                 _context.Users.Add(new User
