@@ -298,6 +298,47 @@ namespace LMSweb.Controllers
         {
             var gid = _context.Students.Find(checkString).GroupId;
             var groupStu = _context.Students.Where(s => s.GroupId == gid).ToList();
+            var oldLeader = groupStu.Find(s => s.IsLeader == true);
+
+            // 更動 EvaluationCoaching 的 AUID and BUID 
+            var evaluationCoaching_AUID = _context.EvaluationCoachings.Where(x => x.AUID == oldLeader.StudentId);
+            foreach (var item in evaluationCoaching_AUID)
+            {
+                var ec = new EvaluationCoaching()
+                {
+                    AUID = checkString,
+                    BUID = item.BUID,
+                    MissionId = item.MissionId,
+                    Evaluation = item.Evaluation,
+                    Coaching = item.Coaching,
+                };
+                _context.EvaluationCoachings.Add(ec);
+                _context.EvaluationCoachings.Remove(item);
+            }
+            _context.SaveChanges();
+            var evaluationCoaching_BUID = _context.EvaluationCoachings.Where(x => x.BUID == oldLeader.StudentId);
+            foreach (var item in evaluationCoaching_BUID)
+            {
+                var ec = new EvaluationCoaching()
+                {
+                    AUID = item.AUID,
+                    BUID = checkString,
+                    MissionId = item.MissionId,
+                    Evaluation = item.Evaluation,
+                    Coaching = item.Coaching,
+                };
+                _context.EvaluationCoachings.Add(ec);
+                _context.EvaluationCoachings.Remove(item);
+            }
+            _context.SaveChanges();
+
+            // 更動 Answer 的 UserID
+            var answer = _context.Answers.Where(x => x.UserId == oldLeader.StudentId);
+            foreach (var item in answer)
+            {
+                item.UserId = checkString;
+                _context.SaveChanges();
+            }
 
             groupStu.ForEach(s => s.IsLeader = false);
             _context.SaveChanges();
