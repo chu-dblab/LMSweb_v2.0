@@ -344,7 +344,11 @@ namespace LMSweb.Controllers
             {
                 foreach (var item in answer)
                 {
-                    item.UserId = checkString;
+                    var ans = new Answer();
+                    ans = item;
+                    ans.UserId = checkString;
+                    _context.Answers.Add(ans);
+                    _context.Answers.Remove(item);
                     _context.SaveChanges();
                 }
             }
