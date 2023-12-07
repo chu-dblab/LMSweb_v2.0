@@ -302,43 +302,53 @@ namespace LMSweb.Controllers
 
             // 更動 EvaluationCoaching 的 AUID and BUID 
             var evaluationCoaching_AUID = _context.EvaluationCoachings.Where(x => x.AUID == oldLeader.StudentId);
-            foreach (var item in evaluationCoaching_AUID)
+            if (evaluationCoaching_AUID != null)
             {
-                var ec = new EvaluationCoaching()
+                foreach (var item in evaluationCoaching_AUID)
                 {
-                    AUID = checkString,
-                    BUID = item.BUID,
-                    MissionId = item.MissionId,
-                    Evaluation = item.Evaluation,
-                    Coaching = item.Coaching,
-                };
-                _context.EvaluationCoachings.Add(ec);
-                _context.EvaluationCoachings.Remove(item);
+                    var ec = new EvaluationCoaching()
+                    {
+                        AUID = checkString,
+                        BUID = item.BUID,
+                        MissionId = item.MissionId,
+                        Evaluation = item.Evaluation,
+                        Coaching = item.Coaching,
+                    };
+                    _context.EvaluationCoachings.Add(ec);
+                    _context.EvaluationCoachings.Remove(item);
+                }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
             var evaluationCoaching_BUID = _context.EvaluationCoachings.Where(x => x.BUID == oldLeader.StudentId);
-            foreach (var item in evaluationCoaching_BUID)
+            if (evaluationCoaching_BUID != null)
             {
-                var ec = new EvaluationCoaching()
+                foreach (var item in evaluationCoaching_BUID)
                 {
-                    AUID = item.AUID,
-                    BUID = checkString,
-                    MissionId = item.MissionId,
-                    Evaluation = item.Evaluation,
-                    Coaching = item.Coaching,
-                };
-                _context.EvaluationCoachings.Add(ec);
-                _context.EvaluationCoachings.Remove(item);
+                    var ec = new EvaluationCoaching()
+                    {
+                        AUID = item.AUID,
+                        BUID = checkString,
+                        MissionId = item.MissionId,
+                        Evaluation = item.Evaluation,
+                        Coaching = item.Coaching,
+                    };
+                    _context.EvaluationCoachings.Add(ec);
+                    _context.EvaluationCoachings.Remove(item);
+                }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
 
             // 更動 Answer 的 UserID
             var answer = _context.Answers.Where(x => x.UserId == oldLeader.StudentId);
-            foreach (var item in answer)
+            if (answer != null)
             {
-                item.UserId = checkString;
-                _context.SaveChanges();
+                foreach (var item in answer)
+                {
+                    item.UserId = checkString;
+                    _context.SaveChanges();
+                }
             }
+            
 
             groupStu.ForEach(s => s.IsLeader = false);
             _context.SaveChanges();
