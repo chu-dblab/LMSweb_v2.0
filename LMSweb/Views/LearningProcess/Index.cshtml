@@ -212,7 +212,7 @@
                                 <text>
                                 let template@(i)@(j) = $("#EvaluationDetailShort").html();
                                 var EvaluationDetailShort = $(template@(i)@(j));
-                                EvaluationDetailShort.find("#P_text").text(`@(j+1). @Model.Detail[i].TestFeedback[j]`);
+                                    EvaluationDetailShort.find("#P_text").text(`@(j + 1). ${DetailData[@i].testFeedback[@j]}`);
                                 $("#EvaluationDetail").append(EvaluationDetailShort);
                                 console.log(EvaluationDetailShort);
                                 </text>
