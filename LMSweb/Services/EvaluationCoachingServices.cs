@@ -195,7 +195,7 @@ namespace LMSweb.Services
             if (group_score.Evaluation == null)
             {
                 group.CoachingScore = NoSumitOutput;
-                group.IsSubmit = true;
+                group.IsSubmit = false;
 
                 return group;
             }

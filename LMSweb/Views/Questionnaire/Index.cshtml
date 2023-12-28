@@ -407,7 +407,8 @@
                 {
                     $("#Questionnaire").empty();
                     $("#Questionnaire").hide();
-                } else {
+                }
+                else {
                     $("#Questionnaire").show();
                 }
             }
@@ -779,6 +780,8 @@
                     if (Coaching.groups[group_index - 1].coachingScore.pE01 == 0) {
                         var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}尚未給予評價</h3>`;
                         $("#EvaluationText").append(p);
+                        $("#Questionnaire").empty();
+                        $("#Questionnaire").hide();
                     } else {
                         var p = `<hr class="mt-2"><h3 class="mt-2">${GroupName[group_index-1]}給予的評價</h3>`;
                         $("#EvaluationText").append(p);
