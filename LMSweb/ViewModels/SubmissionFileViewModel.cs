@@ -11,6 +11,9 @@
         public string? type { get; set; }
         public string? Path { get; set; }
 
+        // 是否開放上傳功能
+        public bool IsUpload { get; set; }
+
         public IFormFile? formFile { get; set; }
     }
 }

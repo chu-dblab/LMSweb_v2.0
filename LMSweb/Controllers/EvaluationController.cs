@@ -1,4 +1,5 @@
 ﻿using LMSweb.Data;
+using LMSweb.Models;
 using LMSweb.Services;
 using LMSweb.ViewModels.Evaluation;
 using LMSweb.ViewModels.Questionnaire;
@@ -29,6 +30,7 @@ namespace LMSweb.Controllers
             vm.CourseId = _context.Missions.Find(mid).CourseId;
 
             var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");
+            var UserGid = _context.Students.Find(UID.Value).GroupId;
 
             var _EvaluationGroupIdList = _evaluationCoachingServices.GetEvaluationLeaderList(mid, UID.Value);
 
@@ -71,6 +73,7 @@ namespace LMSweb.Controllers
                 }
 
                 vm.EvaGroupList.Add(group);
+                
             }
 
             if (_EvaluationGroupIdList.Count == 0)
@@ -78,6 +81,7 @@ namespace LMSweb.Controllers
                 return RedirectToAction("Details", "Mission", new { mid = mid , cid = vm.CourseId });
             }
 
+            vm.IsPeerEvaluation = _context.Executions.Where(x => x.GroupId == UserGid && x.MissionId == mid).FirstOrDefault().IsPeerEvaluation;
             return View(vm);
         }
 
@@ -147,6 +151,25 @@ namespace LMSweb.Controllers
             {
                 return false;
             }
+        }
+
+        // 新增API，傳入確認進入評價階段
+        [HttpPost]
+        public IActionResult GoPeerEvaluation(string mid)
+        {
+
+            var UID = User.Claims.FirstOrDefault(x => x.Type == "UID");
+            var gid = _context.Students.Find(UID.Value).GroupId;
+
+            if (gid == null) {
+                return NotFound();
+            }
+
+            var execution = _context.Executions.Where(x => x.GroupId == gid && x.MissionId == mid).FirstOrDefault();
+            execution.IsPeerEvaluation = true;
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

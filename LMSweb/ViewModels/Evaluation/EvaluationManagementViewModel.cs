@@ -9,6 +9,9 @@ namespace LMSweb.ViewModels.Evaluation
 
         public string? TaskType { get; set; }
         public string? TaskSteps { get; set; }
+
+        // 使否進入互動式同儕互評
+        public bool IsPeerEvaluation { get; set; }
         public List<EvaGroup>? EvaGroupList { get; set; }
     }
 

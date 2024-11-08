@@ -37,7 +37,8 @@ namespace LMSweb.Controllers
             vm.MissionId = mid;
             vm.MisstionName = _context.Missions.Find(mid).Mname;
             vm.EndDate = _context.Missions.Find(mid).EndDate;
-            
+            vm.IsUpload = _context.Executions.Where(x => x.GroupId == GroupId && x.MissionId == mid).FirstOrDefault().IsPeerEvaluation;
+
             if (UID == null || misstion == null) { return NotFound(); }
 
             var _ExecutionContent = _context.ExecutionContents.Where(x => x.GroupId == GroupId && x.MissionId == mid && x.Type == type).FirstOrDefault();

@@ -116,6 +116,7 @@ public partial class LMSContext : DbContext
             entity.Property(e => e.MissionId)
                 .HasMaxLength(128)
                 .HasColumnName("MissionID");
+            entity.Property(e => e.IsPeerEvaluation).HasColumnType("bit");
 
             entity.HasOne(d => d.Group).WithMany(p => p.Executions)
                 .HasForeignKey(d => d.GroupId)

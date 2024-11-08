@@ -22,7 +22,12 @@
     <div class="card m-3 p-4">
         <div class="mb-3">
             <h5>@Model.MisstionName</h5>
-            @if (DateTime.Compare(Model.EndDate, DateTime.Now) <= 0)
+            @if (Model.IsUpload)
+            {
+                <p>已鎖定答案</p>
+                <img class="mb-3 img-fluid" src="@(Host)@Model.Path" />
+            }
+            else if (DateTime.Compare(Model.EndDate, DateTime.Now) <= 0)
             {
                 if (Model.Path == null)
                 {
