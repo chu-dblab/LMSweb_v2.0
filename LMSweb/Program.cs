@@ -7,9 +7,19 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<LMSContext>(options =>
-    options.UseSqlServer(builder.Configuration["LMSContext"])
-);
+if(builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<LMSContext>(options =>
+        options.UseSqlServer(builder.Configuration["LMSContext"])
+    );
+}
+else
+{
+    builder.Services.AddDbContext<LMSContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("LMSContext"))
+    );
+}
+
 
 builder.Services.AddCookiePolicy(options =>
 {
